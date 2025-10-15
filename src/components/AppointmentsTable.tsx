@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React from "react";
 import {
     Table,
@@ -50,7 +51,14 @@ export function AppointmentsTable({ data }: AppointmentsTableProps) {
                 <TableBody>
                     {data.map((a) => (
                         <TableRow key={a.id}>
-                            <TableCell>{a.date} / {a.number}</TableCell>
+                            <TableCell>
+                                <Link
+                                    href={`/appointments/${a.id}`}
+                                    className="text-blue-600 hover:underline"
+                                >
+                                    {a.date} / {a.number}
+                                </Link>
+                            </TableCell>
                             <TableCell>{a.requiredServices}</TableCell>
                             <TableCell>{a.assignedRequired}</TableCell>
                             <TableCell>{a.assignmentPercent}%</TableCell>
