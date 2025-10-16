@@ -1,20 +1,44 @@
+"use client";
+
+import { FilterSelect } from "@/components/FilterSelect";
+
 export function TopFilters() {
     return (
-        <div className="h-16 bg-gray-200 flex items-center px-4 gap-4">
-            {/* Примеры фильтров */}
-            <input
-                type="text"
-                placeholder="Поиск..."
-                className="border border-gray-400 rounded px-2 py-1"
+        <div className="h-20 bg-gray-100 dark:bg-gray-900 flex items-center gap-4 px-6 shadow-sm overflow-x-auto">
+            <FilterSelect
+                label="Дата"
+                defaultValue="all"
+                options={[
+                    { value: "all", label: "За всё время" },
+                    { value: "june", label: "Июнь" },
+                    { value: "july", label: "Июль" },
+                    { value: "august", label: "Август" },
+                    { value: "september", label: "Сентябрь" },
+                    { value: "october", label: "Октябрь" },
+                ]}
             />
-            <select className="border border-gray-400 rounded px-2 py-1">
-                <option>Фильтр 1</option>
-                <option>Фильтр 2</option>
-                <option>Фильтр 3</option>
-            </select>
-            <button className="bg-blue-500 text-white px-3 py-1 rounded">
-                Применить
-            </button>
+
+            <FilterSelect
+                label="Специальность"
+                defaultValue="all"
+                options={[
+                    { value: "all", label: "Все специалисты" },
+                    { value: "doctor1", label: "Терапевт" },
+                    { value: "doctor2", label: "Кардиолог" },
+                    { value: "doctor3", label: "Эндокринолог" },
+                ]}
+            />
+
+            <FilterSelect
+                label="Вид приёма"
+                defaultValue="all"
+                options={[
+                    { value: "all", label: "Все" },
+                    { value: "first", label: "Первичный" },
+                    { value: "second", label: "Вторичный" },
+                ]}
+            />
+
         </div>
     );
 }
