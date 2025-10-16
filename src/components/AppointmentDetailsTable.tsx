@@ -9,7 +9,6 @@ import {
     TableHeaderCell,
     TableRow,
     TableRoot,
-    TableCaption,
 } from "@/components/Table";
 
 export interface AppointmentDetail {
@@ -29,7 +28,7 @@ export function AppointmentDetailsTable({ data }: Props) {
     return (
         <TableRoot>
             <Table>
-                <TableCaption>Детали приёма</TableCaption>
+                {/*<TableCaption>Детали приёма</TableCaption>*/}
                 <TableHead>
                     <TableRow>
                         <TableHeaderCell>Название назначения/услуги</TableHeaderCell>

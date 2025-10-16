@@ -1,15 +1,27 @@
+'use client';
+
+import { useEffect, useState } from "react";
 import { AppointmentDetailsTable, AppointmentDetail } from "@/components/AppointmentDetailsTable";
 
-async function getAppointmentDetails(id: string) {
-    const res = await fetch(`http://localhost:3000/api/appointments/${id}`, {
-        cache: "no-store",
-    });
-    if (!res.ok) throw new Error("Ошибка при загрузке данных");
-    return res.json();
+interface AppointmentDetailsPageProps {
+    params: { id: string };
 }
 
-export default async function AppointmentDetailsPage({ params }: { params: { id: string } }) {
-    const data: AppointmentDetail[] = await getAppointmentDetails(params.id);
+export default function AppointmentDetailsPage({ params }: AppointmentDetailsPageProps) {
+    const [data, setData] = useState<AppointmentDetail[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (!params.id) return;
+
+        fetch(`/api/appointments/${params.id}`)
+            .then(res => res.json())
+            .then(d => setData(d))
+            .finally(() => setLoading(false));
+    }, [params.id]);
+
+    if (!params.id) return <div className="p-8">Не указан ID приёма</div>;
+    if (loading) return <div className="p-8">Загрузка...</div>;
 
     return (
         <div className="p-8">

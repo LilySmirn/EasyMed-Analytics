@@ -1,15 +1,21 @@
+// src/app/doctors/page.tsx
+'use client';
+
+import { useEffect, useState } from 'react';
 import { DoctorsTable } from "@/components/DoctorsTable";
 
-async function getDoctors() {
-    const res = await fetch("http://localhost:3000/api/doctors", {
-        cache: "no-store",
-    });
-    if (!res.ok) throw new Error("Failed to fetch doctors");
-    return res.json();
-}
+export default function DoctorsPage() {
+    const [doctors, setDoctors] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-export default async function DoctorsPage() {
-    const doctors = await getDoctors();
+    useEffect(() => {
+        fetch('/api/doctors')
+            .then(res => res.json())
+            .then(data => setDoctors(data))
+            .finally(() => setLoading(false));
+    }, []);
+
+    if (loading) return <div className="p-8">Загрузка...</div>;
 
     return (
         <div className="p-8">

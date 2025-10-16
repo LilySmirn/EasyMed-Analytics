@@ -9,7 +9,6 @@ import {
     TableHeaderCell,
     TableRow,
     TableRoot,
-    TableCaption,
 } from "@/components/Table";
 import Link from "next/link";
 
@@ -36,7 +35,7 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
     return (
         <TableRoot>
             <Table>
-                <TableCaption>Список докторов</TableCaption>
+                {/*<TableCaption>Список докторов</TableCaption>*/}
                 <TableHead>
                     <TableRow>
                         <TableHeaderCell>ID</TableHeaderCell>
