@@ -35,7 +35,7 @@ export function TopFilters() {
                 options={[
                     { value: "all", label: "Все" },
                     { value: "first", label: "Первичный" },
-                    { value: "second", label: "Вторичный" },
+                    { value: "second", label: "Повторный" },
                 ]}
             />
 
