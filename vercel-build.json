@@ -1,0 +1,6 @@
+{
+  "buildCommand": "echo 'already built locally'",
+  "outputDirectory": ".next",
+  "framework": "nextjs"
+}
+

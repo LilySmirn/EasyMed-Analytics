@@ -24,10 +24,12 @@ export function FilterSelect({
     return (
         <div className="flex flex-col">
             <label className="text-sm text-gray-500 mb-1 ml-1">{label}</label>
+
             <Select defaultValue={defaultValue} onValueChange={onChange}>
-                <SelectTrigger className="w-48">
+                <SelectTrigger className="w-48 p-2 border rounded bg-white dark:bg-gray-800 text-left">
                     <SelectValue placeholder={label} />
                 </SelectTrigger>
+
                 <SelectContent>
                     {options.map((opt) => (
                         <SelectItem key={opt.value} value={opt.value}>

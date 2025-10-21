@@ -19,10 +19,18 @@ const DrawerTrigger = React.forwardRef<
 ));
 DrawerTrigger.displayName = "Drawer.Trigger";
 
-/**
- * Overlay отключаем, чтобы не было затемнения
- */
-const DrawerOverlay = () => null;
+const DrawerOverlay = React.forwardRef<
+    React.ElementRef<typeof DrawerPrimitives.Overlay>,
+    React.ComponentPropsWithoutRef<typeof DrawerPrimitives.Overlay>
+>(({ className, ...props }, ref) => (
+    <DrawerPrimitives.Overlay
+        ref={ref}
+        className={cx("pointer-events-none", className)}
+        {...props}
+    />
+));
+DrawerOverlay.displayName = "DrawerOverlay";
+
 
 const DrawerPortal = DrawerPrimitives.Portal;
 DrawerPortal.displayName = "DrawerPortal";
@@ -30,8 +38,9 @@ DrawerPortal.displayName = "DrawerPortal";
 const DrawerContent = React.forwardRef<
     React.ElementRef<typeof DrawerPrimitives.Content>,
     React.ComponentPropsWithoutRef<typeof DrawerPrimitives.Content>
->(({ className, ...props }, forwardedRef) => (
+>(({ className, children, ...props }, forwardedRef) => (
     <DrawerPortal>
+        {/* Overlay можно отключить или оставить */}
         <DrawerOverlay />
         <DrawerPrimitives.Content
             ref={forwardedRef}
@@ -46,10 +55,13 @@ const DrawerContent = React.forwardRef<
                 className
             )}
             {...props}
-        />
+        >
+            {children}
+        </DrawerPrimitives.Content>
     </DrawerPortal>
 ));
 DrawerContent.displayName = "DrawerContent";
+
 
 const DrawerHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
     ({ children, className, ...props }, ref) => (
@@ -84,6 +96,18 @@ const DrawerTitle = React.forwardRef<
 ));
 DrawerTitle.displayName = "DrawerTitle";
 
+const DrawerDescription = React.forwardRef<
+    React.ElementRef<typeof DrawerPrimitives.Description>,
+    React.ComponentPropsWithoutRef<typeof DrawerPrimitives.Description>
+>(({ className, ...props }, forwardedRef) => (
+    <DrawerPrimitives.Description
+        ref={forwardedRef}
+        className={cx("text-sm text-gray-500 dark:text-gray-400", className)}
+        {...props}
+    />
+));
+DrawerDescription.displayName = "DrawerDescription";
+
 const DrawerBody = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
     ({ className, ...props }, ref) => (
         <div ref={ref} className={cx("flex-1 py-4", className)} {...props} />
@@ -97,5 +121,6 @@ export {
     DrawerContent,
     DrawerHeader,
     DrawerTitle,
+    DrawerDescription,
     DrawerBody,
 };
