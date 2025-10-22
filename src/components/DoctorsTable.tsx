@@ -12,7 +12,7 @@ import {
 } from "@/components/Table";
 import Link from "next/link";
 
-interface Doctor {
+export interface Doctor {
     id: string;
     fullName: string;
     appointments: number;

@@ -3,6 +3,7 @@ import "./globals.css";
 import { GeistSans } from "geist/font/sans";
 import { Sidebar } from "@/components/Sidebar";
 import { TopFilters } from "@/components/TopFilters";
+import { FiltersProvider } from "@/context/FiltersContext";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -20,18 +21,14 @@ export default function RootLayout({
             className={`${GeistSans.className} antialiased dark:bg-gray-950`}
         >
         <body className="min-h-screen flex bg-gray-50 dark:bg-gray-950">
-        {/* Боковое меню */}
         <Sidebar />
 
-        {/* Основная область */}
-        <div className="flex-1 flex flex-col">
-            {/* Верхние фильтры */}
-            <TopFilters />
-
-            {/* Контент страницы */}
-            <main className="flex-1 overflow-auto p-8">{children}</main>
-
-        </div>
+        <FiltersProvider>
+            <div className="flex-1 flex flex-col">
+                <TopFilters />
+                <main className="flex-1 overflow-auto p-8">{children}</main>
+            </div>
+        </FiltersProvider>
         </body>
         </html>
     );
