@@ -2,21 +2,27 @@ name: Update project structure
 
 on:
   push:
-    branches: [ main ]   # можно указать нужную ветку
+    branches: [ main ]   # укажи нужную ветку
+  workflow_dispatch:
 
 jobs:
   generate-structure:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 18
-      - run: node generate-structure.js
+
+      - name: Generate project structure
+        run: node generate-structure.js
+
       - name: Commit updated structure
         run: |
           git config user.name "CI Bot"
           git config user.email "bot@example.com"
-          git add structure.json structure.md
-          git commit -m "update: auto-generated structure" || echo "No changes"
-          git push
+          git add structure.json docs/structure.md || true
+          git commit -m "update: auto-generated structure" || echo "No changes to commit"
+          git push || echo "No changes to push"
