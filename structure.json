@@ -24,74 +24,53 @@
     "type": "file"
   },
   {
-    "name": ".idea",
-    "type": "directory",
-    "children": [
-      {
-        "name": ".gitignore",
-        "type": "file"
-      },
-      {
-        "name": ".name",
-        "type": "file"
-      },
-      {
-        "name": "easycode.ignore",
-        "type": "file"
-      },
-      {
-        "name": "easymed-analytics.iml",
-        "type": "file"
-      },
-      {
-        "name": "inspectionProfiles",
-        "type": "directory",
-        "children": [
-          {
-            "name": "Project_Default.xml",
-            "type": "file"
-          }
-        ]
-      },
-      {
-        "name": "modules.xml",
-        "type": "file"
-      },
-      {
-        "name": "vcs.xml",
-        "type": "file"
-      },
-      {
-        "name": "workspace.xml",
-        "type": "file"
-      }
-    ]
-  },
-  {
-    "name": ".vercel",
-    "type": "directory",
-    "children": [
-      {
-        "name": "project.json",
-        "type": "file"
-      },
-      {
-        "name": "README.txt",
-        "type": "file"
-      }
-    ]
-  },
-  {
     "name": ".vercelignore",
     "type": "file"
   },
   {
     "name": "docs",
     "type": "directory",
-    "children": []
+    "children": [
+      {
+        "name": "api.md",
+        "type": "file"
+      },
+      {
+        "name": "architecture.md",
+        "type": "file"
+      },
+      {
+        "name": "components.md",
+        "type": "file"
+      },
+      {
+        "name": "context.md",
+        "type": "file"
+      },
+      {
+        "name": "lib.md",
+        "type": "file"
+      },
+      {
+        "name": "README.md",
+        "type": "file"
+      },
+      {
+        "name": "setup.md",
+        "type": "file"
+      },
+      {
+        "name": "structure.md",
+        "type": "file"
+      },
+      {
+        "name": "utils.md",
+        "type": "file"
+      }
+    ]
   },
   {
-    "name": "generate-structure.js",
+    "name": "generate-structure.mjs",
     "type": "file"
   },
   {

@@ -1,33 +1,66 @@
+// generate-structure.js
 const fs = require("fs");
 const path = require("path");
 
-const ignore = ["node_modules", ".next", ".git", "dist", "out"];
+// Папки, которые нужно игнорировать при обходе
+const ignore = [
+    "node_modules",
+    ".git",
+    ".next",
+    "dist",
+    "build",
+    "out",
+    ".vercel",
+    ".idea",
+    ".DS_Store",
+    "coverage",
+    "logs",
+    "tmp",
+    "temp",
+];
 
-function walk(dir) {
-    const result = [];
-    for (const item of fs.readdirSync(dir, { withFileTypes: true })) {
-        if (ignore.includes(item.name)) continue;
+// Функция обхода директорий
+function buildTree(dir, prefix = "") {
+    const items = fs.readdirSync(dir, { withFileTypes: true })
+        .filter((item) => !ignore.includes(item.name))
+        .sort((a, b) => a.name.localeCompare(b.name));
 
+    return items.map((item, index) => {
+        const isLast = index === items.length - 1;
+        const pointer = isLast ? "└── " : "├── ";
+        const nextPrefix = prefix + (isLast ? "    " : "│   ");
         const fullPath = path.join(dir, item.name);
+
         if (item.isDirectory()) {
-            result.push({
-                name: item.name,
-                type: "directory",
-                children: walk(fullPath),
-            });
+            return (
+                prefix + pointer + item.name + "/" + "\n" +
+                buildTree(fullPath, nextPrefix)
+            );
         } else {
-            result.push({
-                name: item.name,
-                type: "file",
-            });
+            return prefix + pointer + item.name + "\n";
         }
-    }
-    return result;
+    }).join("");
 }
 
-const rootDir = process.argv[2] || ".";
-const structure = walk(rootDir);
+// Основной путь проекта
+const projectDir = process.cwd();
 
-fs.writeFileSync("structure.json", JSON.stringify(structure, null, 2));
+// Генерируем дерево
+const tree = ".\n" + buildTree(projectDir);
 
-console.log("✅ Файл structure.json успешно создан!");
+// Markdown-шаблон
+const markdown = `# Полная структура проекта
+
+Этот файл сгенерирован автоматически (см. \`generate-structure.js\`).
+
+Ниже приведено дерево всех файлов и папок проекта:
+\`\`\`text
+${tree}
+\`\`\`
+`;
+
+// Создаём docs/structure.md
+fs.mkdirSync("docs", { recursive: true });
+fs.writeFileSync("docs/structure.md", markdown, "utf8");
+
+console.log("✅ Файл docs/structure.md успешно создан!");
