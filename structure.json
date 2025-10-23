@@ -4,6 +4,22 @@
     "type": "file"
   },
   {
+    "name": ".github",
+    "type": "directory",
+    "children": [
+      {
+        "name": "workflows",
+        "type": "directory",
+        "children": [
+          {
+            "name": "update-structure.yml",
+            "type": "file"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "name": ".gitignore",
     "type": "file"
   },
@@ -68,6 +84,11 @@
   {
     "name": ".vercelignore",
     "type": "file"
+  },
+  {
+    "name": "docs",
+    "type": "directory",
+    "children": []
   },
   {
     "name": "generate-structure.js",
@@ -313,6 +334,10 @@
         ]
       }
     ]
+  },
+  {
+    "name": "structure.json",
+    "type": "file"
   },
   {
     "name": "tailwind.config.ts",
