@@ -1,0 +1,329 @@
+[
+  {
+    "name": ".eslintrc.json",
+    "type": "file"
+  },
+  {
+    "name": ".gitignore",
+    "type": "file"
+  },
+  {
+    "name": ".idea",
+    "type": "directory",
+    "children": [
+      {
+        "name": ".gitignore",
+        "type": "file"
+      },
+      {
+        "name": ".name",
+        "type": "file"
+      },
+      {
+        "name": "easycode.ignore",
+        "type": "file"
+      },
+      {
+        "name": "easymed-analytics.iml",
+        "type": "file"
+      },
+      {
+        "name": "inspectionProfiles",
+        "type": "directory",
+        "children": [
+          {
+            "name": "Project_Default.xml",
+            "type": "file"
+          }
+        ]
+      },
+      {
+        "name": "modules.xml",
+        "type": "file"
+      },
+      {
+        "name": "vcs.xml",
+        "type": "file"
+      },
+      {
+        "name": "workspace.xml",
+        "type": "file"
+      }
+    ]
+  },
+  {
+    "name": ".vercel",
+    "type": "directory",
+    "children": [
+      {
+        "name": "project.json",
+        "type": "file"
+      },
+      {
+        "name": "README.txt",
+        "type": "file"
+      }
+    ]
+  },
+  {
+    "name": ".vercelignore",
+    "type": "file"
+  },
+  {
+    "name": "generate-structure.js",
+    "type": "file"
+  },
+  {
+    "name": "next-env.d.ts",
+    "type": "file"
+  },
+  {
+    "name": "next.config.mjs",
+    "type": "file"
+  },
+  {
+    "name": "package-lock.json",
+    "type": "file"
+  },
+  {
+    "name": "package.json",
+    "type": "file"
+  },
+  {
+    "name": "postcss.config.mjs",
+    "type": "file"
+  },
+  {
+    "name": "public",
+    "type": "directory",
+    "children": []
+  },
+  {
+    "name": "README.md",
+    "type": "file"
+  },
+  {
+    "name": "src",
+    "type": "directory",
+    "children": [
+      {
+        "name": "app",
+        "type": "directory",
+        "children": [
+          {
+            "name": "api",
+            "type": "directory",
+            "children": [
+              {
+                "name": "appointments",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "route.ts",
+                    "type": "file"
+                  },
+                  {
+                    "name": "[id]",
+                    "type": "directory",
+                    "children": [
+                      {
+                        "name": "route.ts",
+                        "type": "file"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "doctors",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "route.ts",
+                    "type": "file"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "appointments",
+            "type": "directory",
+            "children": [
+              {
+                "name": "AppointmentsPageInner.tsx",
+                "type": "file"
+              },
+              {
+                "name": "page.tsx",
+                "type": "file"
+              },
+              {
+                "name": "[id]",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "page.tsx",
+                    "type": "file"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "doctors",
+            "type": "directory",
+            "children": [
+              {
+                "name": "page.tsx",
+                "type": "file"
+              }
+            ]
+          },
+          {
+            "name": "favicon.ico",
+            "type": "file"
+          },
+          {
+            "name": "fonts",
+            "type": "directory",
+            "children": [
+              {
+                "name": "GeistMonoVF.woff",
+                "type": "file"
+              },
+              {
+                "name": "GeistVF.woff",
+                "type": "file"
+              }
+            ]
+          },
+          {
+            "name": "globals.css",
+            "type": "file"
+          },
+          {
+            "name": "layout.tsx",
+            "type": "file"
+          },
+          {
+            "name": "page.tsx",
+            "type": "file"
+          }
+        ]
+      },
+      {
+        "name": "components",
+        "type": "directory",
+        "children": [
+          {
+            "name": "AppointmentDetailsTable.tsx",
+            "type": "file"
+          },
+          {
+            "name": "AppointmentsTable.tsx",
+            "type": "file"
+          },
+          {
+            "name": "Button.tsx",
+            "type": "file"
+          },
+          {
+            "name": "Card.tsx",
+            "type": "file"
+          },
+          {
+            "name": "CardDemo.tsx",
+            "type": "file"
+          },
+          {
+            "name": "DoctorsTable.tsx",
+            "type": "file"
+          },
+          {
+            "name": "Drawer.tsx",
+            "type": "file"
+          },
+          {
+            "name": "FilterSelect.tsx",
+            "type": "file"
+          },
+          {
+            "name": "ProgressBar.tsx",
+            "type": "file"
+          },
+          {
+            "name": "Select.tsx",
+            "type": "file"
+          },
+          {
+            "name": "Sidebar.tsx",
+            "type": "file"
+          },
+          {
+            "name": "Table.tsx",
+            "type": "file"
+          },
+          {
+            "name": "Tooltip.tsx",
+            "type": "file"
+          },
+          {
+            "name": "TopFilters.tsx",
+            "type": "file"
+          },
+          {
+            "name": "TopFiltersClient.tsx",
+            "type": "file"
+          }
+        ]
+      },
+      {
+        "name": "context",
+        "type": "directory",
+        "children": [
+          {
+            "name": "FiltersContext.tsx",
+            "type": "file"
+          }
+        ]
+      },
+      {
+        "name": "lib",
+        "type": "directory",
+        "children": [
+          {
+            "name": "chartUtils.ts",
+            "type": "file"
+          },
+          {
+            "name": "utils.ts",
+            "type": "file"
+          }
+        ]
+      },
+      {
+        "name": "utils",
+        "type": "directory",
+        "children": [
+          {
+            "name": "applyFilters.ts",
+            "type": "file"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "tailwind.config.ts",
+    "type": "file"
+  },
+  {
+    "name": "tsconfig.json",
+    "type": "file"
+  },
+  {
+    "name": "vercel-build.json",
+    "type": "file"
+  }
+]
