@@ -21,6 +21,7 @@
 │   ├── setup.md
 │   ├── structure.md
 │   └── utils.md
+├── generate-components-doc.js
 ├── generate-structure.js
 ├── next-env.d.ts
 ├── next.config.mjs
@@ -58,6 +59,7 @@
 │   │   ├── Button.tsx
 │   │   ├── Card.tsx
 │   │   ├── CardDemo.tsx
+│   │   ├── demoComponent.tsx
 │   │   ├── DoctorsTable.tsx
 │   │   ├── Drawer.tsx
 │   │   ├── FilterSelect.tsx

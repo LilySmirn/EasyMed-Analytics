@@ -2,7 +2,7 @@ name: Update project structure and components
 
 on:
   push:
-    branches: [ main ]   # укажи нужную ветку
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 18
 
-      # Генерация структуры проекта
+      # Генерация структуры проекта и structure.json
       - name: Generate project structure
         run: node generate-structure.js
 
