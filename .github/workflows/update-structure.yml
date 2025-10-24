@@ -1,4 +1,4 @@
-name: Update project structure
+name: Update project structure and components
 
 on:
   push:
@@ -16,13 +16,19 @@ jobs:
         with:
           node-version: 18
 
+      # Генерация структуры проекта
       - name: Generate project structure
         run: node generate-structure.js
 
-      - name: Commit updated structure
+      # Генерация документации по компонентам
+      - name: Generate components documentation
+        run: node generate-components-doc.js
+
+      # Коммит и пуш изменений
+      - name: Commit updated docs
         run: |
           git config user.name "CI Bot"
           git config user.email "bot@example.com"
-          git add structure.json docs/structure.md || true
-          git commit -m "update: auto-generated structure" || echo "No changes to commit"
+          git add structure.json docs/structure.md docs/components.md || true
+          git commit -m "update: auto-generated structure and components docs" || echo "No changes to commit"
           git push || echo "No changes to push"
