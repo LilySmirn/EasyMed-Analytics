@@ -19,12 +19,14 @@ Tremor обеспечивает единый стиль и готовые при
 src/components/
 ├── AppointmentDetailsTable.tsx
 ├── AppointmentsTable.tsx
+├── BackButton.tsx
 ├── Button.tsx
 ├── Card.tsx
 ├── CardDemo.tsx
 ├── DoctorsTable.tsx
 ├── Drawer.tsx
 ├── FilterSelect.tsx
+├── NosologiesTable.tsx
 ├── ProgressBar.tsx
 ├── Select.tsx
 ├── Sidebar.tsx
@@ -41,6 +43,9 @@ src/components/
 Основан на Tremor Button и дополнительно стилизован с помощью TailwindCSS.
 Применяется во всех интерфейсах для взаимодействия пользователя с системой (отправка форм, фильтрация и т.д.). Поддерживает различные типы (primary, secondary, ghost), а также состояния (loading, disabled).
 Использует Tailwind для стилизации.
+
+### BackButton.tsx
+Компонент кнопки Назад (стрелка). Используется для возврата на страницу, которая выше по иерархии (родительская).
 
 ### Card.tsx
 
@@ -92,6 +97,12 @@ src/components/
 Таблица для отображения списка приёмов.
 Использует базовый компонент Table.tsx и интегрируется с контекстом фильтров.
 Отображает ключевую информацию о пациенте, враче и дате визита.
+
+### NosologiesTable.tsx
+
+Таблица для отображения списка нозологий.
+Использует базовый компонент Table.tsx и интегрируется с контекстом фильтров.
+Отображает ключевую информацию о нозологии, приёмах и выручке.
 
 ### AppointmentDetailsTable.tsx
 

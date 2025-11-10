@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { DoctorsTable, Doctor } from "@/components/DoctorsTable";
 import { useFilters } from "@/context/FiltersContext";
 import { applyFilters, FilterValue } from "@/utils/applyFilters";
+import {BackButton} from "@/components/BackButton";
 
 export default function DoctorsPage() {
     const [doctors, setDoctors] = useState<Doctor[]>([]);
@@ -35,7 +36,11 @@ export default function DoctorsPage() {
 
     return (
         <div className="p-8">
-            <h1 className="text-2xl font-bold mb-6">Доктора</h1>
+
+            <div className="flex items-center gap-2 mb-6">
+                <BackButton />
+                <h1 className="text-2xl font-bold">Специалисты</h1>
+            </div>
             <DoctorsTable data={filteredDoctors} />
         </div>
     );

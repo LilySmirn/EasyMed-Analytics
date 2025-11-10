@@ -38,7 +38,6 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                 {/*<TableCaption>Список докторов</TableCaption>*/}
                 <TableHead>
                     <TableRow>
-                        <TableHeaderCell>ID</TableHeaderCell>
                         <TableHeaderCell>ФИО</TableHeaderCell>
                         <TableHeaderCell>Приёмы</TableHeaderCell>
                         <TableHeaderCell>Первичные</TableHeaderCell>
@@ -54,7 +53,7 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                 <TableBody>
                     {data.map((doc) => (
                         <TableRow key={doc.id}>
-                            <TableCell>{doc.id}</TableCell>
+
                             <TableCell>
                                 <Link
                                     href={{

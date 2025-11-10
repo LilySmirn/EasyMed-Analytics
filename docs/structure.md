@@ -37,6 +37,8 @@
 │   │   │   │   ├── [id]/
 │   │   │   │   │   └── route.ts
 │   │   │   │   └── route.ts
+│   │   │   ├── appointments/
+│   │   │   │   └── route.ts
 │   │   │   └── doctors/
 │   │   │       └── route.ts
 │   │   ├── appointments/
@@ -45,6 +47,10 @@
 │   │   │   ├── AppointmentsPageInner.tsx
 │   │   │   └── page.tsx
 │   │   ├── doctors/
+│   │   │   └── page.tsx
+│   │   ├── nosologies/
+│   │   │   └── page.tsx
+│   │   ├── cancel-reasons/
 │   │   │   └── page.tsx
 │   │   ├── favicon.ico
 │   │   ├── fonts/
@@ -56,6 +62,7 @@
 │   ├── components/
 │   │   ├── AppointmentDetailsTable.tsx
 │   │   ├── AppointmentsTable.tsx
+│   │   ├── BackButton.tsx
 │   │   ├── Button.tsx
 │   │   ├── Card.tsx
 │   │   ├── CardDemo.tsx

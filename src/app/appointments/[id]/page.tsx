@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AppointmentDetailsTable, AppointmentDetail } from "@/components/AppointmentDetailsTable";
+import {BackButton} from "@/components/BackButton";
 
 interface AppointmentDetailsPageProps {
     params: { id: string };
@@ -25,7 +26,10 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
 
     return (
         <div className="p-8">
-            <h1 className="text-2xl font-bold mb-6">Детали приёма №{params.id}</h1>
+            <div className="flex items-center gap-2 mb-6">
+                <BackButton />
+                <h1 className="text-2xl font-bold">Детали приёма №{params.id}</h1>
+            </div>
             <AppointmentDetailsTable data={data} />
         </div>
     );

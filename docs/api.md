@@ -13,8 +13,10 @@ src/app/api/
 ├── appointments/
 │   ├── route.ts         # Работа со списком приёмов (GET, POST)
 │   └── [id]/route.ts    # Работа с отдельным приёмом (GET, PUT, DELETE)
-└── doctors/
-└── route.ts         # Работа со списком врачей (GET)
+├── doctors/
+│   ├── route.ts        # Работа со списком врачей (GET)
+├── nosologies/
+│   ├── route.ts        # Работа со списком нозологий (GET)
 ```
 ---
 
@@ -89,6 +91,30 @@ _Ответ (пример):_
 "name": "Dr. Emily Carter",
 "specialty": "Cardiologist"
 }
+]
+```
+
+### /api/nosologies
+**GET /api/nosologies**
+
+Возвращает список всех нозологий, доступных в системе.
+
+_Ответ (пример):_
+```text
+[
+{
+      id: "1",
+      name: "ОРВИ",
+      diagnosesCount: 120,
+      noServicesVisits: 15,
+      requiredServices: 320,
+      appointmentRate: "85%",
+      completionRate: "78%",
+      deviationRate: "12%",
+      revenue: "1 250 000 ₽",
+      lostRevenue: "150 000 ₽",
+      avgAssignRate: "3.5",
+    },
 ]
 ```
 

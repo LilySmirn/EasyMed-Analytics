@@ -71,9 +71,12 @@ src/
 ├── app/
 │   ├── api/
 │   │   ├── appointments/
+│   │   ├── nosologies/
 │   │   └── doctors/
 │   ├── appointments/
 │   ├── doctors/
+│   ├── nosologies/
+│   ├── cancel-reasons/
 │   ├── fonts/
 │   ├── layout.tsx
 │   ├── globals.css

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
     Drawer,
     DrawerTrigger,
@@ -19,7 +20,7 @@ export function Sidebar() {
     const [openDrawer, setOpenDrawer] = useState<string | null>(null);
 
     return (
-        <aside className="relative flex flex-col items-center bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 py-6 w-20 min-h-screen border-r border-gray-200 dark:border-gray-800">
+        <aside className="flex flex-col items-center bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 py-6 w-[80px] min-h-screen border-r border-gray-200 dark:border-gray-800">
             {/* Иконка 1 — Дом */}
             <Drawer open={openDrawer === "home"} onOpenChange={(v) => setOpenDrawer(v ? "home" : null)}>
                 <DrawerTrigger asChild>
@@ -36,13 +37,28 @@ export function Sidebar() {
                     <DrawerBody>
                         <ul className="flex flex-col gap-2 mt-2">
                             <li className="hover:bg-gray-200 dark:hover:bg-gray-800 rounded px-2 py-1 cursor-pointer">
-                                Обзор
+                                <Link
+                                    href="/nosologies"
+                                    className="block hover:bg-gray-200 dark:hover:bg-gray-800 rounded px-2 py-1"
+                                >
+                                    Нозологии
+                                </Link>
                             </li>
                             <li className="hover:bg-gray-200 dark:hover:bg-gray-800 rounded px-2 py-1 cursor-pointer">
-                                Статистика
+                                <Link
+                                    href="/doctors"
+                                    className="block hover:bg-gray-200 dark:hover:bg-gray-800 rounded px-2 py-1"
+                                >
+                                    Специалисты
+                                </Link>
                             </li>
                             <li className="hover:bg-gray-200 dark:hover:bg-gray-800 rounded px-2 py-1 cursor-pointer">
-                                Аналитика
+                                <Link
+                                    href="/cancel-reasons"
+                                    className="block hover:bg-gray-200 dark:hover:bg-gray-800 rounded px-2 py-1"
+                                >
+                                    Причины отмены
+                                </Link>
                             </li>
                         </ul>
                     </DrawerBody>

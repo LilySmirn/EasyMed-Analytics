@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AppointmentsTable, Appointment } from '@/components/AppointmentsTable';
+import {BackButton} from "@/components/BackButton";
 
 export default function AppointmentsPageInner() {
     const searchParams = useSearchParams();
@@ -24,9 +25,13 @@ export default function AppointmentsPageInner() {
 
     return (
         <div className="p-8">
-            <h1 className="text-2xl font-bold mb-6">
-                Приёмы доктора №{doctorId}
-            </h1>
+            <div className="flex items-center gap-2 mb-6">
+                <BackButton />
+                <h1 className="text-2xl font-bold">
+                    Приёмы доктора №{doctorId}
+                </h1>
+            </div>
+
             <AppointmentsTable data={appointments} />
         </div>
     );
