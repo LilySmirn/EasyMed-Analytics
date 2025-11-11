@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import {
     Table,
     TableBody,
@@ -12,7 +13,7 @@ import {
 } from "@/components/Table";
 
 export interface NosologyDoctor {
-    id: number;
+    id: string;
     name: string;
     diagnosesCount: number;
     requiredServices: number;
@@ -26,9 +27,10 @@ export interface NosologyDoctor {
 
 interface NosologyDoctorsTableProps {
     data: NosologyDoctor[];
+    nosologyId: string;
 }
 
-export function NosologyDoctorsTable({ data }: NosologyDoctorsTableProps) {
+export function NosologyDoctorsTable({ data, nosologyId }: NosologyDoctorsTableProps) {
     return (
         <TableRoot>
             <Table>
@@ -48,7 +50,20 @@ export function NosologyDoctorsTable({ data }: NosologyDoctorsTableProps) {
                 <TableBody>
                     {data.map((doctor) => (
                         <TableRow key={doctor.id}>
-                            <TableCell>{doctor.name}</TableCell>
+                            <TableCell>
+                                <Link
+                                    href={{
+                                        pathname: "/appointments",
+                                        query: {
+                                            id: doctor.id,
+                                            nosology: nosologyId,
+                                        },
+                                    }}
+                                    className="text-blue-600 hover:underline"
+                                >
+                                    {doctor.name}
+                                </Link>
+                            </TableCell>
                             <TableCell>{doctor.diagnosesCount}</TableCell>
                             <TableCell>{doctor.requiredServices}</TableCell>
                             <TableCell>{doctor.assignPercent}%</TableCell>

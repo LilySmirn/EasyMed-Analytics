@@ -26,7 +26,7 @@ export default function NosologyPage({ params }: { params: { id: string } }) {
                 <BackButton />
                 <h1 className="text-2xl font-bold">{name}</h1>
             </div>
-            <NosologyDoctorsTable data={doctors} />
+            <NosologyDoctorsTable data={doctors} nosologyId={params.id} />
         </div>
     );
 }
