@@ -27,6 +27,7 @@ src/components/
 ├── Drawer.tsx
 ├── FilterSelect.tsx
 ├── NosologiesTable.tsx
+├── NosologyDoctorsTable.tsx
 ├── ProgressBar.tsx
 ├── Select.tsx
 ├── Sidebar.tsx
@@ -103,6 +104,12 @@ src/components/
 Таблица для отображения списка нозологий.
 Использует базовый компонент Table.tsx и интегрируется с контекстом фильтров.
 Отображает ключевую информацию о нозологии, приёмах и выручке.
+
+### NosologyDoctorTable.tsx
+
+Таблица для отображения списка врачей, работающих с выбранной нозологией.
+Использует базовый компонент Table.tsx и интегрируется с контекстом фильтров.
+Отображает ключевую информацию о врачах, приёмах и выручке.
 
 ### AppointmentDetailsTable.tsx
 

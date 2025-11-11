@@ -17,6 +17,7 @@ src/app/api/
 │   ├── route.ts        # Работа со списком врачей (GET)
 ├── nosologies/
 │   ├── route.ts        # Работа со списком нозологий (GET)
+│   ├── [id]/doctors/route.ts
 ```
 ---
 
@@ -117,6 +118,43 @@ _Ответ (пример):_
     },
 ]
 ```
+
+### /api/nosologies/[id]/doctors/route.ts
+**GET /api/nosologies/[id]/doctors**
+
+Возвращает список врачей, связанных с конкретной нозологией (по её ID).
+Используется на странице /nosologies/[id] для отображения таблицы врачей, лечащих выбранную нозологию.
+
+_Ответ (пример):_
+```text
+[
+  {
+    "id": 1,
+    "name": "Иванов Иван Иванович",
+    "diagnosesCount": 25,
+    "requiredServices": 12,
+    "assignPercent": 85,
+    "completionPercent": 90,
+    "deviationPercent": 5,
+    "revenue": "350 000 ₽",
+    "lostRevenue": "20 000 ₽",
+    "avgAssign": 3.2
+  },
+  {
+    "id": 2,
+    "name": "Петров Пётр Петрович",
+    "diagnosesCount": 18,
+    "requiredServices": 10,
+    "assignPercent": 80,
+    "completionPercent": 88,
+    "deviationPercent": 6,
+    "revenue": "290 000 ₽",
+    "lostRevenue": "15 000 ₽",
+    "avgAssign": 2.9
+  }
+]
+```
+
 
 ## Общие замечания
 

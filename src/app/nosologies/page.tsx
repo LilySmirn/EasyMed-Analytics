@@ -20,7 +20,7 @@ export default function NosologiesPage() {
     return (
         <div className="p-8">
             <div className="flex items-center gap-2 mb-6">
-                <BackButton title="Title" />
+                <BackButton />
                 <h1 className="text-2xl font-bold">Нозологии</h1>
             </div>
             <NosologiesTable data={nosologies} />

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import {
     Table,
     TableBody,
@@ -10,20 +11,19 @@ import {
     TableRow,
     TableRoot,
 } from "@/components/Table";
-import Link from "next/link";
 
 export interface Nosology {
     id: string;
-    name: string; // название нозологии
-    diagnosesCount: number; // количество диагнозов
-    noServicesVisits: number; // приёмы без назначений
-    requiredServices: number; // количество обязательных услуг
-    appointmentRate: string; // процент назначения
-    completionRate: string; // процент выполнения
-    deviationRate: string; // процент отклонений
-    revenue: string; // выручка
-    lostRevenue: string; // потерянная выручка
-    avgAssignRate: string; // средняя назначаемость
+    name: string;
+    diagnosesCount: number;
+    noServices: number;
+    requiredServices: number;
+    assignPercent: number;
+    completionPercent: number;
+    deviationPercent: number;
+    revenue: string;
+    lostRevenue: string;
+    avgAssign: number;
 }
 
 interface NosologiesTableProps {
@@ -48,30 +48,29 @@ export function NosologiesTable({ data }: NosologiesTableProps) {
                         <TableHeaderCell>Ср. назначаемость</TableHeaderCell>
                     </TableRow>
                 </TableHead>
-
                 <TableBody>
-                    {data.map((nos) => (
-                        <TableRow key={nos.id}>
+                    {data.map((nosology) => (
+                        <TableRow key={nosology.id}>
                             <TableCell>
                                 <Link
                                     href={{
-                                        pathname: "/nosology-details",
-                                        query: { id: nos.id },
+                                        pathname: `/nosologies/${nosology.id}`,
+                                        query: { name: nosology.name },
                                     }}
                                     className="text-blue-600 hover:underline"
                                 >
-                                    {nos.name}
+                                    {nosology.name}
                                 </Link>
                             </TableCell>
-                            <TableCell>{nos.diagnosesCount}</TableCell>
-                            <TableCell>{nos.noServicesVisits}</TableCell>
-                            <TableCell>{nos.requiredServices}</TableCell>
-                            <TableCell>{nos.appointmentRate}</TableCell>
-                            <TableCell>{nos.completionRate}</TableCell>
-                            <TableCell>{nos.deviationRate}</TableCell>
-                            <TableCell>{nos.revenue}</TableCell>
-                            <TableCell>{nos.lostRevenue}</TableCell>
-                            <TableCell>{nos.avgAssignRate}</TableCell>
+                            <TableCell>{nosology.diagnosesCount}</TableCell>
+                            <TableCell>{nosology.noServices}</TableCell>
+                            <TableCell>{nosology.requiredServices}</TableCell>
+                            <TableCell>{nosology.assignPercent}%</TableCell>
+                            <TableCell>{nosology.completionPercent}%</TableCell>
+                            <TableCell>{nosology.deviationPercent}%</TableCell>
+                            <TableCell>{nosology.revenue}</TableCell>
+                            <TableCell>{nosology.lostRevenue}</TableCell>
+                            <TableCell>{nosology.avgAssign}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

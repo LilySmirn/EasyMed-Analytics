@@ -13,11 +13,17 @@
         - `appointments/route.ts` — получение списка записей, создание и работа с отдельными appointments
         - `appointments/[id]/route.ts` — работа с конкретной записью по id
         - `doctors/route.ts` — маршруты для работы с врачами
+        - `nosologies/route.ts` - получение списка нозологий
+        - `nosologies/[id]/doctors/route.ts` - получение списка врачей, работающих с выбранной нозологией
     - `appointments/` — страницы для отображения записей
         - `AppointmentsPageInner.tsx` — внутренний компонент страницы appointments
         - `page.tsx` — основной компонент страницы
         - `[id]/page.tsx` — страница конкретной записи
     - `doctors/page.tsx` — страница со списком врачей
+    - `cancel-reasons/page.tsx` — страницы для отображения причин отмены
+    - `nosologies/` — страницы для отображения нозологий
+      - `nosologies/page.tsx` — страницы для отображения общего списка нозологий
+      - `nosologies/[id]/page.tsx` — страницы для отображения выбранной нозологии
     - `layout.tsx` — общий layout приложения
     - `globals.css` — глобальные стили
     - `fonts/` — шрифты проекта

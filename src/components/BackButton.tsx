@@ -3,11 +3,8 @@
 import { useRouter, usePathname } from "next/navigation";
 import { RiArrowLeftLine } from "@remixicon/react";
 
-interface BackButtonProps {
-    title: string;
-}
 
-export function BackButton({ title }: BackButtonProps) {
+export function BackButton() {
     const router = useRouter();
     const pathname = usePathname();
 
@@ -32,7 +29,6 @@ export function BackButton({ title }: BackButtonProps) {
                 className="flex items-center text-blue-600 hover:text-blue-800 transition-colors p-0"
             >
                 <RiArrowLeftLine className="w-5 h-5 flex-shrink-0" />
-                <span className="text-lg font-medium ml-1">{title}</span>
             </button>
         </div>
     );

@@ -39,6 +39,11 @@
 │   │   │   │   └── route.ts
 │   │   │   ├── appointments/
 │   │   │   │   └── route.ts
+│   │   │   ├── nosologies/
+│   │   │   │   ├── [id]/
+│   │   │   │   │   └── doctors/
+│   │   │   │   │       └── route.ts
+│   │   │   │   └── route.ts
 │   │   │   └── doctors/
 │   │   │       └── route.ts
 │   │   ├── appointments/
@@ -49,6 +54,8 @@
 │   │   ├── doctors/
 │   │   │   └── page.tsx
 │   │   ├── nosologies/
+│   │   │   ├── [id]/
+│   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
 │   │   ├── cancel-reasons/
 │   │   │   └── page.tsx
@@ -70,6 +77,8 @@
 │   │   ├── DoctorsTable.tsx
 │   │   ├── Drawer.tsx
 │   │   ├── FilterSelect.tsx
+│   │   ├── NosologiesTable.tsx
+│   │   ├── NosologyDoctorsTable.tsx
 │   │   ├── ProgressBar.tsx
 │   │   ├── Select.tsx
 │   │   ├── Sidebar.tsx
