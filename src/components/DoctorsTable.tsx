@@ -11,6 +11,7 @@ import {
     TableRoot,
 } from "@/components/Table";
 import Link from "next/link";
+import { getPercentColor } from "@/utils/getPercentColor";
 
 export interface Doctor {
     id: string;
@@ -18,7 +19,7 @@ export interface Doctor {
     appointments: number;
     primary: number;
     requiredKR: number;
-    deviations: number;
+    deviationPercent: number;
     totalServices: number;
     avgServicesPerVisit: number;
     noServices: string;
@@ -35,14 +36,13 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
     return (
         <TableRoot>
             <Table>
-                {/*<TableCaption>Список докторов</TableCaption>*/}
                 <TableHead>
                     <TableRow>
                         <TableHeaderCell>ФИО</TableHeaderCell>
                         <TableHeaderCell>Приёмы</TableHeaderCell>
                         <TableHeaderCell>Первичные</TableHeaderCell>
                         <TableHeaderCell>Обязательные (КР)</TableHeaderCell>
-                        <TableHeaderCell>Отклонения от КР</TableHeaderCell>
+                        <TableHeaderCell>% отклонений</TableHeaderCell>
                         <TableHeaderCell>Всего услуг назначено</TableHeaderCell>
                         <TableHeaderCell>Ср. на 1 приём</TableHeaderCell>
                         <TableHeaderCell>% и шт без назначений</TableHeaderCell>
@@ -53,7 +53,6 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                 <TableBody>
                     {data.map((doc) => (
                         <TableRow key={doc.id}>
-
                             <TableCell>
                                 <Link
                                     href={{
@@ -68,7 +67,9 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                             <TableCell>{doc.appointments}</TableCell>
                             <TableCell>{doc.primary}</TableCell>
                             <TableCell>{doc.requiredKR}</TableCell>
-                            <TableCell>{doc.deviations}</TableCell>
+                            <TableCell className={getPercentColor(doc.deviationPercent, "reverse")}>
+                                {doc.deviationPercent}%
+                            </TableCell>
                             <TableCell>{doc.totalServices}</TableCell>
                             <TableCell>{doc.avgServicesPerVisit}</TableCell>
                             <TableCell>{doc.noServices}</TableCell>

@@ -11,6 +11,7 @@ import {
     TableRow,
     TableRoot,
 } from "@/components/Table";
+import { getPercentColor } from "@/utils/getPercentColor";
 
 export interface Nosology {
     id: string;
@@ -65,9 +66,15 @@ export function NosologiesTable({ data }: NosologiesTableProps) {
                             <TableCell>{nosology.diagnosesCount}</TableCell>
                             <TableCell>{nosology.noServices}</TableCell>
                             <TableCell>{nosology.requiredServices}</TableCell>
-                            <TableCell>{nosology.assignPercent}%</TableCell>
-                            <TableCell>{nosology.completionPercent}%</TableCell>
-                            <TableCell>{nosology.deviationPercent}%</TableCell>
+                            <TableCell className={getPercentColor(nosology.assignPercent)}>
+                                {nosology.assignPercent}%
+                            </TableCell>
+                            <TableCell className={getPercentColor(nosology.completionPercent)}>
+                                {nosology.completionPercent}%
+                            </TableCell>
+                            <TableCell className={getPercentColor(nosology.deviationPercent, "reverse")}>
+                                {nosology.deviationPercent}%
+                            </TableCell>
                             <TableCell>{nosology.revenue}</TableCell>
                             <TableCell>{nosology.lostRevenue}</TableCell>
                             <TableCell>{nosology.avgAssign}</TableCell>

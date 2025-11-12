@@ -9,6 +9,7 @@
 
 ```
 src/utils/
+├── getPercentColor.ts
 └── applyFilters.ts
 ```
 

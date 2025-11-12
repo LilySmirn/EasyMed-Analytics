@@ -11,6 +11,7 @@ import {
     TableRow,
     TableRoot,
 } from "@/components/Table";
+import { getPercentColor } from "@/utils/getPercentColor";
 
 export interface NosologyDoctor {
     id: string;
@@ -66,9 +67,21 @@ export function NosologyDoctorsTable({ data, nosologyId }: NosologyDoctorsTableP
                             </TableCell>
                             <TableCell>{doctor.diagnosesCount}</TableCell>
                             <TableCell>{doctor.requiredServices}</TableCell>
-                            <TableCell>{doctor.assignPercent}%</TableCell>
-                            <TableCell>{doctor.completionPercent}%</TableCell>
-                            <TableCell>{doctor.deviationPercent}%</TableCell>
+                            <TableCell
+                                className={getPercentColor(doctor.assignPercent)}
+                            >
+                                {doctor.assignPercent}%
+                            </TableCell>
+                            <TableCell
+                                className={getPercentColor(doctor.completionPercent)}
+                            >
+                                {doctor.completionPercent}%
+                            </TableCell>
+                            <TableCell
+                                className={getPercentColor(doctor.deviationPercent, "reverse")}
+                            >
+                                {doctor.deviationPercent}%
+                            </TableCell>
                             <TableCell>{doctor.revenue}</TableCell>
                             <TableCell>{doctor.lostRevenue}</TableCell>
                             <TableCell>{doctor.avgAssign}</TableCell>
