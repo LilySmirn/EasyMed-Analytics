@@ -27,7 +27,7 @@ export function TopFilters() {
                 defaultValue={filters.specialty || "all"}
                 onChange={(v) => setFilter("specialty", v)}
                 options={[
-                    { value: "all", label: "Все специалисты" },
+                    { value: "all", label: "Все специальности" },
                     { value: "терапевт", label: "Терапевт" },
                     { value: "кардиолог", label: "Кардиолог" },
                     { value: "эндокринолог", label: "Эндокринолог" },
@@ -43,6 +43,18 @@ export function TopFilters() {
                     { value: "second", label: "Повторный" },
                 ]}
                 onChange={(v) => setFilter("type", v)}
+            />
+
+            <FilterSelect
+                label="Филиалы"
+                defaultValue={filters.specialty || "all"}
+                onChange={(v) => setFilter("specialty", v)}
+                options={[
+                    { value: "all", label: "Все филиалы" },
+                    { value: "Филиал 1", label: "Филиал 1" },
+                    { value: "Филиал 2", label: "Филиал 2" },
+                    { value: "Филиал 3", label: "Филиал 3" },
+                ]}
             />
         </div>
     );

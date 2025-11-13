@@ -49,7 +49,7 @@ export function Sidebar() {
                                     href="/doctors"
                                     className="block hover:bg-gray-200 dark:hover:bg-gray-800 rounded px-2 py-1"
                                 >
-                                    Специалисты
+                                    Доктора
                                 </Link>
                             </li>
                             <li className="hover:bg-gray-200 dark:hover:bg-gray-800 rounded px-2 py-1 cursor-pointer">
@@ -57,7 +57,15 @@ export function Sidebar() {
                                     href="/cancel-reasons"
                                     className="block hover:bg-gray-200 dark:hover:bg-gray-800 rounded px-2 py-1"
                                 >
-                                    Причины отмены
+                                    Специальности
+                                </Link>
+                            </li>
+                            <li className="hover:bg-gray-200 dark:hover:bg-gray-800 rounded px-2 py-1 cursor-pointer">
+                                <Link
+                                    href="/cancel-reasons"
+                                    className="block hover:bg-gray-200 dark:hover:bg-gray-800 rounded px-2 py-1"
+                                >
+                                    Статистика
                                 </Link>
                             </li>
                         </ul>

@@ -39,7 +39,7 @@ export default function DoctorsPage() {
 
             <div className="flex items-center gap-2 mb-6">
                 <BackButton />
-                <h1 className="text-2xl font-bold">Специалисты</h1>
+                <h1 className="text-2xl font-bold">Доктора</h1>
             </div>
             <DoctorsTable data={filteredDoctors} />
         </div>
