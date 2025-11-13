@@ -21,6 +21,8 @@ src/components/
 ├── AppointmentsTable.tsx
 ├── BackButton.tsx
 ├── Button.tsx
+├── Calendar.tsx
+├── CalendarFilter.tsx
 ├── Card.tsx
 ├── CardDemo.tsx
 ├── DoctorsTable.tsx
@@ -28,6 +30,7 @@ src/components/
 ├── FilterSelect.tsx
 ├── NosologiesTable.tsx
 ├── NosologyDoctorsTable.tsx
+├── Popover.tsx
 ├── ProgressBar.tsx
 ├── Select.tsx
 ├── Sidebar.tsx
@@ -48,6 +51,14 @@ src/components/
 ### BackButton.tsx
 Компонент кнопки Назад (стрелка). Используется для возврата на страницу, которая выше по иерархии (родительская).
 
+### Calendar.tsx
+
+Шаблон Tremor для календаря.
+
+### CalendarFilter.tsx
+
+Компонент календаря.
+
 ### Card.tsx
 
 Карточка контейнера данных.
@@ -59,6 +70,10 @@ src/components/
 Компонент выезжающей боковой панели (drawer).
 Основан на Tremor и адаптирован под дизайн проекта.
 Используется для отображения подкатегорий бокового меню.
+
+### Popover.tsx
+
+Компонент Tremor для всплывающего меню.
 
 ### ProgressBar.tsx
 
