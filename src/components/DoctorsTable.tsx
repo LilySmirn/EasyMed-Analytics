@@ -1,17 +1,11 @@
 "use client";
 
 import React from "react";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeaderCell,
-    TableRow,
-    TableRoot,
-} from "@/components/Table";
+import { Table, TableBody, TableCell, TableHead, TableRow, TableRoot } from "@/components/Table";
 import Link from "next/link";
 import { getPercentColor } from "@/utils/getPercentColor";
+import { SortableHeader } from "@/components/SortableHeader";
+import { useSortableData } from "@/components/useSortableData";
 
 export interface Doctor {
     id: string;
@@ -33,34 +27,100 @@ interface DoctorsTableProps {
 }
 
 export function DoctorsTable({ data }: DoctorsTableProps) {
+    const { items, requestSort, sortConfig } = useSortableData<Doctor>(data);
+
     return (
         <TableRoot>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableHeaderCell>ФИО</TableHeaderCell>
-                        <TableHeaderCell>Приёмы</TableHeaderCell>
-                        <TableHeaderCell>Первичные</TableHeaderCell>
-                        <TableHeaderCell>Обязательные (КР)</TableHeaderCell>
-                        <TableHeaderCell>% отклонений</TableHeaderCell>
-                        <TableHeaderCell>Всего услуг назначено</TableHeaderCell>
-                        <TableHeaderCell>Ср. на 1 приём</TableHeaderCell>
-                        <TableHeaderCell>% и шт без назначений</TableHeaderCell>
-                        <TableHeaderCell>Средний чек</TableHeaderCell>
-                        <TableHeaderCell>Выручка</TableHeaderCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="ФИО"
+                                columnKey="fullName"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Приёмы"
+                                columnKey="appointments"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Первичные"
+                                columnKey="primary"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Обязательные (КР)"
+                                columnKey="requiredKR"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="% отклонений"
+                                columnKey="deviationPercent"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Всего услуг назначено"
+                                columnKey="totalServices"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Ср. на 1 приём"
+                                columnKey="avgServicesPerVisit"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="% и шт без назначений"
+                                columnKey="noServices"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Средний чек"
+                                columnKey="avgBill"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Выручка"
+                                columnKey="revenue"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map((doc) => (
+                    {items.map((doc) => (
                         <TableRow key={doc.id}>
                             <TableCell>
-                                <Link
-                                    href={{
-                                        pathname: "/appointments",
-                                        query: { id: doc.id },
-                                    }}
-                                    className="text-blue-600 hover:underline"
-                                >
+                                <Link href={{ pathname: "/appointments", query: { id: doc.id } }} className="text-blue-600 hover:underline">
                                     {doc.fullName}
                                 </Link>
                             </TableCell>
