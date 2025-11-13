@@ -11,6 +11,7 @@ import {
     TableRow,
     TableRoot,
 } from "@/components/Table";
+import { getPercentColor } from "@/utils/getPercentColor";
 
 export interface Appointment {
     id: string;
@@ -34,7 +35,6 @@ export function AppointmentsTable({ data }: AppointmentsTableProps) {
     return (
         <TableRoot>
             <Table>
-                {/*<TableCaption>Приёмы</TableCaption>*/}
                 <TableHead>
                     <TableRow>
                         <TableHeaderCell>Дата / № приёма</TableHeaderCell>
@@ -60,9 +60,15 @@ export function AppointmentsTable({ data }: AppointmentsTableProps) {
                             </TableCell>
                             <TableCell>{a.requiredServices}</TableCell>
                             <TableCell>{a.assignedRequired}</TableCell>
-                            <TableCell>{a.assignmentPercent}%</TableCell>
-                            <TableCell>{a.completionPercent}%</TableCell>
-                            <TableCell>{a.deviationPercent}%</TableCell>
+                            <TableCell className={getPercentColor(a.assignmentPercent)}>
+                                {a.assignmentPercent}%
+                            </TableCell>
+                            <TableCell className={getPercentColor(a.completionPercent)}>
+                                {a.completionPercent}%
+                            </TableCell>
+                            <TableCell className={getPercentColor(a.deviationPercent, "reverse")}>
+                                {a.deviationPercent}%
+                            </TableCell>
                             <TableCell>{a.revenue}</TableCell>
                             <TableCell>{a.lostRevenue}</TableCell>
                         </TableRow>
