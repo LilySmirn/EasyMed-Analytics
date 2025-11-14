@@ -34,6 +34,7 @@ src/components/
 ├── ProgressBar.tsx
 ├── Select.tsx
 ├── Sidebar.tsx
+├── StatisticsTable.tsx
 ├── Table.tsx
 ├── Tooltip.tsx
 ├── TopFilters.tsx
@@ -113,6 +114,11 @@ src/components/
 Таблица для отображения списка приёмов.
 Использует базовый компонент Table.tsx и интегрируется с контекстом фильтров.
 Отображает ключевую информацию о пациенте, враче и дате визита.
+
+### StatisticsTable.tsx
+
+Таблица для отображения причин отмены.
+Использует базовый компонент Table.tsx.
 
 ### NosologiesTable.tsx
 

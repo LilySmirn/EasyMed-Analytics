@@ -85,6 +85,7 @@
 │   │   ├── ProgressBar.tsx
 │   │   ├── Select.tsx
 │   │   ├── Sidebar.tsx
+│   │   ├── SatisticsTable.tsx
 │   │   ├── Table.tsx
 │   │   ├── Tooltip.tsx
 │   │   ├── TopFilters.tsx

@@ -14,10 +14,12 @@ src/app/api/
 │   ├── route.ts         # Работа со списком приёмов (GET, POST)
 │   └── [id]/route.ts    # Работа с отдельным приёмом (GET, PUT, DELETE)
 ├── doctors/
-│   ├── route.ts        # Работа со списком врачей (GET)
+│   └── route.ts        # Работа со списком врачей (GET)
 ├── nosologies/
 │   ├── route.ts        # Работа со списком нозологий (GET)
-│   ├── [id]/doctors/route.ts
+│   └──[id]/doctors/route.ts
+├── statistics/
+│   └── route.ts        # Работа со списком врачей (GET)
 ```
 ---
 
@@ -94,6 +96,11 @@ _Ответ (пример):_
 }
 ]
 ```
+
+### /api/statistics
+**GET /api/statistics**
+
+Возвращает список всех запросов по нозологиям и % от общего количества приемов.
 
 ### /api/nosologies
 **GET /api/nosologies**

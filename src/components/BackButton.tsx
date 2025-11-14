@@ -12,7 +12,7 @@ export function BackButton() {
     const isTopLevelPage =
         pathname === "/nosologies" ||
         pathname === "/doctors" ||
-        pathname === "/cancel-reasons";
+        pathname === "/statistics";
 
     const handleBack = () => {
         if (isTopLevelPage) {
