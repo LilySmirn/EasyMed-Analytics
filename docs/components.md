@@ -35,6 +35,7 @@ src/components/
 ├── Select.tsx
 ├── Sidebar.tsx
 ├── StatisticsTable.tsx
+├── SpecialitiesTable.tsx
 ├── Table.tsx
 ├── Tooltip.tsx
 ├── TopFilters.tsx
@@ -118,6 +119,11 @@ src/components/
 ### StatisticsTable.tsx
 
 Таблица для отображения причин отмены.
+Использует базовый компонент Table.tsx.
+
+### SpecialitiesTable.tsx
+
+Таблица для отображения специальностей.
 Использует базовый компонент Table.tsx.
 
 ### NosologiesTable.tsx

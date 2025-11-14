@@ -16,6 +16,7 @@
         - `nosologies/route.ts` - получение списка нозологий
         - `nosologies/[id]/doctors/route.ts` - получение списка врачей, работающих с выбранной нозологией
         - `statistics/route.ts` - получение причин отмены
+        - `specialities/route.ts` - получение списка специальностей
     - `appointments/` — страницы для отображения записей
         - `AppointmentsPageInner.tsx` — внутренний компонент страницы appointments
         - `page.tsx` — основной компонент страницы
@@ -80,11 +81,13 @@ src/
 │   │   ├── appointments/
 │   │   ├── nosologies/
 │   │   ├── statistics/
+│   │   ├── specialities/
 │   │   └── doctors/
 │   ├── appointments/
 │   ├── doctors/
 │   ├── nosologies/
 │   ├── statistics/
+│   ├── specialities/
 │   ├── fonts/
 │   ├── layout.tsx
 │   ├── globals.css

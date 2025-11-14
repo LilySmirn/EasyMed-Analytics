@@ -39,6 +39,10 @@
 │   │   │   │   └── route.ts
 │   │   │   ├── appointments/
 │   │   │   │   └── route.ts
+│   │   │   ├── statistics/
+│   │   │   │   └── route.ts
+│   │   │   ├── specialities/
+│   │   │   │   └── route.ts
 │   │   │   ├── nosologies/
 │   │   │   │   ├── [id]/
 │   │   │   │   │   └── doctors/
@@ -57,7 +61,9 @@
 │   │   │   ├── [id]/
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
-│   │   ├── cancel-reasons/
+│   │   ├── statistics/
+│   │   │   └── page.tsx
+│   │   ├── specialities/
 │   │   │   └── page.tsx
 │   │   ├── favicon.ico
 │   │   ├── fonts/
@@ -86,6 +92,7 @@
 │   │   ├── Select.tsx
 │   │   ├── Sidebar.tsx
 │   │   ├── SatisticsTable.tsx
+│   │   ├── SpecialitiesTable.tsx
 │   │   ├── Table.tsx
 │   │   ├── Tooltip.tsx
 │   │   ├── TopFilters.tsx

@@ -54,7 +54,7 @@ export function Sidebar() {
                             </li>
                             <li className="hover:bg-gray-200 dark:hover:bg-gray-800 rounded px-2 py-1 cursor-pointer">
                                 <Link
-                                    href="/statistics"
+                                    href="/specialties"
                                     className="block hover:bg-gray-200 dark:hover:bg-gray-800 rounded px-2 py-1"
                                 >
                                     Специальности
