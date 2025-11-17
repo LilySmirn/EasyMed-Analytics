@@ -44,6 +44,7 @@ export function Sidebar() {
                     <DrawerHeader>
                         <DrawerTitle>Главный экран</DrawerTitle>
                     </DrawerHeader>
+                    <DrawerDescription />
                     <DrawerBody>
                         <ul className="flex flex-col gap-2 mt-2">
                             <li className="hover:bg-[#BADEFF] dark:hover:bg-gray-800 rounded px-2 py-1 cursor-pointer">
