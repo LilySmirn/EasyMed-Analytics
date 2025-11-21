@@ -1,5 +1,6 @@
 import mysql from "mysql2/promise";
 import { loadSpecialities } from "./loadSpecialities.mjs";
+import { loadDoctors } from "./loadDoctors.mjs";
 
 const dbConfig = {
     host: 'localhost',
@@ -12,6 +13,8 @@ async function run() {
     const conn = await mysql.createConnection(dbConfig);
 
     await loadSpecialities(conn, "./dbload/data/provided.xlsx");
+
+    await loadDoctors(conn, "./dbload/data/provided.xlsx");
 
     await conn.end();
 }

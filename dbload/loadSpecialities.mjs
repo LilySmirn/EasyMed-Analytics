@@ -3,8 +3,8 @@ import XLSX from "xlsx";
 
 /**
  * Загружает уникальные специальности из Excel и записывает в таблицу specialities
- * @param {import('mysql2/promise').Connection} conn - подключение к MySQL
- * @param {string} filePath - путь к Excel файлу
+ * @param {import('mysql2/promise').Connection} conn
+ * @param {string} filePath
  */
 export async function loadSpecialities(conn, filePath) {
     console.log("Загрузка специальностей из файла:", filePath);
@@ -30,10 +30,12 @@ export async function loadSpecialities(conn, filePath) {
     // запись в таблицу specialities
     for (const [externalId, name] of specialtiesMap) {
         await conn.execute(
-            `INSERT INTO specialities (external_id, name) VALUES (?, ?)`,
+            `INSERT INTO specialities (external_id, name)
+             VALUES (?, ?)
+                 ON DUPLICATE KEY UPDATE name = VALUES(name)`,
             [externalId, name]
         );
     }
 
-    console.log("Записано специальностей:", specialtiesMap.size);
+    console.log("Специальности записаны или обновлены:", specialtiesMap.size);
 }
