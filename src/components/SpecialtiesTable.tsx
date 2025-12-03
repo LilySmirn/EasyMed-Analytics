@@ -1,84 +1,143 @@
 'use client';
 
-import React, { useState } from "react";
+import React from "react";
+import Link from "next/link";
 import { Table, TableBody, TableCell, TableHead, TableRow, TableRoot } from "@/components/Table";
 import { getPercentColor } from "@/utils/getPercentColor";
+import { SortableHeader } from "@/components/SortableHeader";
+import { useSortableData } from "@/components/useSortableData";
 
 export interface Specialty {
     id: string;
     name: string;
-    revenue: number;
-    lostRevenue: number;
-    percentAssigned: number;
-    percentCompleted: number;
-    percentDeviation: number;
-    avgBill: number;
+    appointments: number;
+    primary: number;
+    requiredKR: number;
+    deviationPercent: number;
+    totalServices: number;
+    avgServicesPerVisit: number;
+    noServices: string;
+    avgBill: string;
+    revenue: string;
+    servicesPerVisit: number;
 }
 
 interface SpecialtiesTableProps {
     data: Specialty[];
 }
 
-type SortConfig = { key: keyof Specialty; direction: "asc" | "desc" } | null;
-
 export function SpecialtiesTable({ data }: SpecialtiesTableProps) {
-    const [sortConfig, setSortConfig] = useState<SortConfig>(null);
-
-    const sortedData = React.useMemo(() => {
-        if (!sortConfig) return data;
-        return [...data].sort((a, b) => {
-            const aVal = a[sortConfig.key];
-            const bVal = b[sortConfig.key];
-
-            if (typeof aVal === "number" && typeof bVal === "number") {
-                return sortConfig.direction === "asc" ? aVal - bVal : bVal - aVal;
-            }
-
-            return sortConfig.direction === "asc"
-                ? String(aVal).localeCompare(String(bVal))
-                : String(bVal).localeCompare(String(aVal));
-        });
-    }, [data, sortConfig]);
-
-    const requestSort = (key: keyof Specialty) => {
-        setSortConfig((prev) => {
-            if (prev?.key === key) {
-                return { key, direction: prev.direction === "asc" ? "desc" : "asc" };
-            }
-            return { key, direction: "asc" };
-        });
-    };
-
-    const getSortArrow = (key: keyof Specialty) => {
-        if (sortConfig?.key !== key) return null;
-        return sortConfig.direction === "asc" ? " ↑" : " ↓";
-    };
+    const { items, requestSort, sortConfig } = useSortableData<Specialty>(data);
 
     return (
         <TableRoot>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell onClick={() => requestSort("name")}>Специальность{getSortArrow("name")}</TableCell>
-                        <TableCell className="text-center" onClick={() => requestSort("revenue")}>Выручка{getSortArrow("revenue")}</TableCell>
-                        <TableCell className="text-center" onClick={() => requestSort("lostRevenue")}>Потерянная выручка{getSortArrow("lostRevenue")}</TableCell>
-                        <TableCell className="text-center" onClick={() => requestSort("percentAssigned")}>% назначения{getSortArrow("percentAssigned")}</TableCell>
-                        <TableCell className="text-center" onClick={() => requestSort("percentCompleted")}>% выполнения{getSortArrow("percentCompleted")}</TableCell>
-                        <TableCell className="text-center" onClick={() => requestSort("percentDeviation")}>% отклонений{getSortArrow("percentDeviation")}</TableCell>
-                        <TableCell className="text-center" onClick={() => requestSort("avgBill")}>Средний чек{getSortArrow("avgBill")}</TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Специальность"
+                                columnKey="name"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Приёмы"
+                                columnKey="appointments"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Первичные"
+                                columnKey="primary"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Обязательные (КР)"
+                                columnKey="requiredKR"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="% отклонений"
+                                columnKey="deviationPercent"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Всего услуг назначено"
+                                columnKey="totalServices"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Ср. на 1 приём"
+                                columnKey="avgServicesPerVisit"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="% и шт без назначений"
+                                columnKey="noServices"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Средний чек"
+                                columnKey="avgBill"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Выручка"
+                                columnKey="revenue"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
                     </TableRow>
                 </TableHead>
-
                 <TableBody>
-                    {sortedData.map((spec) => (
+                    {items.map((spec) => (
                         <TableRow key={spec.id}>
-                            <TableCell>{spec.name}</TableCell>
-                            <TableCell className="text-center">{spec.revenue.toLocaleString("ru-RU")} ₽</TableCell>
-                            <TableCell className="text-center">{spec.lostRevenue.toLocaleString("ru-RU")} ₽</TableCell>
-                            <TableCell className={`text-center ${getPercentColor(spec.percentAssigned)}`}>{spec.percentAssigned}%</TableCell>
-                            <TableCell className={`text-center ${getPercentColor(spec.percentCompleted)}`}>{spec.percentCompleted}%</TableCell>
-                            <TableCell className={`text-center ${getPercentColor(spec.percentDeviation, "reverse")}`}>{spec.percentDeviation}%</TableCell>
-                            <TableCell className="text-center">{spec.avgBill.toLocaleString("ru-RU")} ₽</TableCell>
+                            <TableCell>
+                                <Link
+                                    href={{ pathname: "/appointments", query: { id: spec.id } }}
+                                    className="text-blue-600 hover:underline"
+                                >
+                                    {spec.name}
+                                </Link>
+                            </TableCell>
+                            <TableCell>{spec.appointments}</TableCell>
+                            <TableCell>{spec.primary}</TableCell>
+                            <TableCell>{spec.requiredKR}</TableCell>
+                            <TableCell className={getPercentColor(spec.deviationPercent, "reverse")}>
+                                {spec.deviationPercent}%
+                            </TableCell>
+                            <TableCell>{spec.totalServices}</TableCell>
+                            <TableCell>{spec.avgServicesPerVisit}</TableCell>
+                            <TableCell>{spec.noServices}</TableCell>
+                            <TableCell>{spec.avgBill}</TableCell>
+                            <TableCell>{spec.revenue}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
