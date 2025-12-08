@@ -39,8 +39,7 @@ export function NosologiesTable({ data }: NosologiesTableProps) {
                     <TableRow>
                         <TableHeaderCell>Нозология</TableHeaderCell>
                         <TableHeaderCell>Кол-во диагнозов</TableHeaderCell>
-                        <TableHeaderCell>Приёмы без назначений</TableHeaderCell>
-                        <TableHeaderCell>Кол-во обязат. услуг</TableHeaderCell>
+                        <TableHeaderCell>Диагнозы без назначений</TableHeaderCell>
                         <TableHeaderCell>% назначения</TableHeaderCell>
                         <TableHeaderCell>% выполнения</TableHeaderCell>
                         <TableHeaderCell>% отклонений</TableHeaderCell>
@@ -65,7 +64,7 @@ export function NosologiesTable({ data }: NosologiesTableProps) {
                             </TableCell>
                             <TableCell>{nosology.diagnosesCount}</TableCell>
                             <TableCell>{nosology.noServices}</TableCell>
-                            <TableCell>{nosology.requiredServices}</TableCell>
+
                             <TableCell className={getPercentColor(nosology.assignPercent)}>
                                 {nosology.assignPercent}%
                             </TableCell>

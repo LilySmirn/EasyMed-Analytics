@@ -39,7 +39,6 @@ export function NosologyDoctorsTable({ data, nosologyId }: NosologyDoctorsTableP
                     <TableRow>
                         <TableHeaderCell>ФИО врача</TableHeaderCell>
                         <TableHeaderCell>Кол-во диагнозов</TableHeaderCell>
-                        <TableHeaderCell>Кол-во обязат. услуг</TableHeaderCell>
                         <TableHeaderCell>% назначения</TableHeaderCell>
                         <TableHeaderCell>% выполнения</TableHeaderCell>
                         <TableHeaderCell>% отклонений</TableHeaderCell>
@@ -66,7 +65,6 @@ export function NosologyDoctorsTable({ data, nosologyId }: NosologyDoctorsTableP
                                 </Link>
                             </TableCell>
                             <TableCell>{doctor.diagnosesCount}</TableCell>
-                            <TableCell>{doctor.requiredServices}</TableCell>
                             <TableCell
                                 className={getPercentColor(doctor.assignPercent)}
                             >
