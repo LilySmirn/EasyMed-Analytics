@@ -38,6 +38,7 @@ export function AppointmentsTable({ data }: AppointmentsTableProps) {
                 <TableHead>
                     <TableRow>
                         <TableHeaderCell>Дата / № приёма</TableHeaderCell>
+                        <TableHeaderCell>МКБ</TableHeaderCell>
                         <TableHeaderCell>Кол-во обяз. услуг</TableHeaderCell>
                         <TableHeaderCell>Назначено обяз.</TableHeaderCell>
                         <TableHeaderCell>% назначения</TableHeaderCell>
@@ -58,6 +59,7 @@ export function AppointmentsTable({ data }: AppointmentsTableProps) {
                                     {a.date} / {a.number}
                                 </Link>
                             </TableCell>
+                            <TableCell>J01.01</TableCell>
                             <TableCell>{a.requiredServices}</TableCell>
                             <TableCell>{a.assignedRequired}</TableCell>
                             <TableCell className={getPercentColor(a.assignmentPercent)}>

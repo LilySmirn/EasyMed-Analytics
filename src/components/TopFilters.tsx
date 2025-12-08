@@ -24,7 +24,7 @@ export function TopFilters() {
             />
 
             <FilterSelect
-                label="Вид приёма"
+                label="Тип приёма"
                 defaultValue="all"
                 options={[
                     { value: "all", label: "Все" },
