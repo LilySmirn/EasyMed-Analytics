@@ -68,7 +68,7 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                         </TableCell>
                         <TableCell>
                             <SortableHeader
-                                label="% отклонений"
+                                label="Отклонения от КР"
                                 columnKey="deviationPercent"
                                 sortConfig={sortConfig}
                                 onSort={requestSort}
@@ -92,7 +92,7 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                         </TableCell>
                         <TableCell>
                             <SortableHeader
-                                label="% и шт без назначений"
+                                label="Приёмы без назначений"
                                 columnKey="noServices"
                                 sortConfig={sortConfig}
                                 onSort={requestSort}
