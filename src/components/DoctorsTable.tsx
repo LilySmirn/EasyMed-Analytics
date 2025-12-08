@@ -12,14 +12,18 @@ export interface Doctor {
     fullName: string;
     appointments: number;
     primary: number;
-    requiredKR: number;
+
+    requiredKR: number;        // норма
+    krServicesDone: number;    // факт
+
     deviationPercent: number;
     totalServices: number;
     avgServicesPerVisit: number;
     noServices: string;
     avgBill: string;
     revenue: string;
-    servicesPerVisit: number;
+
+    overKR: number;            // вычисляемое
 }
 
 interface DoctorsTableProps {
@@ -27,7 +31,13 @@ interface DoctorsTableProps {
 }
 
 export function DoctorsTable({ data }: DoctorsTableProps) {
-    const { items, requestSort, sortConfig } = useSortableData<Doctor>(data);
+    const preparedData = data.map(doc => ({
+        ...doc,
+        overKR: Math.max(0, doc.totalServices - doc.krServicesDone),
+    }));
+
+    const { items, requestSort, sortConfig } =
+        useSortableData<Doctor>(preparedData);
 
     return (
         <TableRoot>
@@ -76,8 +86,16 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                         </TableCell>
                         <TableCell>
                             <SortableHeader
-                                label="Всего услуг назначено"
-                                columnKey="totalServices"
+                                label="Услуги по КР"
+                                columnKey="krServicesDone"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Услуги сверх КР"
+                                columnKey="overKR"
                                 sortConfig={sortConfig}
                                 onSort={requestSort}
                             />
@@ -130,7 +148,8 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                             <TableCell className={getPercentColor(doc.deviationPercent, "reverse")}>
                                 {doc.deviationPercent}%
                             </TableCell>
-                            <TableCell>{doc.totalServices}</TableCell>
+                            <TableCell>{doc.krServicesDone}</TableCell>
+                            <TableCell>{doc.overKR}</TableCell>
                             <TableCell>{doc.avgServicesPerVisit}</TableCell>
                             <TableCell>{doc.noServices}</TableCell>
                             <TableCell>{doc.avgBill}</TableCell>

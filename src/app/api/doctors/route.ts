@@ -7,9 +7,13 @@ const doctors = [
         profession: "Терапевт",
         appointments: 120,
         primary: 45,
-        requiredKR: 30,
+
+        requiredKR: 30,     // норма
+        krServicesDone: 28, // факт (недовыполнение)
+
         deviationPercent: 5,
-        totalServices: 400,
+        totalServices: 50,
+
         avgServicesPerVisit: 3.3,
         noServices: "8% (10)",
         avgBill: "2 300 ₽",
@@ -22,9 +26,13 @@ const doctors = [
         profession: "Кардиолог",
         appointments: 95,
         primary: 30,
+
         requiredKR: 28,
+        krServicesDone: 30, // перевыполнение
+
         deviationPercent: 3,
-        totalServices: 310,
+        totalServices: 50,
+
         avgServicesPerVisit: 3.2,
         noServices: "5% (5)",
         avgBill: "2 600 ₽",
@@ -37,9 +45,13 @@ const doctors = [
         profession: "Терапевт",
         appointments: 130,
         primary: 60,
+
         requiredKR: 35,
+        krServicesDone: 35, // ровно по норме
+
         deviationPercent: 4,
-        totalServices: 450,
+        totalServices: 50,
+
         avgServicesPerVisit: 3.5,
         noServices: "6% (8)",
         avgBill: "2 100 ₽",
@@ -52,9 +64,13 @@ const doctors = [
         profession: "Эндокринолог",
         appointments: 80,
         primary: 25,
+
         requiredKR: 20,
+        krServicesDone: 18,
+
         deviationPercent: 2,
-        totalServices: 290,
+        totalServices: 50,
+
         avgServicesPerVisit: 3.6,
         noServices: "4% (3)",
         avgBill: "3 200 ₽",
@@ -67,9 +83,13 @@ const doctors = [
         profession: "Кардиолог",
         appointments: 110,
         primary: 40,
+
         requiredKR: 33,
+        krServicesDone: 36,
+
         deviationPercent: 6,
-        totalServices: 370,
+        totalServices: 50,
+
         avgServicesPerVisit: 3.4,
         noServices: "7% (8)",
         avgBill: "2 800 ₽",
@@ -82,9 +102,13 @@ const doctors = [
         profession: "Эндокринолог",
         appointments: 105,
         primary: 38,
+
         requiredKR: 31,
+        krServicesDone: 29,
+
         deviationPercent: 3,
-        totalServices: 350,
+        totalServices: 50,
+
         avgServicesPerVisit: 3.3,
         noServices: "5% (6)",
         avgBill: "2 700 ₽",
@@ -97,9 +121,13 @@ const doctors = [
         profession: "Кардиолог",
         appointments: 90,
         primary: 28,
+
         requiredKR: 27,
+        krServicesDone: 27,
+
         deviationPercent: 2,
-        totalServices: 310,
+        totalServices: 50,
+
         avgServicesPerVisit: 3.4,
         noServices: "6% (5)",
         avgBill: "2 900 ₽",
@@ -112,9 +140,13 @@ const doctors = [
         profession: "Терапевт",
         appointments: 85,
         primary: 25,
+
         requiredKR: 22,
+        krServicesDone: 20,
+
         deviationPercent: 1,
-        totalServices: 300,
+        totalServices: 50,
+
         avgServicesPerVisit: 3.5,
         noServices: "3% (2)",
         avgBill: "3 000 ₽",
@@ -127,9 +159,13 @@ const doctors = [
         profession: "Эндокринолог",
         appointments: 100,
         primary: 32,
+
         requiredKR: 30,
+        krServicesDone: 31,
+
         deviationPercent: 3,
-        totalServices: 340,
+        totalServices: 50,
+
         avgServicesPerVisit: 3.4,
         noServices: "5% (5)",
         avgBill: "2 750 ₽",
@@ -142,9 +178,13 @@ const doctors = [
         profession: "Кардиолог",
         appointments: 92,
         primary: 29,
+
         requiredKR: 26,
+        krServicesDone: 24,
+
         deviationPercent: 4,
-        totalServices: 320,
+        totalServices: 50,
+
         avgServicesPerVisit: 3.3,
         noServices: "6% (6)",
         avgBill: "2 850 ₽",
