@@ -1,24 +1,24 @@
 import { NextResponse } from "next/server";
+import type { Doctor } from "@/components/DoctorsTable";
 
-const doctors = [
+const doctors: Doctor[] = [
     {
         id: "1",
         fullName: "Иванов И.И.",
         profession: "Терапевт",
         appointments: 120,
         primary: 45,
-
-        requiredKR: 30,     // норма
-        krServicesDone: 28, // факт (недовыполнение)
-
+        requiredKR: 30,
+        krServicesDone: 28,
         deviationPercent: 5,
         totalServices: 50,
-
         avgServicesPerVisit: 3.3,
         noServices: "8% (10)",
         avgBill: "2 300 ₽",
         revenue: "276 000 ₽",
         servicesPerVisit: 3.3,
+        overKR: 0,
+        lostRevenueDisplay: "",
     },
     {
         id: "2",
@@ -26,18 +26,17 @@ const doctors = [
         profession: "Кардиолог",
         appointments: 95,
         primary: 30,
-
         requiredKR: 28,
-        krServicesDone: 30, // перевыполнение
-
+        krServicesDone: 30,
         deviationPercent: 3,
         totalServices: 50,
-
         avgServicesPerVisit: 3.2,
         noServices: "5% (5)",
         avgBill: "2 600 ₽",
         revenue: "247 000 ₽",
         servicesPerVisit: 3.2,
+        overKR: 0,
+        lostRevenueDisplay: "",
     },
     {
         id: "3",
@@ -45,18 +44,17 @@ const doctors = [
         profession: "Терапевт",
         appointments: 130,
         primary: 60,
-
         requiredKR: 35,
-        krServicesDone: 35, // ровно по норме
-
+        krServicesDone: 35,
         deviationPercent: 4,
         totalServices: 50,
-
         avgServicesPerVisit: 3.5,
         noServices: "6% (8)",
         avgBill: "2 100 ₽",
         revenue: "273 000 ₽",
         servicesPerVisit: 3.5,
+        overKR: 0,
+        lostRevenueDisplay: "",
     },
     {
         id: "4",
@@ -64,18 +62,17 @@ const doctors = [
         profession: "Эндокринолог",
         appointments: 80,
         primary: 25,
-
         requiredKR: 20,
         krServicesDone: 18,
-
         deviationPercent: 2,
         totalServices: 50,
-
         avgServicesPerVisit: 3.6,
         noServices: "4% (3)",
         avgBill: "3 200 ₽",
         revenue: "256 000 ₽",
         servicesPerVisit: 3.6,
+        overKR: 0,
+        lostRevenueDisplay: "",
     },
     {
         id: "5",
@@ -83,18 +80,17 @@ const doctors = [
         profession: "Кардиолог",
         appointments: 110,
         primary: 40,
-
         requiredKR: 33,
         krServicesDone: 36,
-
         deviationPercent: 6,
         totalServices: 50,
-
         avgServicesPerVisit: 3.4,
         noServices: "7% (8)",
         avgBill: "2 800 ₽",
         revenue: "308 000 ₽",
         servicesPerVisit: 3.4,
+        overKR: 0,
+        lostRevenueDisplay: "",
     },
     {
         id: "6",
@@ -102,18 +98,17 @@ const doctors = [
         profession: "Эндокринолог",
         appointments: 105,
         primary: 38,
-
         requiredKR: 31,
         krServicesDone: 29,
-
         deviationPercent: 3,
         totalServices: 50,
-
         avgServicesPerVisit: 3.3,
         noServices: "5% (6)",
         avgBill: "2 700 ₽",
         revenue: "283 000 ₽",
         servicesPerVisit: 3.3,
+        overKR: 0,
+        lostRevenueDisplay: "",
     },
     {
         id: "7",
@@ -121,18 +116,17 @@ const doctors = [
         profession: "Кардиолог",
         appointments: 90,
         primary: 28,
-
         requiredKR: 27,
         krServicesDone: 27,
-
         deviationPercent: 2,
         totalServices: 50,
-
         avgServicesPerVisit: 3.4,
         noServices: "6% (5)",
         avgBill: "2 900 ₽",
         revenue: "261 000 ₽",
         servicesPerVisit: 3.4,
+        overKR: 0,
+        lostRevenueDisplay: "",
     },
     {
         id: "8",
@@ -140,18 +134,17 @@ const doctors = [
         profession: "Терапевт",
         appointments: 85,
         primary: 25,
-
         requiredKR: 22,
         krServicesDone: 20,
-
         deviationPercent: 1,
         totalServices: 50,
-
         avgServicesPerVisit: 3.5,
         noServices: "3% (2)",
         avgBill: "3 000 ₽",
         revenue: "255 000 ₽",
         servicesPerVisit: 3.5,
+        overKR: 0,
+        lostRevenueDisplay: "",
     },
     {
         id: "9",
@@ -159,18 +152,17 @@ const doctors = [
         profession: "Эндокринолог",
         appointments: 100,
         primary: 32,
-
         requiredKR: 30,
         krServicesDone: 31,
-
         deviationPercent: 3,
         totalServices: 50,
-
         avgServicesPerVisit: 3.4,
         noServices: "5% (5)",
         avgBill: "2 750 ₽",
         revenue: "275 000 ₽",
         servicesPerVisit: 3.4,
+        overKR: 0,
+        lostRevenueDisplay: "",
     },
     {
         id: "10",
@@ -178,21 +170,40 @@ const doctors = [
         profession: "Кардиолог",
         appointments: 92,
         primary: 29,
-
         requiredKR: 26,
         krServicesDone: 24,
-
         deviationPercent: 4,
         totalServices: 50,
-
         avgServicesPerVisit: 3.3,
         noServices: "6% (6)",
         avgBill: "2 850 ₽",
         revenue: "263 000 ₽",
         servicesPerVisit: 3.3,
+        overKR: 0,
+        lostRevenueDisplay: "",
     },
 ];
 
+function prepareDoctorsData(doctors: Doctor[]) {
+    return doctors.map((doc: typeof doctors[number]) => {
+        const revenueNumber = Number(doc.revenue.replace(/\s|₽/g, ""));
+        const lostServices = Math.max(0, doc.requiredKR - doc.krServicesDone);
+        const lostRevenuePercent = Math.round((lostServices / doc.requiredKR) * 100);
+        const lostRevenueAmount = Math.round((lostServices / doc.requiredKR) * revenueNumber);
+
+        return {
+            ...doc,
+            overKR: Math.max(0, doc.totalServices - doc.krServicesDone),
+            lostRevenueDisplay: lostServices > 0
+                ? `${lostRevenuePercent}% (${lostRevenueAmount.toLocaleString()} ₽)`
+                : `0% (0 ₽)`,
+        };
+    });
+}
+
+
+
 export async function GET() {
-    return NextResponse.json(doctors);
+    const preparedDoctors = prepareDoctorsData(doctors);
+    return NextResponse.json(preparedDoctors);
 }

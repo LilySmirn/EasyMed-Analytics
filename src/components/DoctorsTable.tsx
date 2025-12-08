@@ -10,20 +10,23 @@ import { useSortableData } from "@/components/useSortableData";
 export interface Doctor {
     id: string;
     fullName: string;
+    profession: string;          // обязательно
     appointments: number;
     primary: number;
 
-    requiredKR: number;        // норма
-    krServicesDone: number;    // факт
+    requiredKR: number;          // норма
+    krServicesDone: number;      // факт
 
     deviationPercent: number;
     totalServices: number;
     avgServicesPerVisit: number;
+    servicesPerVisit: number;    // обязательно
     noServices: string;
     avgBill: string;
     revenue: string;
 
-    overKR: number;            // вычисляемое
+    overKR: number;             // вычисляемое
+    lostRevenueDisplay: string; // "3% (20 000 ₽)"
 }
 
 interface DoctorsTableProps {
@@ -36,8 +39,7 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
         overKR: Math.max(0, doc.totalServices - doc.krServicesDone),
     }));
 
-    const { items, requestSort, sortConfig } =
-        useSortableData<Doctor>(preparedData);
+    const { items, requestSort, sortConfig } = useSortableData<Doctor>(preparedData);
 
     return (
         <TableRoot>
@@ -132,13 +134,24 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                                 onSort={requestSort}
                             />
                         </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Потерянная выручка"
+                                columnKey="lostRevenueDisplay"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {items.map((doc) => (
+                    {items.map(doc => (
                         <TableRow key={doc.id}>
                             <TableCell>
-                                <Link href={{ pathname: "/appointments", query: { id: doc.id } }} className="text-blue-600 hover:underline">
+                                <Link
+                                    href={{ pathname: "/appointments", query: { id: doc.id } }}
+                                    className="text-blue-600 hover:underline"
+                                >
                                     {doc.fullName}
                                 </Link>
                             </TableCell>
@@ -154,6 +167,7 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                             <TableCell>{doc.noServices}</TableCell>
                             <TableCell>{doc.avgBill}</TableCell>
                             <TableCell>{doc.revenue}</TableCell>
+                            <TableCell>{doc.lostRevenueDisplay}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
