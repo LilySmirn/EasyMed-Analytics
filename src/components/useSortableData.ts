@@ -1,17 +1,22 @@
-import { useState, useMemo } from "react";
+import {useMemo, useState} from "react";
 
 export interface SortConfig {
     key: string;
     direction: "asc" | "desc";
 }
 
-export function useSortableData<T>(items: T[], initialSort?: SortConfig) {
-    const [sortConfig, setSortConfig] = useState<SortConfig | null>(initialSort || null);
+export function useSortableData<T>(items: T[], storageName: string, initialSort?: SortConfig) {
+    const [sortConfig, setSortConfig] = useState<SortConfig | null>(() => {
+        const sortConfigString = localStorage.getItem(storageName);
+        return sortConfigString !== null ? JSON.parse(sortConfigString): initialSort;
+    });
 
     const sortedItems = useMemo(() => {
-        if (!sortConfig) return items;
+        if (!sortConfig) {
+            return items;
+        }
 
-        const sorted = [...items].sort((a, b) => {
+        return [...items].sort((a, b) => {
             const valA = a[sortConfig.key as keyof T];
             const valB = b[sortConfig.key as keyof T];
 
@@ -27,19 +32,16 @@ export function useSortableData<T>(items: T[], initialSort?: SortConfig) {
 
             return 0;
         });
-
-        return sorted;
     }, [items, sortConfig]);
 
     const requestSort = (key: string) => {
+        let direction: ("asc" | "desc") = "asc";
         if (sortConfig?.key === key) {
-            setSortConfig({
-                key,
-                direction: sortConfig.direction === "asc" ? "desc" : "asc",
-            });
-        } else {
-            setSortConfig({ key, direction: "asc" });
+            direction = sortConfig.direction === "asc" ? "desc" : "asc";
         }
+
+        setSortConfig({ key, direction: direction });
+        localStorage.setItem(storageName, JSON.stringify({ key, direction: direction }));
     };
 
     return { items: sortedItems, requestSort, sortConfig };

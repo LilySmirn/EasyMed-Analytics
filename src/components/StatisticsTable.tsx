@@ -17,7 +17,7 @@ interface StatisticsTableProps {
 }
 
 export function StatisticsTable({ data }: StatisticsTableProps) {
-    const { items, requestSort, sortConfig } = useSortableData<Statistic>(data);
+    const { items, requestSort, sortConfig } = useSortableData<Statistic>(data, "statisticsSorting");
 
     return (
         <TableRoot>

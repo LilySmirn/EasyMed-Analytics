@@ -39,7 +39,7 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
         overKR: Math.max(0, doc.totalServices - doc.krServicesDone),
     }));
 
-    const { items, requestSort, sortConfig } = useSortableData<Doctor>(preparedData);
+    const { items, requestSort, sortConfig } = useSortableData<Doctor>(preparedData, "doctorsSorting");
 
     return (
         <TableRoot>

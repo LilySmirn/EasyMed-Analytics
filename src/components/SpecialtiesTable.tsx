@@ -27,7 +27,7 @@ interface SpecialtiesTableProps {
 }
 
 export function SpecialtiesTable({ data }: SpecialtiesTableProps) {
-    const { items, requestSort, sortConfig } = useSortableData<Specialty>(data);
+    const { items, requestSort, sortConfig } = useSortableData<Specialty>(data, "specialitiesSorting");
 
     return (
         <TableRoot>
