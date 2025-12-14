@@ -1,6 +1,6 @@
 "use client";
 
-import { TopFilters } from "@/components/TopFilters";
+import { TopFilters } from "./TopFilters";
 
 export default function TopFiltersClient() {
     return <TopFilters />;

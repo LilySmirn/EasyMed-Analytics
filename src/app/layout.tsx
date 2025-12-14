@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { GeistSans } from "geist/font/sans";
 import { Sidebar } from "@/components/Sidebar";
-import { TopFilters } from "@/components/TopFilters";
+import TopFiltersClient from "@/components/TopFiltersClient"; // обёртка Client Component
 import { FiltersProvider } from "@/context/FiltersContext";
 
 export const metadata: Metadata = {
@@ -12,9 +12,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
                                        children,
-                                   }: Readonly<{
-    children: React.ReactNode;
-}>) {
+                                   }: Readonly<{ children: React.ReactNode }>) {
     return (
         <html
             lang="en"
@@ -25,7 +23,7 @@ export default function RootLayout({
 
         <FiltersProvider>
             <div className="flex-1 flex flex-col">
-                <TopFilters />
+                <TopFiltersClient /> {/* теперь корректно */}
                 <main className="flex-1 overflow-auto p-8">{children}</main>
             </div>
         </FiltersProvider>
