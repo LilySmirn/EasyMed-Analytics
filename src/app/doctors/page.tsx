@@ -9,7 +9,6 @@ import {BackButton} from "@/components/BackButton";
 export default function DoctorsPage() {
     const [doctors, setDoctors] = useState<Doctor[]>([]);
     const [loading, setLoading] = useState(true);
-    const { filters } = useFilters();
 
     useEffect(() => {
         fetch('/api/doctors')
@@ -17,6 +16,9 @@ export default function DoctorsPage() {
             .then((data: Doctor[]) => setDoctors(data))
             .finally(() => setLoading(false));
     }, []);
+
+    const { filters } = useFilters();
+    console.log("docs", filters);
 
     const filteredDoctors = useMemo(
         () => applyFilters<Doctor>(doctors, filters, {

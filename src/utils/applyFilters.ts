@@ -17,6 +17,8 @@ export function applyFilters<T extends Record<string, any>>(
     config: Record<string, FilterConfig<T>> = {}
 ): T[] {
     return data.filter((item) => {
+        console.log("filtering data:", data);
+        console.log("filtering:", filters);
         return Object.entries(filters).every(([key, value]) => {
             if (value === undefined || value === null || value === "all") return true;
 

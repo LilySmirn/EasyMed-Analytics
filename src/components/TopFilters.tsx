@@ -36,8 +36,8 @@ export function TopFilters() {
 
             <FilterSelect
                 label="Филиалы"
-                defaultValue={filters.specialty || "all"}
-                onChange={(v) => setFilter("specialty", v)}
+                defaultValue="all"
+                onChange={(v) => setFilter("branch", v)}
                 options={[
                     { value: "all", label: "Все филиалы" },
                     { value: "Филиал 1", label: "Филиал 1" },

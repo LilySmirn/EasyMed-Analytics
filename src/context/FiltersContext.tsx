@@ -12,7 +12,7 @@ interface FiltersContextType {
 }
 
 const FiltersContext = createContext<FiltersContextType>({
-    filters: {},
+    filters: getFilters(),
     setFilter: () => {},
     clearFilters: () => {},
 });
@@ -21,14 +21,27 @@ interface FiltersProviderProps {
     children: ReactNode;
 }
 
+function getFilters (){
+    const filterValueString = localStorage.getItem("filters");
+    console.log("getting filter cache", filterValueString);
+    let filterValue: FiltersState;
+
+    if (filterValueString !== null) {
+        filterValue = JSON.parse(filterValueString);
+        return filterValue;
+    }
+
+    return {};
+}
+
 export const FiltersProvider = ({ children }: FiltersProviderProps) => {
-    const searchParams = useSearchParams();
+    //const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
 
-    const [filters, setFilters] = useState<FiltersState>({});
+    const [filters, setFilters] = useState<FiltersState>(() => getFilters());
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (!searchParams) return;
 
         const initialFilters: FiltersState = {};
@@ -45,22 +58,25 @@ export const FiltersProvider = ({ children }: FiltersProviderProps) => {
             setFilters(initialFilters);
         }
         // Иначе оставляем текущее состояние (например, на /appointment/123)
-    }, [searchParams, pathname]);
+    }, [searchParams, pathname]);*/
 
     const setFilter = (key: string, value: string) => {
         const newFilters = { ...filters, [key]: value };
         setFilters(newFilters);
 
-        const query = new URLSearchParams(
+        console.log(`setting filter: {key}, {value}`);
+
+        localStorage.setItem("filters", JSON.stringify(newFilters));
+
+        /*const query = new URLSearchParams(
             Object.entries(newFilters).filter(([_, v]) => v && v !== "all") as [string, string][]
         ).toString();
-
-        localStorage.setItem(key, value);
-        router.replace(`${pathname}${query ? `?${query}` : ""}`);
+        router.replace(`${pathname}${query ? `?${query}` : ""}`);*/
     };
 
     const clearFilters = () => {
         setFilters({});
+        //localStorage.setItem("filters", JSON.stringify({}));
         router.replace(pathname);
     };
 
