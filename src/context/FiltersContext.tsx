@@ -1,7 +1,7 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { createContext, useContext, useState, ReactNode } from "react";
+import { useRouter, usePathname } from "next/navigation";
 
 type FiltersState = Record<string, string>;
 
@@ -11,72 +11,40 @@ interface FiltersContextType {
     clearFilters: () => void;
 }
 
+function safeGetFilters(): FiltersState {
+    if (typeof window === "undefined") return {};
+    const raw = localStorage.getItem("filters");
+    return raw ? JSON.parse(raw) : {};
+}
+
+function safeSetFilters(filters: FiltersState) {
+    if (typeof window === "undefined") return;
+    localStorage.setItem("filters", JSON.stringify(filters));
+}
+
 const FiltersContext = createContext<FiltersContextType>({
-    filters: getFilters(),
+    filters: {},
     setFilter: () => {},
     clearFilters: () => {},
 });
 
-interface FiltersProviderProps {
-    children: ReactNode;
-}
-
-function getFilters (){
-    const filterValueString = localStorage.getItem("filters");
-    console.log("getting filter cache", filterValueString);
-    let filterValue: FiltersState;
-
-    if (filterValueString !== null) {
-        filterValue = JSON.parse(filterValueString);
-        return filterValue;
-    }
-
-    return {};
-}
-
-export const FiltersProvider = ({ children }: FiltersProviderProps) => {
-    //const searchParams = useSearchParams();
+export const FiltersProvider = ({ children }: { children: ReactNode }) => {
     const router = useRouter();
     const pathname = usePathname();
 
-    const [filters, setFilters] = useState<FiltersState>(() => getFilters());
-
-    /*useEffect(() => {
-        if (!searchParams) return;
-
-        const initialFilters: FiltersState = {};
-        searchParams.forEach((value, key) => {
-            initialFilters[key] = value;
-        });
-
-        const topLevelPaths = ["/doctors", "/nosologies", "/statistics"];
-        const queryLength = Array.from(searchParams.keys()).length;
-
-        if (topLevelPaths.includes(pathname) && queryLength === 0) {
-            setFilters({});
-        } else if (queryLength > 0) {
-            setFilters(initialFilters);
-        }
-        // Иначе оставляем текущее состояние (например, на /appointment/123)
-    }, [searchParams, pathname]);*/
+    const [filters, setFilters] = useState<FiltersState>(() => safeGetFilters());
 
     const setFilter = (key: string, value: string) => {
-        const newFilters = { ...filters, [key]: value };
-        setFilters(newFilters);
-
-        console.log(`setting filter: {key}, {value}`);
-
-        localStorage.setItem("filters", JSON.stringify(newFilters));
-
-        /*const query = new URLSearchParams(
-            Object.entries(newFilters).filter(([_, v]) => v && v !== "all") as [string, string][]
-        ).toString();
-        router.replace(`${pathname}${query ? `?${query}` : ""}`);*/
+        const next = { ...filters, [key]: value };
+        setFilters(next);
+        safeSetFilters(next);
     };
 
     const clearFilters = () => {
         setFilters({});
-        //localStorage.setItem("filters", JSON.stringify({}));
+        if (typeof window !== "undefined") {
+            localStorage.removeItem("filters");
+        }
         router.replace(pathname);
     };
 
