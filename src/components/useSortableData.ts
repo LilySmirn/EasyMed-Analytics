@@ -1,20 +1,32 @@
-import {useMemo, useState} from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export interface SortConfig {
     key: string;
     direction: "asc" | "desc";
 }
 
-export function useSortableData<T>(items: T[], storageName: string, initialSort?: SortConfig) {
-    const [sortConfig, setSortConfig] = useState<SortConfig | null>(() => {
-        const sortConfigString = localStorage.getItem(storageName);
-        return sortConfigString !== null ? JSON.parse(sortConfigString): initialSort;
-    });
+export function useSortableData<T>(
+    items: T[],
+    storageName: string,
+    initialSort?: SortConfig
+) {
+    // ⬅️ безопасно для SSR
+    const [sortConfig, setSortConfig] = useState<SortConfig | null>(
+        initialSort ?? null
+    );
+
+    // ⬇️ ТОЛЬКО браузер
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+
+        const stored = localStorage.getItem(storageName);
+        if (stored) {
+            setSortConfig(JSON.parse(stored));
+        }
+    }, [storageName]);
 
     const sortedItems = useMemo(() => {
-        if (!sortConfig) {
-            return items;
-        }
+        if (!sortConfig) return items;
 
         return [...items].sort((a, b) => {
             const valA = a[sortConfig.key as keyof T];
@@ -35,13 +47,17 @@ export function useSortableData<T>(items: T[], storageName: string, initialSort?
     }, [items, sortConfig]);
 
     const requestSort = (key: string) => {
-        let direction: ("asc" | "desc") = "asc";
+        let direction: "asc" | "desc" = "asc";
+
         if (sortConfig?.key === key) {
             direction = sortConfig.direction === "asc" ? "desc" : "asc";
         }
 
-        setSortConfig({ key, direction: direction });
-        localStorage.setItem(storageName, JSON.stringify({ key, direction: direction }));
+        const newConfig = { key, direction };
+        setSortConfig(newConfig);
+
+        // ⬅️ безопасно, т.к. вызывается по клику
+        localStorage.setItem(storageName, JSON.stringify(newConfig));
     };
 
     return { items: sortedItems, requestSort, sortConfig };
