@@ -24,7 +24,7 @@ src/components/
 ├── Calendar.tsx
 ├── CalendarFilter.tsx
 ├── Card.tsx
-├── CardDemo.tsx
+├── MetricCard.tsx
 ├── DoctorsTable.tsx
 ├── Drawer.tsx
 ├── FilterSelect.tsx
@@ -158,7 +158,7 @@ src/components/
 Клиентская версия верхней панели фильтров.
 Используется в Next.js страницах как компонент с use client, обеспечивая интерактивность фильтрации без серверного рендера.
 
-### CardDemo.tsx
+### MetricCard.tsx
 
 Пример использования карточек (Card.tsx) в демонстрационных целях.
 Применяется для тестирования визуальных элементов и быстрой проверки стилей Tremor-компонентов.

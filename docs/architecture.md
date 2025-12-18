@@ -36,7 +36,7 @@
 - Переиспользуемые компоненты интерфейса.
 - Примеры:
     - `Button.tsx` — кнопка
-    - `Card.tsx`, `CardDemo.tsx` — карточки для отображения данных
+    - `Card.tsx`, `MetricCard.tsx` — карточки для отображения данных
     - `Drawer.tsx` — боковое меню
     - `AppointmentsTable.tsx`, `DoctorsTable.tsx` — таблицы данных
     - `FilterSelect.tsx`, `Select.tsx` — селекты и фильтры
