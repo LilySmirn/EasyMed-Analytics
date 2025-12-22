@@ -25,7 +25,7 @@ src/components/
 ├── CalendarFilter.tsx
 ├── Card.tsx
 ├── MetricCard.tsx
-├── DoctorsTable.tsx
+├── DoctorsTable/
 ├── Drawer.tsx
 ├── FilterSelect.tsx
 ├── NosologiesTable.tsx
@@ -143,10 +143,10 @@ src/components/
 Расширенная таблица с подробной информацией о конкретном приёме.
 Подключается на странице деталей (appointments/[id]/page.tsx).
 
-### DoctorsTable.tsx
+### DoctorsTable (папка с файлами)
 
-Таблица с данными о врачах.
-Строится на основе базового Table.tsx, включает фильтрацию.
+Папка с компонентом Таблица с данными о врачах. Включает в себя саму таблицу DoctorsTable.tsx, конфиг columns.ts с конфигурацией колонок, index.ts для реэкспорта путей таблицы.
+Таблица строится на основе базового Table.tsx, включает фильтрацию.
 
 ### TopFilters.tsx
 

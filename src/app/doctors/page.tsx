@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import { DoctorsTable, Doctor } from "@/components/DoctorsTable";
+import { DoctorsTable, Doctor } from "@/components/DoctorsTable/DoctorsTable";
 import { useFilters } from "@/context/FiltersContext";
 import { applyFilters, FilterValue } from "@/utils/applyFilters";
 import {BackButton} from "@/components/BackButton";
