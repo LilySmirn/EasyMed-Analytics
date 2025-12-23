@@ -42,14 +42,19 @@ export interface Doctor {
     lostOUKRPercent: number;
 }
 
+export type TableMode = "quality" | "finance";
+
 interface DoctorsTableProps {
     data: Doctor[];
-    useFinance?: boolean;
+    mode: TableMode;
 }
 
-export function DoctorsTable({ data, useFinance = false }: DoctorsTableProps) {
-    const columns: ColumnConfig[] = useFinance ? financeColumns : qualityColumns;
-    const { items, requestSort, sortConfig } = useSortableData<Doctor>(data, "doctorsSorting");
+export function DoctorsTable({ data, mode }: DoctorsTableProps) {
+    const columns: ColumnConfig[] =
+        mode === "finance" ? financeColumns : qualityColumns;
+
+    const { items, requestSort, sortConfig } =
+        useSortableData<Doctor>(data, "doctorsSorting");
 
     return (
         <TableRoot>
