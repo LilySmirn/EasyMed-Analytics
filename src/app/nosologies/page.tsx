@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BackButton } from "@/components/BackButton";
-import { NosologiesTable, Nosology } from "@/components/NosologiesTable";
+import { NosologiesTable, Nosology } from "@/components/NosologiesTable/NosologiesTable";
 
 export default function NosologiesPage() {
     const [nosologies, setNosologies] = useState<Nosology[]>([]);

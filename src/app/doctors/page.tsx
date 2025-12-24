@@ -46,7 +46,6 @@ export default function DoctorsPage() {
                     <h1 className="text-2xl font-bold">Доктора</h1>
                 </div>
 
-                <ModeToggle value={mode} onChange={setMode} />
             </div>
 
             <DoctorsTable data={filteredDoctors} mode={mode} />
