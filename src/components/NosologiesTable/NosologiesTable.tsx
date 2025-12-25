@@ -14,6 +14,7 @@ import { getPercentColor } from "@/utils/getPercentColor";
 import { SortableHeader } from "@/components/SortableHeader";
 import { useSortableData } from "@/components/useSortableData";
 import { qualityColumns, financeColumns, ColumnConfig } from "./columns";
+import { useMode } from "@/context/ModeContext"; // <-- подключаем глобальный контекст
 
 export interface Nosology {
     id: string;
@@ -40,12 +41,18 @@ export interface Nosology {
 
 interface NosologiesTableProps {
     data: Nosology[];
-    useFinance?: boolean;
 }
 
-export function NosologiesTable({ data, useFinance = false }: NosologiesTableProps) {
+export function NosologiesTable({ data }: NosologiesTableProps) {
+    const { mode } = useMode(); // <-- берём глобальный режим
+    const useFinance = mode === "finance";
+
     const columns: ColumnConfig[] = useFinance ? financeColumns : qualityColumns;
-    const { items, requestSort, sortConfig } = useSortableData<Nosology>(data, "nosologiesSorting");
+
+    const { items, requestSort, sortConfig } = useSortableData<Nosology>(
+        data,
+        "nosologiesSorting"
+    );
 
     return (
         <TableRoot>

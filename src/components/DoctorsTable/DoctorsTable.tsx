@@ -14,6 +14,7 @@ import { getPercentColor } from "@/utils/getPercentColor";
 import { SortableHeader } from "@/components/SortableHeader";
 import { useSortableData } from "@/components/useSortableData";
 import { qualityColumns, financeColumns, ColumnConfig } from "./columns";
+import { useMode } from "@/context/ModeContext";
 
 export interface Doctor {
     id: string;
@@ -49,7 +50,9 @@ interface DoctorsTableProps {
     mode: TableMode;
 }
 
-export function DoctorsTable({ data, mode }: DoctorsTableProps) {
+export function DoctorsTable({ data }: DoctorsTableProps) {
+    const { mode } = useMode();
+
     const columns: ColumnConfig[] =
         mode === "finance" ? financeColumns : qualityColumns;
 

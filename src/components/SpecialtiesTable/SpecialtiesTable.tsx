@@ -14,6 +14,7 @@ import { getPercentColor } from "@/utils/getPercentColor";
 import { SortableHeader } from "@/components/SortableHeader";
 import { useSortableData } from "@/components/useSortableData";
 import { qualityColumns, financeColumns, ColumnConfig } from "./columns";
+import { useMode } from "@/context/ModeContext"; // ✅ добавляем контекст
 
 export interface Specialty {
     id: string;
@@ -42,11 +43,14 @@ export interface Specialty {
 
 interface Props {
     data: Specialty[];
-    useFinance?: boolean;
+    useFinance?: boolean; // можно оставить, если нужен override
 }
 
-export function SpecialtiesTable({ data, useFinance = false }: Props) {
-    const columns: ColumnConfig[] = useFinance ? financeColumns : qualityColumns;
+export function SpecialtiesTable({ data, useFinance }: Props) {
+    const { mode } = useMode(); // получаем глобальный режим
+    const isFinance = useFinance ?? (mode === "finance"); // если пропс не передан, берем из контекста
+
+    const columns: ColumnConfig[] = isFinance ? financeColumns : qualityColumns;
     const { items, requestSort, sortConfig } =
         useSortableData<Specialty>(data, "specialtiesSorting");
 
@@ -78,9 +82,7 @@ export function SpecialtiesTable({ data, useFinance = false }: Props) {
                                         col.color
                                             ? getPercentColor(
                                                 spec[col.key] as number,
-                                                col.color === "reverse"
-                                                    ? "reverse"
-                                                    : undefined
+                                                col.color === "reverse" ? "reverse" : undefined
                                             )
                                             : undefined
                                     }
