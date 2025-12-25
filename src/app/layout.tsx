@@ -23,7 +23,7 @@ export default function RootLayout({
 
         <FiltersProvider>
             <div className="flex-1 flex flex-col">
-                <TopFiltersClient /> {/* теперь корректно */}
+                <TopFiltersClient />
                 <main className="flex-1 overflow-auto p-8">{children}</main>
             </div>
         </FiltersProvider>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BackButton } from "@/components/BackButton";
-import { SpecialtiesTable, Specialty } from "@/components/SpecialtiesTable";
+import { SpecialtiesTable, Specialty } from "@/components/SpecialtiesTable/SpecialtiesTable";
 
 export default function SpecialtiesPage() {
     const [specialties, setSpecialties] = useState<Specialty[]>([]);
