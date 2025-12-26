@@ -5,12 +5,10 @@ import { DoctorsTable, Doctor } from "@/components/DoctorsTable/DoctorsTable";
 import { useFilters } from "@/context/FiltersContext";
 import { applyFilters, FilterValue } from "@/utils/applyFilters";
 import { BackButton } from "@/components/BackButton";
-import { ModeToggle, TableMode } from "@/components/ModeToggle";
 
 export default function DoctorsPage() {
     const [doctors, setDoctors] = useState<Doctor[]>([]);
     const [loading, setLoading] = useState(true);
-    const [mode, setMode] = useState<TableMode>("quality");
 
     const { filters } = useFilters();
 
@@ -45,10 +43,9 @@ export default function DoctorsPage() {
                     <BackButton />
                     <h1 className="text-2xl font-bold">Доктора</h1>
                 </div>
-
             </div>
 
-            <DoctorsTable data={filteredDoctors} mode={mode} />
+            <DoctorsTable data={filteredDoctors} />
         </div>
     );
 }
