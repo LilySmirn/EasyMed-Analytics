@@ -1,8 +1,6 @@
 "use client";
 
-import React from "react";
-
-export type TableMode = "quality" | "finance";
+import { TableMode } from "@/context/ModeContext";
 
 interface Props {
     value: TableMode;
@@ -11,18 +9,23 @@ interface Props {
 
 export function ModeToggle({ value, onChange }: Props) {
     return (
-        <div className="flex gap-2 mb-4">
+        <div className="flex gap-2">
             <button
                 className={`px-4 py-2 rounded ${
-                    value === "quality" ? "bg-blue-600 text-white" : "bg-gray-200"
+                    value === "quality"
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-200"
                 }`}
                 onClick={() => onChange("quality")}
             >
                 Качество лечения
             </button>
+
             <button
                 className={`px-4 py-2 rounded ${
-                    value === "finance" ? "bg-blue-600 text-white" : "bg-gray-200"
+                    value === "finance"
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-200"
                 }`}
                 onClick={() => onChange("finance")}
             >

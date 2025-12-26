@@ -1,14 +1,20 @@
 "use client";
 
 import { FilterSelect } from "@/components/FilterSelect";
-import { useFilters } from "@/context/FiltersContext";
 import { CalendarPopover } from "@/components/CalendarFilter";
-import { ModeToggle, TableMode } from "@/components/ModeToggle";
+import { ModeToggle } from "@/components/ModeToggle";
+import { useFilters } from "@/context/FiltersContext";
 import { useMode } from "@/context/ModeContext";
 
 export function TopFilters() {
     const { setFilter, filters } = useFilters();
-    const { mode, setMode } = useMode(); // тут хук для тумблера
+    const { mode, setMode, isReady } = useMode();
+
+    if (!isReady) {
+        return (
+            <div className="h-20 bg-gray-100 dark:bg-gray-900" />
+        );
+    }
 
     return (
         <div className="h-20 bg-gray-100 dark:bg-gray-900 flex items-center justify-between px-6 shadow-sm overflow-x-auto">

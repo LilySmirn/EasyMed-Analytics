@@ -1,41 +1,46 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { TableMode } from "@/components/ModeToggle";
+
+export type TableMode = "quality" | "finance";
 
 interface ModeContextValue {
     mode: TableMode;
     setMode: (mode: TableMode) => void;
+    isReady: boolean;
 }
 
 const ModeContext = createContext<ModeContextValue | undefined>(undefined);
 
 export function ModeProvider({ children }: { children: React.ReactNode }) {
-    const [mode, setModeState] = useState<TableMode>("quality");
-    const [isMounted, setIsMounted] = useState(false);
+    const [mode, setMode] = useState<TableMode>("quality");
+    const [isReady, setIsReady] = useState(false);
 
-    // При монтировании читаем из localStorage
     useEffect(() => {
-        const saved = localStorage.getItem("tableMode") as TableMode | null;
-        if (saved === "finance" || saved === "quality") {
-            setModeState(saved);
+        const saved = localStorage.getItem("tableMode");
+        if (saved === "quality" || saved === "finance") {
+            setMode(saved);
         }
-        setIsMounted(true);
+        setIsReady(true);
     }, []);
 
-    // Сохраняем при изменении
-    const setMode = (newMode: TableMode) => {
-        setModeState(newMode);
-        if (isMounted) {
-            localStorage.setItem("tableMode", newMode);
+    useEffect(() => {
+        if (isReady) {
+            localStorage.setItem("tableMode", mode);
         }
-    };
+    }, [mode, isReady]);
 
-    return <ModeContext.Provider value={{ mode, setMode }}>{children}</ModeContext.Provider>;
+    return (
+        <ModeContext.Provider value={{ mode, setMode, isReady }}>
+            {children}
+        </ModeContext.Provider>
+    );
 }
 
 export function useMode() {
     const context = useContext(ModeContext);
-    if (!context) throw new Error("useMode must be used within a ModeProvider");
+    if (!context) {
+        throw new Error("useMode must be used within ModeProvider");
+    }
     return context;
 }

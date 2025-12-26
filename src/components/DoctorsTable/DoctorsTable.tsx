@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import {
     Table,
     TableBody,
@@ -9,7 +10,6 @@ import {
     TableRow,
     TableRoot,
 } from "@/components/Table";
-import Link from "next/link";
 import { getPercentColor } from "@/utils/getPercentColor";
 import { SortableHeader } from "@/components/SortableHeader";
 import { useSortableData } from "@/components/useSortableData";
@@ -20,7 +20,6 @@ export interface Doctor {
     id: string;
     fullName: string;
     profession: string;
-
     appointments: number;
     primary: number;
     requiredKR: number;
@@ -32,22 +31,17 @@ export interface Doctor {
     noServices: string;
     avgBill: string;
     revenue: string;
-
     repeatAppointments: number;
     assignedOUKRPercent: number;
     servicesCompletedPercent: number;
     overKR: number;
-
     potentialRevenue: string;
     lostOUKRRevenue: string;
     lostOUKRPercent: number;
 }
 
-export type TableMode = "quality" | "finance";
-
 interface DoctorsTableProps {
     data: Doctor[];
-    mode: TableMode;
 }
 
 export function DoctorsTable({ data }: DoctorsTableProps) {
@@ -65,7 +59,7 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                 <TableHead>
                     <TableRow>
                         {columns.map((col) => (
-                            <TableCell key={col.key as string}>
+                            <TableCell key={String(col.key)}>
                                 <SortableHeader
                                     label={col.label}
                                     columnKey={col.key}
@@ -82,19 +76,24 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                         <TableRow key={doc.id}>
                             {columns.map((col) => (
                                 <TableCell
-                                    key={col.key as string}
+                                    key={String(col.key)}
                                     className={
                                         col.color
                                             ? getPercentColor(
                                                 doc[col.key] as number,
-                                                col.color === "reverse" ? "reverse" : undefined
+                                                col.color === "reverse"
+                                                    ? "reverse"
+                                                    : undefined
                                             )
                                             : undefined
                                     }
                                 >
                                     {col.link ? (
                                         <Link
-                                            href={{ pathname: "/appointments", query: { id: doc.id } }}
+                                            href={{
+                                                pathname: "/appointments",
+                                                query: { id: doc.id },
+                                            }}
                                             className="text-blue-600 hover:underline"
                                         >
                                             {doc[col.key]}

@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <FiltersProvider>
             <ModeProvider>
                 <div className="flex-1 flex flex-col">
-                    <TopFilters /> {/* теперь фильтры + тумблер */}
+                    <TopFilters /> {/*фильтры + тумблер */}
                     <main className="flex-1 overflow-auto p-8">{children}</main>
                 </div>
             </ModeProvider>
