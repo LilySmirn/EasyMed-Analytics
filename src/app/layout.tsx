@@ -14,18 +14,21 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" className={`${GeistSans.className} antialiased dark:bg-gray-950`}>
-        <body className="min-h-screen flex bg-gray-50 dark:bg-gray-950">
+        <body className="h-screen flex overflow-hidden bg-gray-50 dark:bg-gray-950">
         <Sidebar />
 
         <FiltersProvider>
             <ModeProvider>
-                <div className="flex-1 flex flex-col">
-                    <TopFilters /> {/*фильтры + тумблер */}
-                    <main className="flex-1 overflow-auto p-8">{children}</main>
+                <div className="flex-1 flex flex-col min-w-0">
+                    <TopFilters />
+                    <main className="flex-1 overflow-y-auto overflow-x-hidden p-8 min-w-0">
+                        {children}
+                    </main>
                 </div>
             </ModeProvider>
         </FiltersProvider>
         </body>
+
         </html>
     );
 }
