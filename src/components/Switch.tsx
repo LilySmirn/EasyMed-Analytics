@@ -11,48 +11,37 @@ const switchVariants = tv({
         root: [
             // base
             "group relative isolate inline-flex shrink-0 cursor-pointer items-center rounded-full p-0.5 shadow-inner outline-hidden ring-1 ring-inset transition-all",
-            "bg-gray-200 dark:bg-gray-950",
+            // фон всегда синий
+            "bg-blue-500 dark:bg-blue-500",
             // ring color
             "ring-black/5 dark:ring-gray-800",
-            // checked
-            "data-[state=checked]:bg-blue-500 dark:data-[state=checked]:bg-blue-500",
             // disabled
             "data-disabled:cursor-default",
-            // disabled checked
-            "data-disabled:data-[state=checked]:bg-blue-200",
-            "data-disabled:data-[state=checked]:ring-gray-300",
-            // disabled checked dark
-            "dark:data-disabled:data-[state=checked]:ring-gray-900",
-            "dark:data-disabled:data-[state=checked]:bg-blue-900",
-            // disabled unchecked
-            "data-disabled:data-[state=unchecked]:ring-gray-300",
-            "data-disabled:data-[state=unchecked]:bg-gray-100",
-            // disabled unchecked dark
-            "dark:data-disabled:data-[state=unchecked]:ring-gray-700",
-            "dark:data-disabled:data-[state=unchecked]:bg-gray-800",
+            "data-disabled:bg-blue-300 dark:data-disabled:bg-blue-900",
+            "focus:outline-none focus:ring-2 focus:ring-blue-400",
             focusRing,
         ],
         thumb: [
             // base
-            "pointer-events-none relative inline-block transform appearance-none rounded-full border-none shadow-lg outline-hidden transition-all duration-150 ease-in-out focus:border-none focus:outline-hidden focus:outline-transparent",
-            // background color
+            "pointer-events-none relative inline-block transform appearance-none rounded-full border-none shadow-lg transition-all duration-150 ease-in-out focus:border-none focus:outline-hidden focus:outline-transparent",
+            // фон кружка серый
             "bg-white dark:bg-gray-50",
+            // движение при переключении
+            "data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0",
             // disabled
             "group-data-disabled:shadow-none",
-            "group-data-disabled:bg-gray-50 dark:group-data-disabled:bg-gray-500",
+            "group-data-disabled:bg-gray-200 dark:group-data-disabled:bg-gray-700",
         ],
     },
     variants: {
         size: {
             default: {
                 root: "h-5 w-9",
-                thumb:
-                    "h-4 w-4 data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0",
+                thumb: "h-4 w-4 data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0",
             },
             small: {
                 root: "h-4 w-7",
-                thumb:
-                    "h-3 w-3 data-[state=checked]:translate-x-3 data-[state=unchecked]:translate-x-0",
+                thumb: "h-3 w-3 data-[state=checked]:translate-x-3 data-[state=unchecked]:translate-x-0",
             },
         },
     },

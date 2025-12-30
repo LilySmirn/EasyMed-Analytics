@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { TableMode } from "@/context/ModeContext"
 import { Switch } from "@/components/Switch"
 
@@ -9,32 +10,50 @@ interface Props {
 }
 
 export function ModeToggle({ value, onChange }: Props) {
+    // boolean для Switch
     const isFinance = value === "finance"
 
     return (
         <div className="flex items-center gap-3">
-      <span
-          className={`text-sm transition-colors ${
-              !isFinance ? "font-medium text-blue-600" : "text-gray-500"
-          }`}
-      >
-        Качество лечения
-      </span>
+            {/* Иконка "Качество лечения" */}
+            <div
+                className={`transition-opacity cursor-pointer ${
+                    !isFinance ? "opacity-100" : "opacity-40"
+                }`}
+                onClick={() => onChange("quality")}
+            >
+                <Image
+                    src="/eagle.png"
+                    alt="Качество лечения"
+                    width={30}
+                    height={30}
+                />
+            </div>
 
+            {/* Сам Switch */}
             <Switch
                 checked={isFinance}
-                onCheckedChange={(checked) =>
+                onCheckedChange={(checked: boolean) => {
+                    // проверка на undefined на всякий случай
+                    if (checked === undefined) return
                     onChange(checked ? "finance" : "quality")
-                }
+                }}
             />
 
-            <span
-                className={`text-sm transition-colors ${
-                    isFinance ? "font-medium text-blue-600" : "text-gray-500"
+            {/* Иконка "Финансы" */}
+            <div
+                className={`transition-opacity cursor-pointer ${
+                    isFinance ? "opacity-100" : "opacity-40"
                 }`}
+                onClick={() => onChange("finance")}
             >
-        Финансы
-      </span>
+                <Image
+                    src="/ruble.png"
+                    alt="Финансы"
+                    width={22}
+                    height={22}
+                />
+            </div>
         </div>
     )
 }
