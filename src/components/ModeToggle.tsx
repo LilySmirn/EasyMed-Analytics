@@ -1,36 +1,40 @@
-"use client";
+"use client"
 
-import { TableMode } from "@/context/ModeContext";
+import { TableMode } from "@/context/ModeContext"
+import { Switch } from "@/components/Switch"
 
 interface Props {
-    value: TableMode;
-    onChange: (value: TableMode) => void;
+    value: TableMode
+    onChange: (value: TableMode) => void
 }
 
 export function ModeToggle({ value, onChange }: Props) {
-    return (
-        <div className="flex gap-2">
-            <button
-                className={`px-4 py-2 rounded ${
-                    value === "quality"
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-200"
-                }`}
-                onClick={() => onChange("quality")}
-            >
-                Качество лечения
-            </button>
+    const isFinance = value === "finance"
 
-            <button
-                className={`px-4 py-2 rounded ${
-                    value === "finance"
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-200"
+    return (
+        <div className="flex items-center gap-3">
+      <span
+          className={`text-sm transition-colors ${
+              !isFinance ? "font-medium text-blue-600" : "text-gray-500"
+          }`}
+      >
+        Качество лечения
+      </span>
+
+            <Switch
+                checked={isFinance}
+                onCheckedChange={(checked) =>
+                    onChange(checked ? "finance" : "quality")
+                }
+            />
+
+            <span
+                className={`text-sm transition-colors ${
+                    isFinance ? "font-medium text-blue-600" : "text-gray-500"
                 }`}
-                onClick={() => onChange("finance")}
             >
-                Финансы
-            </button>
+        Финансы
+      </span>
         </div>
-    );
+    )
 }
