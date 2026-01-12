@@ -11,6 +11,7 @@ export default function Home() {
                         key={index}
                         title={card.title}
                         metrics={card.metrics}
+                        total={card.total}
                     />
                 ))}
             </main>

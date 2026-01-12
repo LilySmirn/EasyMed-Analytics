@@ -3,83 +3,18 @@ import type { MetricCardData } from "@/components/MetricCard";
 export const cardsData: MetricCardData[] =  [
     {
         title: "Приёмы",
+        total: 10000,
         metrics: [
             { label: "Факт", value: 33, variant: "error" },
-            { label: "Прогноз", value: 88 },
+            { label: "LFL (к пред. месяцу)", value: 10, displayValue: "+10%", },
         ],
     },
     {
         title: "Первичные приёмы",
+        total: 5000,
         metrics: [
-            { label: "Факт", value: 45 },
+            { label: "Факт", value: 99 },
             { label: "Прогноз", value: 70 },
-        ],
-    },
-    {
-        title: "Повторные приёмы",
-        metrics: [
-            { label: "Шт", value: 60 },
-            { label: "Процент", value: 75 },
-        ],
-    },
-    {
-        title: "Соблюдение КР",
-        metrics: [
-            { label: "Шт", value: 60 },
-            { label: "Процент", value: 75 },
-        ],
-    },
-    {
-        title: "Назначено сверх КР",
-        metrics: [
-            { label: "Шт", value: 60 },
-            { label: "Процент", value: 75 },
-        ],
-    },
-    {
-        title: "Назначено всего услуг",
-        metrics: [
-            { label: "Шт", value: 60 },
-            { label: "Процент", value: 75 },
-        ],
-    },
-    {
-        title: "Среднее Назначено на 1 приём",
-        metrics: [
-            { label: "Шт", value: 60 },
-            { label: "Процент", value: 75 },
-        ],
-    },
-    {
-        title: "Приемов без назначений",
-        metrics: [
-            { label: "Шт", value: 60 },
-            { label: "Процент", value: 75 },
-        ],
-    },
-    {
-        title: "Процент выполнения",
-        metrics: [
-            { label: "Шт", value: 60 },
-            { label: "Процент", value: 75 },
-        ],
-    },
-    {
-        title: "Средний чек",
-        metrics: [
-            { label: "Факт", value: 82 },
-        ],
-    },
-    {
-        title: "Выручка",
-        metrics: [
-            { label: "Факт", value: 90 },
-        ],
-    },
-    {
-        title: "Потерянная выручка",
-        metrics: [
-            { label: "Факт", value: 25, variant: "error" },
         ],
     },
 ];

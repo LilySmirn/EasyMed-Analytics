@@ -58,15 +58,16 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
             variant,
             className,
             ...props
-        }: ProgressBarProps,
+        },
         forwardedRef,
     ) => {
         const safeValue = Math.min(max, Math.max(value, 0))
         const { background, bar } = progressBarVariants({ variant })
+
         return (
             <div
                 ref={forwardedRef}
-                className={cx("inline-flex items-center", className)}
+                className={cx("inline-flex w-full relative", className)}
                 role="progressbar"
                 aria-label="Progress bar"
                 aria-valuenow={value}
@@ -74,42 +75,38 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
                 tremor-id="tremor-raw"
                 {...props}
             >
+                {/* Полоска фона */}
                 <div
-                    className={cx(
-                        "relative h-3 rounded-full flex-1",
-                        background(),
-                    )}
-                    // style={{ width: "200px" }}
+                    className={cx("w-full rounded-full", background())}
+                    style={{ height: "26px" }}
                 >
+                    {/* Заливка */}
                     <div
                         className={cx(
-                            "h-full flex-col rounded-full",
+                            "h-full rounded-full",
                             bar(),
                             showAnimation &&
-                            "transform-gpu transition-all duration-300 ease-in-out",
+                            "transform-gpu transition-all duration-300 ease-in-out"
                         )}
                         style={{
                             width: max ? `${(safeValue / max) * 100}%` : `${safeValue}%`,
                         }}
                     />
                 </div>
-                {label ? (
-                    <span
-                        className={cx(
-                            // base
-                            "ml-2 whitespace-nowrap text-sm font-medium leading-none",
-                            // text color
-                            "text-gray-900 dark:text-gray-50",
-                        )}
-                        style={{ minWidth: "60px" }}
-                    >
-            {label}
-          </span>
-                ) : null}
+
+                {/* Текст по центру всей полоски */}
+                {label && (
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <span className="text-sm font-medium text-white select-none">
+              {label}
+            </span>
+                    </div>
+                )}
             </div>
         )
-    },
+    }
 )
+
 
 ProgressBar.displayName = "ProgressBar"
 
