@@ -2,6 +2,8 @@
 
 import { Card } from "@/components/Card";
 import { ProgressBar } from "@/components/ProgressBar";
+import { MetricBar } from "./MetricBar";
+import { MetricFilter } from "./MetricFilter";
 
 export type Metric = {
     label: string;
@@ -20,7 +22,16 @@ type MetricCardProps = MetricCardData;
 
 export function MetricCard({ title, metrics, total }: MetricCardProps) {
     const firstMetric = metrics[0];
-    const factCount = total ? Math.round((firstMetric.value / 100) * total) : 0;
+    const secondMetric = metrics[1];
+
+    const factCount = total
+        ? Math.round((firstMetric.value / 100) * total)
+        : 0;
+
+    const secondCount =
+        total && secondMetric
+            ? Math.round((secondMetric.value / 100) * total)
+            : 0;
 
     return (
         <Card className="w-[750px] card p-6">
@@ -29,31 +40,37 @@ export function MetricCard({ title, metrics, total }: MetricCardProps) {
             </h2>
 
             <div className="flex flex-col gap-4 w-full">
-                {/* Первый прогресс бар с надписями сверху */}
-                <div>
-                    {total && (
-                        <div className="flex justify-between text-sm font-medium mb-1">
-                            <span>{factCount} шт</span>
-                            <span>{total} шт</span>
-                        </div>
-                    )}
+                {/* Первый прогресс бар */}
+                <MetricBar metric={firstMetric} total={total} />
 
+                {/* Второй прогресс бар */}
+                {secondMetric && (
                     <ProgressBar
-                        value={firstMetric.value}
-                        label={firstMetric.displayValue ?? `${firstMetric.label} ${firstMetric.value}%`}
-                        variant={firstMetric.variant ?? "default"}
+                        mode="indicator"
+                        value={secondMetric.value}
+                        label={
+                            secondMetric.displayValue ??
+                            `${secondMetric.label} ${secondMetric.value}%`
+                        }
+                        variant={secondMetric.variant ?? "default"}
+                    />
+                )}
+
+                {/* Фильтры */}
+                <div className="flex justify-between mt-4 gap-4 text-sm text-gray-700 dark:text-gray-300">
+                    <MetricFilter
+                        title="LFL (фильтр)"
+                        percent={secondMetric?.value ?? 0}
+                        count={secondCount}
+                        align="left"
+                    />
+                    <MetricFilter
+                        title="План/факт"
+                        percent={firstMetric.value - 100}
+                        count={factCount - (total ?? 0)}
+                        align="right"
                     />
                 </div>
-
-                {/* Остальные прогресс-бары (если есть) */}
-                {metrics.slice(1).map((metric, index) => (
-                    <ProgressBar
-                        key={index}
-                        value={metric.value}
-                        label={metric.displayValue ?? `${metric.label} ${metric.value}`}
-                        variant={metric.variant ?? "default"}
-                    />
-                ))}
             </div>
         </Card>
     );

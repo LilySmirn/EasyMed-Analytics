@@ -1,8 +1,7 @@
-// Tremor ProgressBar [v0.0.3]
+// Tremor ProgressBar [v0.0.4]
 
 import React from "react"
 import { tv, type VariantProps } from "tailwind-variants"
-
 import { cx } from "@/lib/utils"
 
 const progressBarVariants = tv({
@@ -44,8 +43,9 @@ interface ProgressBarProps
         VariantProps<typeof progressBarVariants> {
     value?: number
     max?: number
-    showAnimation?: boolean
     label?: string
+    showAnimation?: boolean
+    mode?: "progress" | "indicator"
 }
 
 const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
@@ -56,6 +56,7 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
             label,
             showAnimation = false,
             variant,
+            mode = "progress",
             className,
             ...props
         },
@@ -64,21 +65,28 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
         const safeValue = Math.min(max, Math.max(value, 0))
         const { background, bar } = progressBarVariants({ variant })
 
+        const width =
+            mode === "indicator"
+                ? "100%"
+                : max
+                    ? `${(safeValue / max) * 100}%`
+                    : `${safeValue}%`
+
         return (
             <div
                 ref={forwardedRef}
-                className={cx("inline-flex w-full relative", className)}
+                className={cx("relative w-full", className)}
                 role="progressbar"
                 aria-label="Progress bar"
-                aria-valuenow={value}
-                aria-valuemax={max}
+                aria-valuenow={mode === "progress" ? safeValue : undefined}
+                aria-valuemax={mode === "progress" ? max : undefined}
                 tremor-id="tremor-raw"
                 {...props}
             >
-                {/* Полоска фона */}
+                {/* Фон */}
                 <div
-                    className={cx("w-full rounded-full", background())}
-                    style={{ height: "26px" }}
+                    className={cx("w-full rounded-full overflow-hidden", background())}
+                    style={{ height: 26 }}
                 >
                     {/* Заливка */}
                     <div
@@ -86,11 +94,9 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
                             "h-full rounded-full",
                             bar(),
                             showAnimation &&
-                            "transform-gpu transition-all duration-300 ease-in-out"
+                            "transition-all duration-300 ease-in-out"
                         )}
-                        style={{
-                            width: max ? `${(safeValue / max) * 100}%` : `${safeValue}%`,
-                        }}
+                        style={{ width }}
                     />
                 </div>
 
@@ -106,7 +112,6 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
         )
     }
 )
-
 
 ProgressBar.displayName = "ProgressBar"
 

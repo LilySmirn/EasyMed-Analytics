@@ -10,11 +10,11 @@ export const cardsData: MetricCardData[] =  [
         ],
     },
     {
-        title: "Первичные приёмы",
+        title: "Ср.чек прием",
         total: 5000,
         metrics: [
-            { label: "Факт", value: 99 },
-            { label: "Прогноз", value: 70 },
+            { label: "Факт", value: 73, variant: "error" },
+            { label: "LFL (к пред. месяцу)", value: 17, displayValue: "-17%", },
         ],
     },
 ];
