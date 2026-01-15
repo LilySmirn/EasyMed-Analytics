@@ -10,11 +10,7 @@ export function TopFilters() {
     const { setFilter, filters } = useFilters();
     const { mode, setMode, isReady } = useMode();
 
-    if (!isReady) {
-        return (
-            <div className="h-20 bg-gray-100 dark:bg-gray-900" />
-        );
-    }
+    if (!isReady) return <div className="h-20 bg-gray-100 dark:bg-gray-900" />;
 
     return (
         <div className="h-20 bg-gray-100 dark:bg-gray-900 flex items-center justify-between px-6 shadow-sm overflow-x-auto">
@@ -35,7 +31,7 @@ export function TopFilters() {
 
                 <FilterSelect
                     label="Тип приёма"
-                    defaultValue="all"
+                    defaultValue={filters.type || "all"}
                     options={[
                         { value: "all", label: "Все" },
                         { value: "first", label: "Первичный" },
@@ -46,7 +42,7 @@ export function TopFilters() {
 
                 <FilterSelect
                     label="Филиалы"
-                    defaultValue="all"
+                    defaultValue={filters.branch || "all"}
                     onChange={(v) => setFilter("branch", v)}
                     options={[
                         { value: "all", label: "Все филиалы" },

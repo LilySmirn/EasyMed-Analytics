@@ -18,3 +18,7 @@ export const cardsData: MetricCardData[] =  [
         ],
     },
 ];
+
+// TODO:
+// LFL будет вынесен из массива metrics
+// и перестанет быть "вторым элементом"

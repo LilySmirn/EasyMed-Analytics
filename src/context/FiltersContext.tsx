@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
-import { useRouter, usePathname } from "next/navigation";
 
 type FiltersState = Record<string, string>;
 
@@ -29,9 +28,6 @@ const FiltersContext = createContext<FiltersContextType>({
 });
 
 export const FiltersProvider = ({ children }: { children: ReactNode }) => {
-    const router = useRouter();
-    const pathname = usePathname();
-
     const [filters, setFilters] = useState<FiltersState>(() => safeGetFilters());
 
     const setFilter = (key: string, value: string) => {
@@ -45,7 +41,6 @@ export const FiltersProvider = ({ children }: { children: ReactNode }) => {
         if (typeof window !== "undefined") {
             localStorage.removeItem("filters");
         }
-        router.replace(pathname);
     };
 
     return (
