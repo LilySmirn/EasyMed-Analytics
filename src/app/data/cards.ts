@@ -1,4 +1,4 @@
-import type { MetricCardData } from "@/components/MetricCard";
+import type { MetricCardData } from "@/app/types/MetricTypes";
 
 export const cardsData: MetricCardData[] =  [
     {

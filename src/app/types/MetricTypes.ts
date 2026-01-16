@@ -4,3 +4,9 @@ export type Metric = {
     displayValue?: string;
     variant?: "default" | "error" | "success" | "warning" | "neutral";
 };
+
+export type MetricCardData = {
+    title: string;
+    metrics: Metric[];
+    total?: number;
+};
