@@ -9,9 +9,8 @@ export function MetricCardsWrapper() {
     const { filters } = useFilters();
     const [isLoading, setIsLoading] = useState(true);
 
-    // имитация загрузки данных (или подгрузка реального API)
     useEffect(() => {
-        const timer = setTimeout(() => setIsLoading(false), 100); // 100ms skeleton
+        const timer = setTimeout(() => setIsLoading(false), 100);
         return () => clearTimeout(timer);
     }, [filters]);
 
@@ -22,7 +21,9 @@ export function MetricCardsWrapper() {
             {mockCardsData.map((card, index) => {
                 const filterKey = `${filters.specialty || "all"}_${filters.type || "all"}_${filters.branch || "all"}`;
                 const secondMetric = card.metrics[1];
-                const secondCount = card.total && secondMetric ? Math.round((secondMetric.value / 100) * card.total) : 0;
+                const secondCount = secondMetric && card.total
+                    ? Math.round((secondMetric.value / 100) * card.total)
+                    : 0;
 
                 const leftFilter = isAllFilters
                     ? {

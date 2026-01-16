@@ -1,11 +1,10 @@
 "use client";
 
 import { Card } from "@/components/Card";
-import { ProgressBar } from "@/components/ProgressBar";
+import { ProgressBar, type ProgressBarVariant } from "@/components/ProgressBar";
 import { MetricBar } from "./MetricBar";
 import { MetricFilter } from "./MetricFilter";
 import type { Metric } from "@/app/types/MetricTypes";
-import type { ProgressBarVariant } from "@/components/ProgressBar";
 
 type MetricCardProps = {
     title: string;
@@ -16,7 +15,7 @@ type MetricCardProps = {
         count: number;
         variant?: ProgressBarVariant;
     };
-    isLoading?: boolean; // Для Skeleton
+    isLoading?: boolean;
 };
 
 export function MetricCard({ title, metrics, total, leftFilter, isLoading }: MetricCardProps) {
@@ -30,30 +29,37 @@ export function MetricCard({ title, metrics, total, leftFilter, isLoading }: Met
 
     const showSkeleton = isLoading || !leftFilter;
 
+    const secondVariant: ProgressBarVariant = secondMetric?.variant &&
+    ["default","neutral","warning","error","success"].includes(secondMetric.variant)
+        ? (secondMetric.variant as ProgressBarVariant)
+        : "default";
+
     return (
         <Card className="w-[750px] card p-6">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">{title}</h2>
 
             <div className="flex flex-col gap-4 w-full">
-                {/* Первый прогресс бар */}
                 <MetricBar metric={firstMetric} total={total} />
 
-                {/* Второй прогресс бар */}
                 {secondMetric && (
                     <ProgressBar
                         mode="indicator"
                         value={secondMetric.value}
                         label={secondMetric.displayValue ?? `${secondMetric.label} ${secondMetric.value}%`}
-                        variant={secondMetric.variant as ProgressBarVariant ?? "default"}
+                        variant={secondVariant}
                     />
                 )}
 
-                {/* Фильтры */}
                 <div className="flex justify-between mt-4 gap-4 text-sm text-gray-700 dark:text-gray-300">
                     {showSkeleton ? (
                         <>
                             <div className="w-[100px] h-6 bg-gray-300 rounded" />
-                            <div className="w-[100px] h-6 bg-gray-300 rounded" />
+                            <MetricFilter
+                                title="План/факт"
+                                percent={firstMetric.value - 100}
+                                count={factCount - (total ?? 0)}
+                                align="right"
+                            />
                         </>
                     ) : (
                         <>
