@@ -1,5 +1,5 @@
 import { ProgressBar } from "@/components/ProgressBar";
-import type { Metric } from "./MetricCard";
+import type { Metric } from "@/app/types/MetricTypes";
 
 type MetricBarProps = {
     metric: Metric;
