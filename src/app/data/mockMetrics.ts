@@ -7,7 +7,7 @@ export const mockCardsData: MetricCardData[] = [
         title: "Карточка 1",
         metrics: [
             { label: "План", value: 50, variant: "default" },
-            { label: "Факт", value: 90, variant: "error" },
+            { label: "LFL (к пред. месяцу)", value: 90, variant: "error" },
         ],
         total: 200,
     },
@@ -15,7 +15,7 @@ export const mockCardsData: MetricCardData[] = [
         title: "Карточка 2",
         metrics: [
             { label: "План", value: 90, variant: "default" },
-            { label: "Факт", value: 70, variant: "error" },
+            { label: "LFL (к пред. месяцу)", value: 70, variant: "error" },
         ],
         total: 150,
     },
@@ -23,7 +23,7 @@ export const mockCardsData: MetricCardData[] = [
         title: "Карточка 3",
         metrics: [
             { label: "План", value: 10, variant: "default" },
-            { label: "Факт", value: 85, variant: "error" },
+            { label: "LFL (к пред. месяцу)", value: 85, variant: "error" },
         ],
         total: 180,
     },
