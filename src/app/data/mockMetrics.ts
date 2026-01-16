@@ -1,5 +1,5 @@
 // src/app/data/mockMetrics.ts
-import { MetricCardData } from "@/components/MetricCard";
+import type { MetricCardData } from "@/app/types/MetricTypes";
 
 // Основные карточки
 export const mockCardsData: MetricCardData[] = [
