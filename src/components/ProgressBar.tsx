@@ -16,6 +16,15 @@ const progressBarVariants = tv({
             warning: { background: "bg-[#CECECE]", bar: "bg-[#EDB212]" },
             error: { background: "bg-[#CECECE]", bar: "bg-[#C43A3A]" },
             success: { background: "bg-[#CECECE]", bar: "bg-[#3E8319]" },
+
+            indicatorPositive: {
+                background: "bg-[#66A246]",
+                bar: "bg-[#66A246]",
+            },
+            indicatorNegative: {
+                background: "bg-[#E86363]",
+                bar: "bg-[#E86363]",
+            },
         },
     },
     defaultVariants: {
