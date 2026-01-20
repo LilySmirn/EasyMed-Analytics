@@ -4,50 +4,57 @@ import type { MetricCardData } from "@/app/types/MetricTypes";
 // Основные карточки
 export const mockCardsData: MetricCardData[] = [
     {
-        title: "Карточка 1",
+        title: "Приёмы",
         metrics: [
-            { label: "План", value: 50, variant: "default" },
+            { label: "Факт", value: 33, variant: "default" },
 
             // LFL: error = плохо (красный)
             {
                 label: "LFL (к пред. месяцу)",
-                value: 90,
+                value: +10,
                 variant: "error",
-                polarity: "inverted",
+                polarity: "normal",
             },
         ],
-        total: 200,
+        total: 10000,
+        rightFilterTitle: "План/факт",
+        unit: "",
     },
     {
-        title: "Карточка 2",
+        title: "Ср.чек приема",
         metrics: [
-            { label: "План", value: 90, variant: "default" },
+            { label: "Факт", value: 83, variant: "default" },
 
             // LFL: error = плохо
             {
                 label: "LFL (к пред. месяцу)",
-                value: -15,
+                value: -17,
                 variant: "error",
-                polarity: "inverted",
+                polarity: "normal",
             },
         ],
-        total: 150,
+        total: 5000,
+        rightFilterTitle: "План/факт",
+        unit: "₽",
     },
     {
-        title: "Карточка 3",
+        title: "Соблюдение ОУКР",
         metrics: [
-            { label: "План", value: 10, variant: "default" },
+            { label: "План", value: 93, variant: "default" },
 
             // пример, когда значение большое,
             // но считается хорошим
             {
                 label: "LFL (к пред. месяцу)",
-                value: 85,
+                value: -5,
                 variant: "error",
                 polarity: "inverted",
             },
         ],
         total: 180,
+        rightFilterTitle: "Отклонение от ОУКР",
+        centralValueOnly: true,
+        unit: "",
     },
 ];
 
@@ -63,7 +70,7 @@ export const mockLFL: Record<
         }
     >
 > = {
-    "Карточка 1": {
+    "Приёмы": {
         "терапевт_all_all": {
             percent: -10,
             count: 12,
@@ -85,7 +92,7 @@ export const mockLFL: Record<
             variant: "error",
         },
     },
-    "Карточка 2": {
+    "Ср.чек приема": {
         "терапевт_all_all": {
             percent: 30,
             count: 15,
@@ -107,7 +114,7 @@ export const mockLFL: Record<
             variant: "error",
         },
     },
-    "Карточка 3": {
+    "Соблюдение ОУКР": {
         "терапевт_all_all": {
             percent: 28,
             count: 14,

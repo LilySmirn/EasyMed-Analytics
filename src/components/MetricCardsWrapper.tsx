@@ -40,6 +40,9 @@ export function MetricCardsWrapper() {
                         metrics={card.metrics}
                         total={card.total}
                         leftFilter={leftFilter}
+                        rightFilterTitle={card.rightFilterTitle}
+                        centralValueOnly={card.centralValueOnly} // передаём флаг
+                        unit={card.unit}
                         isLoading={isLoading}
                     />
                 );

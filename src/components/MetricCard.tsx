@@ -5,13 +5,8 @@ import { ProgressBar } from "@/components/ProgressBar";
 import { MetricBar } from "./MetricBar";
 import { MetricFilter } from "./MetricFilter";
 import type { Metric } from "@/app/types/MetricTypes";
-import {
-    getVariantByPolarity,
-    type MetricPolarity,
-} from "@/utils/metricPolarity";
-import {
-    mapProgressVariantToFilterVariant,
-} from "@/utils/metricVariantMapper";
+import { getVariantByPolarity, type MetricPolarity } from "@/utils/metricPolarity";
+import { mapProgressVariantToFilterVariant } from "@/utils/metricVariantMapper";
 
 type MetricCardProps = {
     title: string;
@@ -21,12 +16,15 @@ type MetricCardProps = {
         percent: number;
         count: number;
     };
+    rightFilterTitle?: string;
     isLoading?: boolean;
+    centralValueOnly?: boolean; // флаг для карточек вроде ОУКР
+    unit?: string; // единица измерения, например "шт", "₽" или ""
 };
 
 /**
- * ЛОКАЛЬНО повторяем логику первого прогресс-бара,
- * чтобы корректно инвертировать цвет в правом фильтре
+ * Локальная логика первого прогресс-бара
+ * для корректной инверсии цвета в правом фильтре
  */
 function getFirstBarProgressVariant(value: number) {
     if (value <= 10) return "indicatorNegative";
@@ -39,72 +37,68 @@ export function MetricCard({
                                metrics,
                                total,
                                leftFilter,
+                               rightFilterTitle,
                                isLoading,
+                               centralValueOnly = false,
+                               unit, // принимаем unit
                            }: MetricCardProps) {
     const firstMetric = metrics[0];
     const secondMetric = metrics[1];
 
-    const factCount = total
-        ? Math.round((firstMetric.value / 100) * total)
-        : 0;
-
     const showSkeleton = isLoading || !leftFilter;
 
-    /**
-     * POLARITY карточки
-     * Берём напрямую из LFL-метрики
-     */
-    const lflPolarity: MetricPolarity =
-        secondMetric?.polarity ?? "normal";
+    /** POLARITY карточки: берём напрямую из LFL-метрики */
+    const lflPolarity: MetricPolarity = secondMetric?.polarity ?? "normal";
 
-    /**
-     * === ВАРИАНТЫ ===
-     */
+    /** 1️⃣ Второй прогресс-бар (LFL) */
+    const secondProgressVariant = secondMetric
+        ? getVariantByPolarity(secondMetric.value, lflPolarity)
+        : "indicatorPositive";
 
-        // 1️⃣ Второй прогресс-бар (LFL)
-    const secondProgressVariant = getVariantByPolarity(
-            secondMetric.value,
-            lflPolarity
-        );
-
-    // 2️⃣ Нижний левый фильтр (LFL-фильтр)
+    /** 2️⃣ Нижний левый фильтр (LFL-фильтр) */
     const leftFilterVariant = mapProgressVariantToFilterVariant(
-        getVariantByPolarity(leftFilter!.percent, lflPolarity)
+        getVariantByPolarity(leftFilter?.percent ?? 0, lflPolarity)
     );
 
-    // 3️⃣ Нижний правый фильтр (План/факт)
-// инверсия фактического цвета первого прогресс-бара
+    /** 3️⃣ Нижний правый фильтр (инверсия первого прогресс-бара) */
     const firstBarVariant = getFirstBarProgressVariant(firstMetric.value);
+    const rightFilterVariant =
+        firstBarVariant === "indicatorPositive"
+            ? "error"
+            : firstBarVariant === "indicatorNegative"
+                ? "success"
+                : "warning";
 
-    let rightFilterVariant: "success" | "error" | "warning" = "success";
+    /** Значения для фильтров */
+    const factCount = total && !centralValueOnly
+        ? Math.round((firstMetric.value / 100) * total)
+        : firstMetric.value;
 
-    if (firstBarVariant === "indicatorPositive") {
-        rightFilterVariant = "error"; // инвертируем зеленый → красный
-    } else if (firstBarVariant === "indicatorNegative") {
-        rightFilterVariant = "success"; // инвертируем красный → зеленый
-    } else if (firstBarVariant === "warning") {
-        rightFilterVariant = "warning"; // желтый оставляем желтым
-    }
+    const rightFilterCount = total && !centralValueOnly
+        ? factCount - (total ?? 0)
+        : firstMetric.value;
 
     return (
         <Card className="w-[750px] card p-6">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            <h2 className="text-[30px] font-bold text-center text-gray-900 dark:text-gray-100 mb-4">
                 {title}
             </h2>
 
             <div className="flex flex-col gap-4 w-full">
-                {/* Первый прогресс-бар — без изменений */}
-                <MetricBar metric={firstMetric} total={total} />
+                {/* Первый прогресс-бар всегда */}
+                <MetricBar
+                    metric={firstMetric}
+                    total={total}
+                    centralValueOnly={centralValueOnly}
+                    unit={unit} // передаем единицу измерения
+                />
 
                 {/* Второй прогресс-бар — индикатор */}
                 {secondMetric && (
                     <ProgressBar
                         mode="indicator"
                         value={100}
-                        label={
-                            secondMetric.displayValue ??
-                            `${secondMetric.label} ${secondMetric.value}%`
-                        }
+                        label={secondMetric.displayValue ?? `${secondMetric.label} ${secondMetric.value}%`}
                         variant={secondProgressVariant}
                     />
                 )}
@@ -114,10 +108,11 @@ export function MetricCard({
                         <>
                             <div className="w-[100px] h-6 bg-gray-300 rounded" />
                             <MetricFilter
-                                title="План/факт"
+                                title={rightFilterTitle ?? "План/факт"}
                                 percent={firstMetric.value - 100}
-                                count={factCount - (total ?? 0)}
+                                count={rightFilterCount}
                                 align="right"
+                                variant={rightFilterVariant}
                             />
                         </>
                     ) : (
@@ -125,17 +120,17 @@ export function MetricCard({
                             {/* ЛЕВЫЙ — LFL */}
                             <MetricFilter
                                 title="LFL (фильтр)"
-                                percent={leftFilter!.percent}
-                                count={leftFilter!.count}
+                                percent={leftFilter?.percent ?? 0}
+                                count={leftFilter?.count ?? 0}
                                 align="left"
                                 variant={leftFilterVariant}
                             />
 
-                            {/* ПРАВЫЙ — План/факт (инверсия первого бара) */}
+                            {/* ПРАВЫЙ — План/факт или своё название */}
                             <MetricFilter
-                                title="План/факт"
+                                title={rightFilterTitle ?? "План/факт"}
                                 percent={firstMetric.value - 100}
-                                count={factCount - (total ?? 0)}
+                                count={rightFilterCount}
                                 align="right"
                                 variant={rightFilterVariant}
                             />

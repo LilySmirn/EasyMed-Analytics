@@ -16,4 +16,7 @@ export type MetricCardData = {
     title: string;
     metrics: Metric[];
     total?: number;
+    rightFilterTitle?: string;
+    centralValueOnly?: boolean;
+    unit?: string;
 };
