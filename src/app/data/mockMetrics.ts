@@ -8,12 +8,12 @@ export const mockCardsData: MetricCardData[] = [
         metrics: [
             { label: "План", value: 50, variant: "default" },
 
-            // 🔹 LFL: error = плохо (красный)
+            // LFL: error = плохо (красный)
             {
                 label: "LFL (к пред. месяцу)",
                 value: 90,
                 variant: "error",
-                isPositive: false,
+                polarity: "inverted",
             },
         ],
         total: 200,
@@ -23,12 +23,12 @@ export const mockCardsData: MetricCardData[] = [
         metrics: [
             { label: "План", value: 90, variant: "default" },
 
-            // 🔹 LFL: error = плохо
+            // LFL: error = плохо
             {
                 label: "LFL (к пред. месяцу)",
-                value: 70,
+                value: -15,
                 variant: "error",
-                isPositive: false,
+                polarity: "inverted",
             },
         ],
         total: 150,
@@ -38,13 +38,13 @@ export const mockCardsData: MetricCardData[] = [
         metrics: [
             { label: "План", value: 10, variant: "default" },
 
-            // 🔹 пример, когда значение большое,
+            // пример, когда значение большое,
             // но считается хорошим
             {
                 label: "LFL (к пред. месяцу)",
                 value: 85,
                 variant: "error",
-                isPositive: true,
+                polarity: "inverted",
             },
         ],
         total: 180,
@@ -65,12 +65,12 @@ export const mockLFL: Record<
 > = {
     "Карточка 1": {
         "терапевт_all_all": {
-            percent: 25,
+            percent: -10,
             count: 12,
             variant: "default", // хорошо
         },
         "кардиолог_all_all": {
-            percent: 35,
+            percent: -35,
             count: 15,
             variant: "error", // плохо
         },

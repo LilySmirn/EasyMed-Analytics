@@ -1,21 +1,17 @@
 "use client";
 
 import { Card } from "@/components/Card";
-import { ProgressBar, type ProgressBarVariant } from "@/components/ProgressBar";
+import { ProgressBar } from "@/components/ProgressBar";
 import { MetricBar } from "./MetricBar";
 import { MetricFilter } from "./MetricFilter";
 import type { Metric } from "@/app/types/MetricTypes";
-
-/**
- * Варианты ТОЛЬКО для MetricFilter (нижние фильтры),
- * они НЕ знают про indicatorPositive / indicatorNegative
- */
-type MetricFilterVariant =
-    | "default"
-    | "error"
-    | "success"
-    | "warning"
-    | "neutral";
+import {
+    getVariantByPolarity,
+    type MetricPolarity,
+} from "@/utils/metricPolarity";
+import {
+    mapProgressVariantToFilterVariant,
+} from "@/utils/metricVariantMapper";
 
 type MetricCardProps = {
     title: string;
@@ -24,10 +20,19 @@ type MetricCardProps = {
     leftFilter?: {
         percent: number;
         count: number;
-        variant?: MetricFilterVariant;
     };
     isLoading?: boolean;
 };
+
+/**
+ * ЛОКАЛЬНО повторяем логику первого прогресс-бара,
+ * чтобы корректно инвертировать цвет в правом фильтре
+ */
+function getFirstBarProgressVariant(value: number) {
+    if (value <= 10) return "indicatorNegative";
+    if (value <= 70) return "warning";
+    return "indicatorPositive";
+}
 
 export function MetricCard({
                                title,
@@ -43,21 +48,43 @@ export function MetricCard({
         ? Math.round((firstMetric.value / 100) * total)
         : 0;
 
-    const secondCount =
-        secondMetric && typeof total === "number"
-            ? Math.round((secondMetric.value / 100) * total)
-            : 0;
-
     const showSkeleton = isLoading || !leftFilter;
 
     /**
-     * Второй прогресс-бар (LFL)
-     * Цвет определяется бизнес-логикой, а не значением
+     * POLARITY карточки
+     * Берём напрямую из LFL-метрики
      */
-    const secondVariant: ProgressBarVariant =
-        secondMetric?.isPositive
-            ? "indicatorPositive"
-            : "indicatorNegative";
+    const lflPolarity: MetricPolarity =
+        secondMetric?.polarity ?? "normal";
+
+    /**
+     * === ВАРИАНТЫ ===
+     */
+
+        // 1️⃣ Второй прогресс-бар (LFL)
+    const secondProgressVariant = getVariantByPolarity(
+            secondMetric.value,
+            lflPolarity
+        );
+
+    // 2️⃣ Нижний левый фильтр (LFL-фильтр)
+    const leftFilterVariant = mapProgressVariantToFilterVariant(
+        getVariantByPolarity(leftFilter!.percent, lflPolarity)
+    );
+
+    // 3️⃣ Нижний правый фильтр (План/факт)
+// инверсия фактического цвета первого прогресс-бара
+    const firstBarVariant = getFirstBarProgressVariant(firstMetric.value);
+
+    let rightFilterVariant: "success" | "error" | "warning" = "success";
+
+    if (firstBarVariant === "indicatorPositive") {
+        rightFilterVariant = "error"; // инвертируем зеленый → красный
+    } else if (firstBarVariant === "indicatorNegative") {
+        rightFilterVariant = "success"; // инвертируем красный → зеленый
+    } else if (firstBarVariant === "warning") {
+        rightFilterVariant = "warning"; // желтый оставляем желтым
+    }
 
     return (
         <Card className="w-[750px] card p-6">
@@ -78,11 +105,11 @@ export function MetricCard({
                             secondMetric.displayValue ??
                             `${secondMetric.label} ${secondMetric.value}%`
                         }
-                        variant={secondVariant}
+                        variant={secondProgressVariant}
                     />
                 )}
 
-                <div className="flex justify-between mt-4 gap-4 text-sm text-gray-700 dark:text-gray-300">
+                <div className="flex justify-between mt-4 gap-4 text-sm">
                     {showSkeleton ? (
                         <>
                             <div className="w-[100px] h-6 bg-gray-300 rounded" />
@@ -95,18 +122,22 @@ export function MetricCard({
                         </>
                     ) : (
                         <>
+                            {/* ЛЕВЫЙ — LFL */}
                             <MetricFilter
                                 title="LFL (фильтр)"
-                                percent={leftFilter?.percent ?? secondCount}
-                                count={leftFilter?.count ?? secondCount}
+                                percent={leftFilter!.percent}
+                                count={leftFilter!.count}
                                 align="left"
-                                variant={leftFilter?.variant ?? "default"}
+                                variant={leftFilterVariant}
                             />
+
+                            {/* ПРАВЫЙ — План/факт (инверсия первого бара) */}
                             <MetricFilter
                                 title="План/факт"
                                 percent={firstMetric.value - 100}
                                 count={factCount - (total ?? 0)}
                                 align="right"
+                                variant={rightFilterVariant}
                             />
                         </>
                     )}

@@ -1,3 +1,5 @@
+import type { MetricPolarity } from "@/utils/metricPolarity";
+
 export type Metric = {
     label: string;
     value: number;
@@ -5,11 +7,9 @@ export type Metric = {
     variant?: "default" | "error" | "success" | "warning" | "neutral";
 
     /**
-     * Используется ТОЛЬКО для индикаторного прогресс-бара (LFL).
-     * true  → зелёный (#66A246)
-     * false → красный (#E86363)
+     * Направление метрики (по умолчанию normal)
      */
-    isPositive?: boolean;
+    polarity?: MetricPolarity;
 };
 
 export type MetricCardData = {
