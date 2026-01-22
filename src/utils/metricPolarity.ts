@@ -1,3 +1,4 @@
+// src/utils/metricPolarity.ts
 import type { ProgressBarVariant } from "@/components/ProgressBar";
 
 export type MetricPolarity = "normal" | "inverted";

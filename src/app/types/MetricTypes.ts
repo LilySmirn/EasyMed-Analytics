@@ -1,3 +1,4 @@
+// src/app/types/MetricTypes.ts
 import type { MetricPolarity } from "@/utils/metricPolarity";
 
 export type Metric = {
@@ -5,11 +6,15 @@ export type Metric = {
     value: number;
     displayValue?: string;
     variant?: "default" | "error" | "success" | "warning" | "neutral";
-
-    /**
-     * Направление метрики (по умолчанию normal)
-     */
     polarity?: MetricPolarity;
+};
+
+// Для фильтров
+export type MetricFilterData = {
+    label: string;
+    value: number; // процент
+    count?: number;  // абсолютное значение
+    variant?: "default" | "error" | "success" | "warning" | "neutral";
 };
 
 export type MetricCardData = {
@@ -19,4 +24,8 @@ export type MetricCardData = {
     rightFilterTitle?: string;
     centralValueOnly?: boolean;
     unit?: string;
+    filters?: {
+        left?: MetricFilterData;
+        right?: MetricFilterData;
+    };
 };

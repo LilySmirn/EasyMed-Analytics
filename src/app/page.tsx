@@ -1,7 +1,4 @@
-"use client";
-
 import { MetricCardsWrapper } from "@/components/MetricCardsWrapper";
-import "./globals.css";
 
 export default function Home() {
     return (
