@@ -1,43 +1,65 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useFilters } from "@/context/FiltersContext";
+import { useEffect, useState } from "react";
 import { MetricCard } from "./MetricCard";
-import { buildMetricCardData } from "@/app/metric-domain/builders/buildMetricCardData";
+import { useFilters } from "@/context/FiltersContext";
+
 import type { MetricCardData } from "@/app/types/MetricTypes";
+import { buildMetricCardData } from "@/app/metric-domain/builders/buildMetricCardData";
 
-// Импортируем **все конфиги карточек**
+// конфиги карточек
 import { visitsCardConfig } from "@/app/metric-config/cards/visits.config";
-// Позже сюда можно добавить новые карточки:
-// import { someOtherCardConfig } from "@/app/metric-config/cards/otherCardConfig";
 
+// моки данных
 import { mockRawCardsData, mockLFL } from "@/app/data/mockMetrics";
 
 export function MetricCardsWrapper() {
-    const { filters } = useFilters(); // для будущей фильтрации
+    const { filters } = useFilters();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const timer = setTimeout(() => setIsLoading(false), 100);
+        // имитация загрузки при смене фильтров
+        setIsLoading(true);
+        const timer = setTimeout(() => setIsLoading(false), 150);
         return () => clearTimeout(timer);
     }, [filters]);
 
-    // Список конфигов карточек
-    const cardConfigs = [visitsCardConfig /* , otherCardConfig */];
+    // Все карточки, которые нужно отрисовать
+    const cardConfigs = [
+        visitsCardConfig,
+        // сюда потом добавятся другие карточки
+    ];
 
-    // Построение данных через билдeр
+    // строка выбранных верхних фильтров
+    const selectedFiltersKey = `${filters.specialty || "all"}_${
+        filters.type || "all"
+    }_${filters.branch || "all"}`;
+
     const cardsData: MetricCardData[] = cardConfigs.map((config) => {
         const rawData = mockRawCardsData[config.title];
+
+        if (!rawData) {
+            console.warn(`Нет raw-данных для карточки "${config.title}"`);
+            return {
+                title: config.title,
+                metrics: [],
+            };
+        }
+
         return buildMetricCardData(config, rawData, {
-            selectedFilters: `${filters.specialty || "all"}_${filters.type || "all"}_${filters.branch || "all"}`,
-            lflMock: mockLFL, // можно заменить на реальные мок-данные LFL
+            selectedFilters: selectedFiltersKey,
+            lflMock: mockLFL,
         });
     });
 
     return (
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-auto">
-            {cardsData.map((card, index) => (
-                <MetricCard key={index} cardData={card} isLoading={isLoading} />
+            {cardsData.map((cardData, index) => (
+                <MetricCard
+                    key={cardData.title ?? index}
+                    cardData={cardData}
+                    isLoading={isLoading}
+                />
             ))}
         </div>
     );

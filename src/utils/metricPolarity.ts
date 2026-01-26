@@ -7,12 +7,25 @@ export function getVariantByPolarity(
     value: number,
     polarity: MetricPolarity
 ): ProgressBarVariant {
-    const isPositive = value >= 0;
+    let variant: "indicatorPositive" | "indicatorNegative" | "indicatorWarning";
 
-    if (polarity === "normal") {
-        return isPositive ? "indicatorPositive" : "indicatorNegative";
+    if (value < 80) variant = "indicatorNegative";
+    else if (value < 90) variant = "indicatorWarning";
+    else variant = "indicatorPositive";
+
+    if (polarity === "inverted") {
+        if (variant === "indicatorPositive") variant = "indicatorNegative";
+        else if (variant === "indicatorNegative") variant = "indicatorPositive";
+        // warning оставляем
     }
 
-    // inverted
-    return isPositive ? "indicatorNegative" : "indicatorPositive";
+    // Маппинг на ProgressBarVariant
+    switch (variant) {
+        case "indicatorPositive":
+            return "success";
+        case "indicatorNegative":
+            return "error";
+        case "indicatorWarning":
+            return "warning";
+    }
 }

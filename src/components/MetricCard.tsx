@@ -45,10 +45,7 @@ export function MetricCard({ cardData, isLoading }: MetricCardProps) {
                         mode="indicator"
                         value={100}
                         label={`${lflMetric.label} ${lflMetric.value}%`}
-                        variant={getVariantByPolarity(
-                            lflMetric.value,
-                            lflMetric.polarity ?? "normal"
-                        )}
+                        variant={lflMetric.variant} // используем variant из билдера
                     />
                 )}
 

@@ -8,7 +8,7 @@ export const mockRawCardsData: Record<string, RawMetricData> = {
     "Приёмы": {
         factValue: 3300, // фактические приёмы
         planValue: 10000, // плановые приёмы (может отсутствовать)
-        lflValue: 10, // для LFL можно использовать базовый процент, builder пересчитает по фильтрам
+        lflValue: 95, // для LFL можно использовать базовый процент, builder пересчитает по фильтрам
     },
     "Ср.чек приема": {
         factValue: 4150,
@@ -38,7 +38,7 @@ export const mockLFL: Record<
 > = {
     "Приёмы": {
         "терапевт_all_all": { percent: -10, count: 12, variant: "default" },
-        "кардиолог_all_all": { percent: -35, count: 15, variant: "error" },
+        "кардиолог_all_all": { percent: 5, count: 15, variant: "error" },
         "терапевт_first_Филиал 1": { percent: 45, count: 20, variant: "default" },
         "кардиолог_second_Филиал 2": { percent: 50, count: 22, variant: "error" },
     },

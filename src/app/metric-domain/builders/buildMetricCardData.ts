@@ -3,8 +3,10 @@ import type { MetricCardConfig } from "@/app/metric-config/metricCardConfig";
 import type { MetricCardData, Metric, MetricFilterData } from "@/app/types/MetricTypes";
 import { calcFactPercent } from "../calculators/calcFactPercent";
 import { calcLFL } from "../calculators/calcLFL";
-import { getVariant, Thresholds } from "../calculators/getVariant";
+import { getVariant } from "../calculators/getVariant";
 import { calcRightFilter } from "../calculators/calcRightFilter";
+
+import { getVariantByPolarity } from "@/utils/metricPolarity";
 
 // -------------------- Типы --------------------
 export type RawMetricData = {
@@ -19,7 +21,7 @@ export interface FiltersState {
         string,
         Record<
             string,
-            { percent: number; count: number; variant?: "default" | "error" | "success" | "warning" }
+            { percent: number; count: number }
         >
     >;
 }
@@ -38,7 +40,7 @@ export function buildMetricCardData(
 
     if (config.bars.fact?.enabled && rawData.planValue != null) {
         factPercent = calcFactPercent(rawData.factValue, rawData.planValue);
-        factVariant = getVariant(factPercent, undefined, "normal"); // thresholds можно добавить, если нужно
+        factVariant = getVariant(factPercent, undefined, "normal");
         metrics.push({
             label: "Факт",
             value: factPercent,
@@ -51,9 +53,12 @@ export function buildMetricCardData(
     }
 
     // --- 2️⃣ LFL-бар ---
+    let lflPercent: number | undefined;
+    let lflVariant: Metric["variant"] | undefined;
+
     if (config.bars.lfl?.enabled) {
-        const lflPercent = calcLFL(rawData, filtersState);
-        const lflVariant = getVariant(lflPercent, undefined, config.bars.lfl.polarity);
+        lflPercent = calcLFL(rawData, filtersState);
+        lflVariant = getVariant(lflPercent, undefined, config.bars.lfl.polarity);
         metrics.push({
             label: "LFL",
             value: lflPercent,
@@ -62,31 +67,45 @@ export function buildMetricCardData(
     }
 
     // --- 3️⃣ Нижние фильтры ---
-    const leftFilter: MetricFilterData | undefined = config.filters.left
-        ? (() => {
-            // Берём значение LFL из моков, если выбран фильтр, иначе дублируем LFL-метрику
-            let value = metrics.find((m) => m.label === "LFL")?.value ?? 0;
-            let count = 0;
-            let variant = metrics.find((m) => m.label === "LFL")?.variant;
+    const lflMetric = metrics.find((m) => m.label === "LFL");
 
-            if (filtersState?.selectedFilters && filtersState.lflMock) {
-                const mock =
-                    filtersState.lflMock[config.title]?.[filtersState.selectedFilters];
-                if (mock) {
-                    value = mock.percent;
-                    count = mock.count;
-                    variant = mock.variant;
+    const leftFilter: MetricFilterData | undefined =
+        config.filters.left && lflMetric
+            ? (() => {
+                let value = lflMetric.value;
+                let count = 0;
+
+                // Берём mock только для значений
+                if (
+                    filtersState?.selectedFilters &&
+                    filtersState.selectedFilters !== "all_all_all" &&
+                    filtersState.lflMock
+                ) {
+                    const mock =
+                        filtersState.lflMock[config.title]?.[
+                            filtersState.selectedFilters
+                            ];
+                    if (mock) {
+                        value = mock.percent;
+                        count = mock.count;
+                    }
                 }
-            }
 
-            return {
-                label: config.filters.left.title,
-                value,
-                count,
-                variant,
-            };
-        })()
-        : undefined;
+                // --- Главное исправление ---
+                // Variant рассчитывается напрямую по правилу LFL-бар + polarity
+                const variant = getVariantByPolarity(
+                    value,
+                    config.bars.lfl?.polarity ?? "normal"
+                );
+
+                return {
+                    label: config.filters.left.title,
+                    value,
+                    count,
+                    variant,
+                };
+            })()
+            : undefined;
 
     const rightFilter: MetricFilterData | undefined =
         config.filters.right?.enabled && rawData.planValue != null
@@ -103,7 +122,7 @@ export function buildMetricCardData(
         config.factDisplay.valuePosition === "center" ||
         (config.referenceType === "none" && !config.bars.fact?.enabled);
 
-    // --- 5️⃣ Формируем финальный объект ---
+    // --- 5️⃣ Финальный объект ---
     return {
         title: config.title,
         metrics,

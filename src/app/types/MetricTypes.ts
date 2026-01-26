@@ -1,5 +1,6 @@
 // src/app/types/MetricTypes.ts
 import type { MetricPolarity } from "@/utils/metricPolarity";
+import type { ProgressBarVariant } from "@/components/ProgressBar";
 
 export type Metric = {
     label: string;
@@ -12,9 +13,9 @@ export type Metric = {
 // Для фильтров
 export type MetricFilterData = {
     label: string;
-    value: number; // процент
-    count?: number;  // абсолютное значение
-    variant?: "default" | "error" | "success" | "warning" | "neutral";
+    value: number;
+    count?: number;
+    variant?: ProgressBarVariant;
 };
 
 export type MetricCardData = {
