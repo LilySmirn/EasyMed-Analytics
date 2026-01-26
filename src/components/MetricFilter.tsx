@@ -1,17 +1,18 @@
 import { BarChart } from "lucide-react";
+import type { MetricFilterData } from "@/app/types/MetricTypes";
 
 type MetricFilterProps = {
     title: string;
     percent: number;
     count: number;
     align?: "left" | "right";
-    variant?: "default" | "error" | "success" | "warning" | "neutral";
+    variant?: MetricFilterData["variant"];
 };
 
-const valueColorClasses: Record<
-    NonNullable<MetricFilterProps["variant"]>,
-    string
-> = {
+// ✅ Явный тип без undefined
+type VariantKey = "default" | "success" | "error" | "warning" | "neutral";
+
+const valueColorClasses: Record<VariantKey, string> = {
     default: "text-gray-700 dark:text-gray-300",
     success: "text-[#66A246]",
     error: "text-[#E86363]",
@@ -24,19 +25,15 @@ export function MetricFilter({
                                  percent,
                                  count,
                                  align = "left",
-                                 variant = "default",
+                                 variant = "default", // default безопасно
                              }: MetricFilterProps) {
-    const valueColor = valueColorClasses[variant];
+    // fallback на default, если variant undefined
+    const valueColor = valueColorClasses[(variant ?? "default") as VariantKey];
 
     return (
         <div className={`flex ${align === "left" ? "justify-start" : "justify-end"} w-full`}>
             <div className="flex flex-col items-start">
-                {/* Заголовок — всегда обычный */}
-                <span className="font-medium text-gray-900 dark:text-gray-100">
-                    {title}
-                </span>
-
-                {/* Значение + иконка — цветные */}
+                <span className="font-medium text-gray-900 dark:text-gray-100">{title}</span>
                 <div className={`flex items-center gap-2 mt-1 ${valueColor}`}>
                     <BarChart className="w-4 h-4" />
                     <span>

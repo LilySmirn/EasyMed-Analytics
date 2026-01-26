@@ -91,8 +91,7 @@ export function buildMetricCardData(
                     }
                 }
 
-                // --- Главное исправление ---
-                // Variant рассчитывается напрямую по правилу LFL-бар + polarity
+                // ✅ ЕДИНСТВЕННО ВЕРНЫЙ variant
                 const variant = getVariantByPolarity(
                     value,
                     config.bars.lfl?.polarity ?? "normal"
@@ -102,7 +101,7 @@ export function buildMetricCardData(
                     label: config.filters.left.title,
                     value,
                     count,
-                    variant,
+                    variant, // <- success | error | warning
                 };
             })()
             : undefined;

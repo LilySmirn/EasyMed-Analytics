@@ -5,7 +5,6 @@ import { MetricBar } from "./MetricBar";
 import { ProgressBar } from "./ProgressBar";
 import { MetricFilter } from "./MetricFilter";
 import type { MetricCardData } from "@/app/types/MetricTypes";
-import { getVariantByPolarity } from "@/utils/metricPolarity";
 
 type MetricCardProps = {
     cardData: MetricCardData;
