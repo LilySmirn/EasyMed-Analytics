@@ -34,31 +34,23 @@ export function buildMetricCardData(
 ): MetricCardData {
     const metrics: Metric[] = [];
 
-    // --- 1️⃣ Факт-бар ---
-    let factPercent: number | undefined;
-    let factVariant: Metric["variant"] | undefined;
-
+    // --- Факт-бар ---
     if (config.bars.fact?.enabled && rawData.planValue != null) {
-        factPercent = calcFactPercent(rawData.factValue, rawData.planValue);
-        factVariant = getVariant(factPercent, undefined, "normal");
+        const factPercent = calcFactPercent(rawData.factValue, rawData.planValue);
+        const factVariant = getVariant(factPercent, undefined, "normal");
         metrics.push({
             label: "Факт",
             value: factPercent,
             variant: factVariant,
-            displayValue:
-                config.factDisplay.valuePosition === "center"
-                    ? `${factPercent}%`
-                    : undefined,
+            displayValue: config.factDisplay.valuePosition === "center" ? `${factPercent}%` : undefined,
         });
     }
 
-    // --- 2️⃣ LFL-бар ---
+    // --- LFL-бар ---
     let lflPercent: number | undefined;
-    let lflVariant: Metric["variant"] | undefined;
-
     if (config.bars.lfl?.enabled) {
         lflPercent = calcLFL(rawData, filtersState);
-        lflVariant = getVariant(lflPercent, undefined, config.bars.lfl.polarity);
+        const lflVariant = getVariant(lflPercent, undefined, config.bars.lfl.polarity);
         metrics.push({
             label: "LFL",
             value: lflPercent,
@@ -66,62 +58,75 @@ export function buildMetricCardData(
         });
     }
 
-    // --- 3️⃣ Нижние фильтры ---
     const lflMetric = metrics.find((m) => m.label === "LFL");
 
+    // --- Левый фильтр ---
     const leftFilter: MetricFilterData | undefined =
-        config.filters.left && lflMetric
+        config.filters.left
             ? (() => {
-                let value = lflMetric.value;
-                let count = 0;
+                const cardId = config.title;
+                const mockForCard = filtersState?.lflMock?.[cardId];
 
-                // Берём mock только для значений
-                if (
-                    filtersState?.selectedFilters &&
-                    filtersState.selectedFilters !== "all_all_all" &&
-                    filtersState.lflMock
-                ) {
-                    const mock =
-                        filtersState.lflMock[config.title]?.[
-                            filtersState.selectedFilters
-                            ];
-                    if (mock) {
-                        value = mock.percent;
-                        count = mock.count;
+                // percent берём через calcLFL
+                const percent = calcLFL(rawData, {
+                    selectedFilters: filtersState?.selectedFilters,
+                    lflMock: filtersState?.lflMock,
+                    cardTitle: cardId,
+                });
+
+                // count для скобок
+                let count: number | undefined;
+                const selectedKey = filtersState?.selectedFilters ?? "";
+
+                if (config.filters.left.showCount) {
+                    if (mockForCard?.[selectedKey]?.count != null) {
+                        // выбран конкретный фильтр
+                        count = mockForCard[selectedKey].count;
+                    } else {
+                        // all / ничего не выбрано → пересчитываем абсолютное число по проценту
+                        // Например, берём rawData.factValue как базу
+                        count = Math.round(rawData.factValue * percent / 100);
                     }
                 }
 
-                // ✅ ЕДИНСТВЕННО ВЕРНЫЙ variant
-                const variant = getVariantByPolarity(
-                    value,
-                    config.bars.lfl?.polarity ?? "normal"
-                );
-
-                return {
+                const leftFilterData: MetricFilterData = {
                     label: config.filters.left.title,
-                    value,
-                    count,
-                    variant, // <- success | error | warning
+                    value: percent,
+                    variant: getVariantByPolarity(percent, config.bars.lfl?.polarity ?? "normal"),
                 };
+
+                if (count != null) {
+                    leftFilterData.count = count;
+                }
+
+                return leftFilterData;
             })()
             : undefined;
 
+
+    // --- Правый фильтр ---
     const rightFilter: MetricFilterData | undefined =
-        config.filters.right?.enabled && rawData.planValue != null
-            ? {
-                label: config.filters.right.title,
-                value: 100 - ((rawData.factValue / rawData.planValue) * 100), // % оставшегося
-                count: rawData.planValue - rawData.factValue, // абсолютное значение
-                variant: metrics.find((m) => m.label === "Факт")?.variant,
-            }
+        config.filters.right?.enabled
+            ? (() => {
+                const { percent, count } = calcRightFilter(rawData.factValue, rawData.planValue);
+                const rightFilterData: MetricFilterData = {
+                    label: config.filters.right.title,
+                    value: percent,
+                    variant: metrics.find((m) => m.label === "Факт")?.variant,
+                };
+
+                if (config.filters.right.showCount && count != null) {
+                    rightFilterData.count = count;
+                }
+
+                return rightFilterData;
+            })()
             : undefined;
 
-    // --- 4️⃣ centralValueOnly ---
     const centralValueOnly =
         config.factDisplay.valuePosition === "center" ||
         (config.referenceType === "none" && !config.bars.fact?.enabled);
 
-    // --- 5️⃣ Финальный объект ---
     return {
         title: config.title,
         metrics,
@@ -132,3 +137,4 @@ export function buildMetricCardData(
         filters: { left: leftFilter, right: rightFilter },
     };
 }
+

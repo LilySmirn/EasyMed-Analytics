@@ -1,20 +1,19 @@
 import type { MetricCardConfig } from "../metricCardConfig";
-import type { MetricPolarity } from "@/./utils/metricPolarity";
 
-export const visitsCardConfig: MetricCardConfig = {
-    id: "visits",
-    title: "Приёмы",
-    unit: "шт",
+export const oukrCardConfig: MetricCardConfig = {
+    id: "oukr",
+    title: "Соблюдение ОУКР",
+    unit: "%",
 
     /**
      * Карточка поддерживает план
      * (если плана нет в данных — он просто не будет показан)
      */
-    referenceType: "plan",
+    referenceType: "ideal",
 
     factDisplay: {
         showBar: true,
-        valuePosition: "aboveBar",
+        valuePosition: "center",
     },
 
     bars: {
@@ -23,7 +22,7 @@ export const visitsCardConfig: MetricCardConfig = {
         },
         lfl: {
             enabled: true,
-            polarity: "normal",
+            polarity: "inverted",
         },
     },
 
@@ -31,7 +30,7 @@ export const visitsCardConfig: MetricCardConfig = {
         left: {
             title: "LFL (фильтр)",
             source: "lfl",
-            polarity: "normal",
+            polarity: "inverted",
             showCount: true,
         },
         right: {
@@ -39,7 +38,7 @@ export const visitsCardConfig: MetricCardConfig = {
             enabled: true,
             value: "100minusFact",
             colorSource: "factBar",
-            showCount: false,
+            showCount: true,
         },
     },
 };

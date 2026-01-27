@@ -4,7 +4,7 @@ import type { MetricFilterData } from "@/app/types/MetricTypes";
 type MetricFilterProps = {
     title: string;
     percent: number;
-    count: number;
+    count?: number; // optional
     align?: "left" | "right";
     variant?: MetricFilterData["variant"];
 };
@@ -37,7 +37,7 @@ export function MetricFilter({
                 <div className={`flex items-center gap-2 mt-1 ${valueColor}`}>
                     <BarChart className="w-4 h-4" />
                     <span>
-                        {percent}% ({count})
+                        {percent}%{count != null && count > 0 ? ` (${count})` : ""}
                     </span>
                 </div>
             </div>

@@ -1,10 +1,10 @@
 import type { MetricCardConfig } from "../metricCardConfig";
-import type { MetricPolarity } from "@/./utils/metricPolarity";
 
-export const visitsCardConfig: MetricCardConfig = {
-    id: "visits",
-    title: "Приёмы",
-    unit: "шт",
+
+export const averageVisitRevenueCardConfig: MetricCardConfig = {
+    id: "averageVisitRevenue",
+    title: "Ср.чек приема",
+    unit: "₽",
 
     /**
      * Карточка поддерживает план
@@ -39,7 +39,7 @@ export const visitsCardConfig: MetricCardConfig = {
             enabled: true,
             value: "100minusFact",
             colorSource: "factBar",
-            showCount: false,
+            showCount: true,
         },
     },
 };

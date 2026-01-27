@@ -9,6 +9,8 @@ import { buildMetricCardData } from "@/app/metric-domain/builders/buildMetricCar
 
 // конфиги карточек
 import { visitsCardConfig } from "@/app/metric-config/cards/visits.config";
+import { averageVisitRevenueCardConfig } from "@/app/metric-config/cards/averageVisitRevenue.config";
+import {oukrCardConfig} from "@/app/metric-config/cards/oukr.config";
 
 // моки данных
 import { mockRawCardsData, mockLFL } from "@/app/data/mockMetrics";
@@ -27,6 +29,8 @@ export function MetricCardsWrapper() {
     // Все карточки, которые нужно отрисовать
     const cardConfigs = [
         visitsCardConfig,
+        averageVisitRevenueCardConfig,
+        oukrCardConfig
         // сюда потом добавятся другие карточки
     ];
 

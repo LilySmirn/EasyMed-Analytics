@@ -16,7 +16,7 @@ export const mockRawCardsData: Record<string, RawMetricData> = {
         lflValue: -17,
     },
     "Соблюдение ОУКР": {
-        factValue: 126, // фактическое соблюдение
+        factValue: 150, // фактическое соблюдение
         planValue: 180, // идеал ОУКР
         lflValue: -5,
     },

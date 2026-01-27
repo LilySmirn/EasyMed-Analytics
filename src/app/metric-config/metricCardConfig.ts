@@ -91,6 +91,8 @@ export type MetricCardConfig = {
             source: "lfl" | "customWhenFiltered";
 
             polarity: MetricPolarity;
+
+            showCount?: boolean;
         };
 
         /**
@@ -113,6 +115,12 @@ export type MetricCardConfig = {
              * Откуда берётся цвет
              */
             colorSource: "factBar";
+
+            /**
+             * Показывать ли абсолютное значение (штуки) рядом с %
+             * По умолчанию true
+             */
+            showCount?: boolean;
         };
     };
 };
