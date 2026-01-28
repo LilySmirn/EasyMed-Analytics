@@ -20,6 +20,16 @@ export const mockRawCardsData: Record<string, RawMetricData> = {
         planValue: 180, // идеал ОУКР
         lflValue: -5,
     },
+    "Выполняемость": {
+        factValue: 94, // фактическое
+        planValue: 210, // план
+        lflValue: -7,
+    },
+    "Ср. назначаемость на прием": {
+        factValue: 84, // фактическое
+        planValue: 105, // план
+        lflValue: 94,
+    },
 };
 
 // ------------------------------
@@ -49,6 +59,12 @@ export const mockLFL: Record<
         "кардиолог_second_Филиал 2": { percent: 60, count: 25, variant: "error" },
     },
     "Соблюдение ОУКР": {
+        "терапевт_all_all": { percent: 28, count: 14, variant: "default" },
+        "кардиолог_all_all": { percent: 38, count: 17, variant: "error" },
+        "терапевт_first_Филиал 3": { percent: 48, count: 21, variant: "default" },
+        "кардиолог_second_Филиал 1": { percent: 52, count: 24, variant: "error" },
+    },
+    "Выполняемость": {
         "терапевт_all_all": { percent: 28, count: 14, variant: "default" },
         "кардиолог_all_all": { percent: 38, count: 17, variant: "error" },
         "терапевт_first_Филиал 3": { percent: 48, count: 21, variant: "default" },
