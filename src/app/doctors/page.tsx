@@ -1,23 +1,28 @@
-"use client";
+'use client';
 
 import { useEffect, useState, useMemo } from "react";
 import { DoctorsTable, Doctor } from "@/components/DoctorsTable/DoctorsTable";
 import { useFilters } from "@/context/FiltersContext";
 import { applyFilters, FilterValue } from "@/utils/applyFilters";
 import { BackButton } from "@/components/BackButton";
+import { useInlineDrawer } from "@/context/InlineDrawerContext"; // добавили
 
 export default function DoctorsPage() {
     const [doctors, setDoctors] = useState<Doctor[]>([]);
     const [loading, setLoading] = useState(true);
 
     const { filters } = useFilters();
+    const { setItems } = useInlineDrawer(); // контекст для очистки
 
     useEffect(() => {
         fetch("/api/doctors")
             .then((res) => res.json())
             .then((data: Doctor[]) => setDoctors(data))
             .finally(() => setLoading(false));
-    }, []);
+
+        // 🔹 очищаем боковую панель
+        setItems([]);
+    }, [setItems]);
 
     const filteredDoctors = useMemo(
         () =>

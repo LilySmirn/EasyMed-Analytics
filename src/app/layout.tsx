@@ -6,6 +6,7 @@ import { FiltersProvider } from "@/context/FiltersContext";
 import { ModeProvider } from "@/context/ModeContext";
 import { TopFilters } from "@/components/TopFilters";
 import { ConditionalDrawer } from "@/components/ConditionalDrawer";
+import { InlineDrawerProvider } from "@/context/InlineDrawerContext"; // добавили
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -18,20 +19,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <body className="h-screen flex overflow-hidden bg-gray-50 dark:bg-gray-950">
         <Sidebar />
 
-        <ConditionalDrawer />
+        <InlineDrawerProvider> {/* <-- оборачиваем */}
+            <ConditionalDrawer />
 
-        <FiltersProvider>
-            <ModeProvider>
-                <div className="flex-1 flex flex-col min-w-0">
-                    <TopFilters />
-                    <main className="flex-1 overflow-y-auto overflow-x-hidden p-8 min-w-0">
-                        {children}
-                    </main>
-                </div>
-            </ModeProvider>
-        </FiltersProvider>
+            <FiltersProvider>
+                <ModeProvider>
+                    <div className="flex-1 flex flex-col min-w-0">
+                        <TopFilters />
+                        <main className="flex-1 overflow-y-auto overflow-x-hidden p-8 min-w-0">
+                            {children}
+                        </main>
+                    </div>
+                </ModeProvider>
+            </FiltersProvider>
+        </InlineDrawerProvider>
         </body>
-
         </html>
     );
 }

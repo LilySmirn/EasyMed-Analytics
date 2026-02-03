@@ -1,24 +1,30 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useInlineDrawer } from "@/context/InlineDrawerContext";
 import { RiCloseLine, RiArrowRightSLine } from "@remixicon/react";
 import { Button } from "@/components/Button";
+import { useState } from "react";
 import { cx } from "@/lib/utils";
+import Link from "next/link";
 
-export function InlineDrawer() {
-    // Начальное состояние — свернуто
+interface InlineDrawerProps {
+    currentId?: string | null; // текущий выбранный элемент
+}
+
+export function InlineDrawer({ currentId }: InlineDrawerProps) {
+    const { items } = useInlineDrawer();
     const [open, setOpen] = useState(false);
+
+    if (!items.length) return null; // скрываем панель, если пусто
 
     return (
         <div className="relative flex-shrink-0 h-full">
-            {/* Панель */}
             <aside
                 className={cx(
                     "transition-all duration-300 border-r border-gray-200 bg-gray-50 overflow-hidden h-full flex flex-col",
-                    open ? "w-[200px]" : "w-0"
+                    open ? "w-64" : "w-0"
                 )}
             >
-                {/* Содержимое панели */}
                 <div
                     className={cx(
                         "h-full flex flex-col p-4",
@@ -26,7 +32,7 @@ export function InlineDrawer() {
                     )}
                 >
                     <div className="flex items-center justify-between border-b pb-3 mb-4">
-                        <h2 className="text-sm font-semibold">Доп. меню</h2>
+                        <h2 className="text-sm font-semibold">Список элементов</h2>
                         <Button
                             variant="ghost"
                             className="p-1"
@@ -36,14 +42,22 @@ export function InlineDrawer() {
                         </Button>
                     </div>
 
-                    <div className="text-sm text-gray-600 space-y-2">
-                        <div>Пункт 1</div>
-                        <div>Пункт 2</div>
-                        <div>Пункт 3</div>
+                    <div className="flex-1 flex flex-col gap-2 overflow-y-auto">
+                        {items.map((item) => (
+                            <Link
+                                key={item.id}
+                                href={item.url}
+                                className={cx(
+                                    "block p-2 rounded hover:bg-blue-100 transition-colors",
+                                    item.id === currentId && "bg-blue-100 font-semibold"
+                                )}
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
                     </div>
                 </div>
 
-                {/* Закладка на всю высоту с закругленными правыми углами */}
                 {!open && (
                     <button
                         className="absolute top-0 left-0 w-4 h-full bg-blue-500 hover:bg-blue-600 flex items-center justify-center rounded-tr-lg rounded-br-lg"
