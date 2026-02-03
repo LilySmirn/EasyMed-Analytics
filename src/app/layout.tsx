@@ -5,6 +5,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { FiltersProvider } from "@/context/FiltersContext";
 import { ModeProvider } from "@/context/ModeContext";
 import { TopFilters } from "@/components/TopFilters";
+import { ConditionalDrawer } from "@/components/ConditionalDrawer";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -16,6 +17,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en" className={`${GeistSans.className} antialiased dark:bg-gray-950`}>
         <body className="h-screen flex overflow-hidden bg-gray-50 dark:bg-gray-950">
         <Sidebar />
+
+        <ConditionalDrawer />
 
         <FiltersProvider>
             <ModeProvider>
