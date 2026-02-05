@@ -3,12 +3,19 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AppointmentsTable, Appointment } from '@/components/AppointmentsTable';
 import { BackButton } from "@/components/BackButton";
-import { useInlineDrawer } from "@/context/InlineDrawerContext";
+import { InlineDrawerItem, useInlineDrawer } from "@/context/InlineDrawerContext";
 import { useFilters } from "@/context/FiltersContext";
+import { Doctor } from "@/components/DoctorsTable/DoctorsTable";
+import { NosologyDoctor } from "@/components/NosologyDoctorsTable";
+import { Specialty } from "@/components/SpecialtiesTable/SpecialtiesTable";
+
+type DrawerDoctor = Doctor & { city?: string; department?: string };
 
 export default function AppointmentsPageInner() {
     const searchParams = useSearchParams();
     const doctorId = searchParams.get('id');
+    const nosologyId = searchParams.get('nosology');
+    const specialtyName = searchParams.get('specialty');
 
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [loading, setLoading] = useState(true);
@@ -16,7 +23,6 @@ export default function AppointmentsPageInner() {
     const { setItems } = useInlineDrawer();
     const { filters } = useFilters();
 
-    // Загружаем все приёмы конкретного доктора с учётом фильтров
     useEffect(() => {
         if (!doctorId) return;
 
@@ -24,7 +30,6 @@ export default function AppointmentsPageInner() {
 
         let url = `/api/appointments?doctorId=${doctorId}`;
 
-        // Добавляем фильтры в запрос, если нужно
         Object.entries(filters).forEach(([key, value]) => {
             url += `&${key}=${encodeURIComponent(value)}`;
         });
@@ -33,22 +38,60 @@ export default function AppointmentsPageInner() {
             .then((res) => res.json())
             .then((data) => setAppointments(data))
             .finally(() => setLoading(false));
-    }, [doctorId, filters]); // <-- фильтры в зависимостях
+    }, [doctorId, filters]);
 
-    // Загружаем всех докторов для боковой панели с учётом фильтров
     useEffect(() => {
+        if (nosologyId) {
+            fetch(`/api/nosologies/${nosologyId}/doctors`)
+                .then((res) => res.json())
+                .then((data: NosologyDoctor[]) => {
+                    const drawerItems: InlineDrawerItem[] = data.map((doctor) => ({
+                        id: doctor.id,
+                        name: doctor.name,
+                        url: {
+                            pathname: '/appointments',
+                            query: {
+                                id: doctor.id,
+                                nosology: nosologyId,
+                            },
+                        },
+                    }));
+
+                    setItems(drawerItems);
+                });
+
+            return;
+        }
+
+        if (specialtyName) {
+            fetch('/api/specialities')
+                .then((res) => res.json())
+                .then((data: Specialty[]) => {
+                    const drawerItems: InlineDrawerItem[] = data.map((specialty) => ({
+                        id: specialty.name,
+                        name: specialty.name,
+                        url: {
+                            pathname: '/appointments',
+                            query: { specialty: specialty.name },
+                        },
+                    }));
+
+                    setItems(drawerItems);
+                });
+
+            return;
+        }
+
         fetch('/api/doctors')
             .then(res => res.json())
-            .then((data) => {
-                // фильтруем только для бокового меню
-                const drawerFiltered = data.filter((doc: any) => {
-                    // проверяем, есть ли фильтры, которые применимы к докторам
+            .then((data: DrawerDoctor[]) => {
+                const drawerFiltered = data.filter((doc) => {
                     if (filters.city && doc.city !== filters.city) return false;
                     if (filters.department && doc.department !== filters.department) return false;
                     return true;
                 });
 
-                const drawerItems = drawerFiltered.map((doc: any) => ({
+                const drawerItems: InlineDrawerItem[] = drawerFiltered.map((doc) => ({
                     id: doc.id,
                     name: doc.fullName,
                     url: `/appointments?id=${doc.id}`,
@@ -56,7 +99,7 @@ export default function AppointmentsPageInner() {
 
                 setItems(drawerItems);
             });
-    }, [filters, setItems]); // <-- реагирует только на filters
+    }, [filters, nosologyId, setItems, specialtyName]);
 
     if (!doctorId) return <div className="p-8">Не указан ID доктора</div>;
     if (loading) return <div className="p-8">Загрузка...</div>;

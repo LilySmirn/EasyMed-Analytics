@@ -2,21 +2,26 @@
 
 import { createContext, useContext, useState, ReactNode } from "react";
 
-type Item = {
+export type InlineDrawerItem = {
     id: string | number;
     name: string;
-    url: string;
+    url:
+        | string
+        | {
+        pathname: string;
+        query?: Record<string, string | number | undefined>;
+    };
 };
 
 type InlineDrawerContextType = {
-    items: Item[];
-    setItems: (items: Item[]) => void;
+    items: InlineDrawerItem[];
+    setItems: (items: InlineDrawerItem[]) => void;
 };
 
 const InlineDrawerContext = createContext<InlineDrawerContextType | undefined>(undefined);
 
 export const InlineDrawerProvider = ({ children }: { children: ReactNode }) => {
-    const [items, setItems] = useState<Item[]>([]);
+    const [items, setItems] = useState<InlineDrawerItem[]>([]);
 
     return (
         <InlineDrawerContext.Provider value={{ items, setItems }}>

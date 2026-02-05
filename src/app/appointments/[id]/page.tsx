@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { AppointmentDetailsTable, AppointmentDetail } from "@/components/AppointmentDetailsTable";
-import {BackButton} from "@/components/BackButton";
-import { useInlineDrawer } from "@/context/InlineDrawerContext";
+import { BackButton } from "@/components/BackButton";
+import { InlineDrawerItem, useInlineDrawer } from "@/context/InlineDrawerContext";
+import { useSearchParams } from "next/navigation";
+import { Doctor } from "@/components/DoctorsTable/DoctorsTable";
 
 interface AppointmentDetailsPageProps {
     params: { id: string };
@@ -15,41 +17,56 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
     const [doctorId, setDoctorId] = useState<string | null>(null);
 
     const { setItems } = useInlineDrawer();
+    const searchParams = useSearchParams();
+    const nosologyId = searchParams.get("nosology");
 
-    // Загружаем детали приёма
     useEffect(() => {
         if (!params.id) return;
 
         fetch(`/api/appointments/${params.id}`)
             .then(res => res.json())
-            .then(d => {
-                setData(d);
-
-                // Берём doctorId из деталей (можно заменить на хранение в state / query)
-                // Так как у нас в тестовых данных нет doctorId, можно передать через query
-                // Для теста ставим doctorId = "1" для a1/a2, "2" для a3
-                let currentDoctorId = "1";
-                if (params.id === "a3") currentDoctorId = "2";
-                setDoctorId(currentDoctorId);
-            })
+            .then(d => setData(d))
             .finally(() => setLoading(false));
     }, [params.id]);
 
-    // Загружаем все приёмы этого доктора для боковой панели
+    useEffect(() => {
+        const resolveDoctorId = async () => {
+            const doctorsRes = await fetch('/api/doctors');
+            const doctors: Doctor[] = await doctorsRes.json();
+
+            for (const doctor of doctors) {
+                const appointmentsRes = await fetch(`/api/appointments?doctorId=${doctor.id}`);
+                const appointments = await appointmentsRes.json();
+                if (appointments.some((appointment: { id: string }) => appointment.id === params.id)) {
+                    setDoctorId(doctor.id);
+                    return;
+                }
+            }
+
+            setDoctorId(null);
+        };
+
+        resolveDoctorId();
+    }, [params.id]);
+
     useEffect(() => {
         if (!doctorId) return;
 
         fetch(`/api/appointments?doctorId=${doctorId}`)
             .then(res => res.json())
-            .then((appointments: any[]) => {
-                const drawerItems = appointments.map(a => ({
+            .then((appointments: Array<{ id: string; date?: string; number?: string }>) => {
+                const drawerItems: InlineDrawerItem[] = appointments.map((a) => ({
                     id: a.id,
-                    name: a.date || `Приём ${a.number || a.id}`, // теперь берём date из списка приёмов
-                    url: `/appointments/${a.id}`
+                    name: a.date || `Приём ${a.number || a.id}`,
+                    url: {
+                        pathname: `/appointments/${a.id}`,
+                        query: nosologyId ? { nosology: nosologyId } : undefined,
+                    },
                 }));
+
                 setItems(drawerItems);
             });
-    }, [doctorId, setItems]);
+    }, [doctorId, nosologyId, setItems]);
 
     if (!params.id) return <div className="p-8">Не указан ID приёма</div>;
     if (loading) return <div className="p-8">Загрузка...</div>;

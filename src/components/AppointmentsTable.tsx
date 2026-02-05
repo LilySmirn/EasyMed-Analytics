@@ -12,6 +12,7 @@ import {
     TableRoot,
 } from "@/components/Table";
 import { getPercentColor } from "@/utils/getPercentColor";
+import { useSearchParams } from "next/navigation";
 
 export interface Appointment {
     id: string;
@@ -32,6 +33,9 @@ interface AppointmentsTableProps {
 }
 
 export function AppointmentsTable({ data }: AppointmentsTableProps) {
+    const searchParams = useSearchParams();
+    const nosologyId = searchParams.get("nosology");
+
     return (
         <TableRoot>
             <Table>
@@ -53,7 +57,10 @@ export function AppointmentsTable({ data }: AppointmentsTableProps) {
                         <TableRow key={a.id}>
                             <TableCell>
                                 <Link
-                                    href={`/appointments/${a.id}`}
+                                    href={{
+                                        pathname: `/appointments/${a.id}`,
+                                        query: nosologyId ? { nosology: nosologyId } : undefined,
+                                    }}
                                     className="text-blue-600 hover:underline"
                                 >
                                     {a.date} / {a.number}

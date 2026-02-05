@@ -4,6 +4,8 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { NosologyDoctorsTable, NosologyDoctor } from "@/components/NosologyDoctorsTable";
 import { BackButton } from "@/components/BackButton";
+import { InlineDrawerItem, useInlineDrawer } from "@/context/InlineDrawerContext";
+import { Nosology } from "@/components/NosologiesTable/NosologiesTable";
 
 export default function NosologyPage({ params }: { params: { id: string } }) {
     const [doctors, setDoctors] = useState<NosologyDoctor[]>([]);
@@ -11,12 +13,31 @@ export default function NosologyPage({ params }: { params: { id: string } }) {
     const searchParams = useSearchParams();
     const name = searchParams.get("name") || "Нозология";
 
+    const { setItems } = useInlineDrawer();
+
     useEffect(() => {
         fetch(`/api/nosologies/${params.id}/doctors`)
             .then((res) => res.json())
             .then((data) => setDoctors(data))
             .finally(() => setLoading(false));
     }, [params.id]);
+
+    useEffect(() => {
+        fetch('/api/nosologies')
+            .then((res) => res.json())
+            .then((data: Nosology[]) => {
+                const drawerItems: InlineDrawerItem[] = data.map((nosology) => ({
+                    id: nosology.id,
+                    name: nosology.name,
+                    url: {
+                        pathname: `/nosologies/${nosology.id}`,
+                        query: { name: nosology.name },
+                    },
+                }));
+
+                setItems(drawerItems);
+            });
+    }, [setItems]);
 
     if (loading) return <div className="p-8">Загрузка...</div>;
 
