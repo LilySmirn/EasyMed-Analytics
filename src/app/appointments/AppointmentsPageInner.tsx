@@ -8,6 +8,7 @@ import { useFilters } from "@/context/FiltersContext";
 import { Doctor } from "@/components/DoctorsTable/DoctorsTable";
 import { NosologyDoctor } from "@/components/NosologyDoctorsTable";
 import { Specialty } from "@/components/SpecialtiesTable/SpecialtiesTable";
+import { applyFilters, FilterValue } from "@/utils/applyFilters";
 
 type DrawerDoctor = Doctor & { city?: string; department?: string };
 
@@ -85,10 +86,15 @@ export default function AppointmentsPageInner() {
         fetch('/api/doctors')
             .then(res => res.json())
             .then((data: DrawerDoctor[]) => {
-                const drawerFiltered = data.filter((doc) => {
-                    if (filters.city && doc.city !== filters.city) return false;
-                    if (filters.department && doc.department !== filters.department) return false;
-                    return true;
+                const drawerFiltered = applyFilters<DrawerDoctor>(data, filters, {
+                    specialty: { field: "profession" },
+                    type: {
+                        custom: (item: DrawerDoctor, value: FilterValue) => {
+                            if (value === "first") return item.primary > 0;
+                            if (value === "second") return item.appointments - item.primary > 0;
+                            return true;
+                        },
+                    },
                 });
 
                 const drawerItems: InlineDrawerItem[] = drawerFiltered.map((doc) => ({

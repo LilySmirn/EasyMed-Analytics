@@ -3,17 +3,21 @@
 import { useEffect, useState } from "react";
 import { BackButton } from "@/components/BackButton";
 import { NosologiesTable, Nosology } from "@/components/NosologiesTable/NosologiesTable";
+import { useInlineDrawer } from "@/context/InlineDrawerContext";
 
 export default function NosologiesPage() {
     const [nosologies, setNosologies] = useState<Nosology[]>([]);
     const [loading, setLoading] = useState(true);
+    const { setItems } = useInlineDrawer();
 
     useEffect(() => {
         fetch('/api/nosologies')
             .then(res => res.json())
             .then((data: Nosology[]) => setNosologies(data))
             .finally(() => setLoading(false));
-    }, []);
+
+        setItems([]);
+    }, [setItems]);
 
     if (loading) return <div className="p-8">Загрузка...</div>;
 
