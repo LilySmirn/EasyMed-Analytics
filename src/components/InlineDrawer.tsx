@@ -61,7 +61,7 @@ export function InlineDrawer({ currentId }: InlineDrawerProps) {
 
                 {!open && (
                     <button
-                        className="absolute top-0 left-0 w-4 h-full bg-blue-500 hover:bg-blue-600 flex items-center justify-center rounded-tr-lg rounded-br-lg"
+                        className="absolute top-0 left-0 w-4 h-full bg-blue-300 hover:bg-blue-400 flex items-center justify-center rounded-tr-lg rounded-br-lg"
                         onClick={() => setOpen(true)}
                         aria-label="Открыть панель"
                     >
