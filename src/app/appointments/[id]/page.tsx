@@ -16,7 +16,7 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
     const [loading, setLoading] = useState(true);
     const [doctorId, setDoctorId] = useState<string | null>(null);
 
-    const { setItems } = useInlineDrawer();
+    const { setItems, setCurrentId } = useInlineDrawer();
     const searchParams = useSearchParams();
     const nosologyId = searchParams.get("nosology");
 
@@ -28,6 +28,10 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
             .then(d => setData(d))
             .finally(() => setLoading(false));
     }, [params.id]);
+
+    useEffect(() => {
+        setCurrentId(params.id);
+    }, [params.id, setCurrentId]);
 
     useEffect(() => {
         const resolveDoctorId = async () => {

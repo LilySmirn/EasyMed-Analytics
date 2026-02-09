@@ -13,7 +13,7 @@ export default function NosologyPage({ params }: { params: { id: string } }) {
     const searchParams = useSearchParams();
     const name = searchParams.get("name") || "Нозология";
 
-    const { setItems } = useInlineDrawer();
+    const { setItems, setCurrentId } = useInlineDrawer();
 
     useEffect(() => {
         fetch(`/api/nosologies/${params.id}/doctors`)
@@ -21,6 +21,10 @@ export default function NosologyPage({ params }: { params: { id: string } }) {
             .then((data) => setDoctors(data))
             .finally(() => setLoading(false));
     }, [params.id]);
+
+    useEffect(() => {
+        setCurrentId(params.id);
+    }, [params.id, setCurrentId]);
 
     useEffect(() => {
         fetch('/api/nosologies')

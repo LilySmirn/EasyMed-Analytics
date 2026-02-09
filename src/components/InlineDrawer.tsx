@@ -7,12 +7,8 @@ import { useState } from "react";
 import { cx } from "@/lib/utils";
 import Link from "next/link";
 
-interface InlineDrawerProps {
-    currentId?: string | null; // текущий выбранный элемент
-}
-
-export function InlineDrawer({ currentId }: InlineDrawerProps) {
-    const { items } = useInlineDrawer();
+export function InlineDrawer() {
+    const { items, currentId } = useInlineDrawer();
     // items.push({ id: 1234, name: 'Test', url: 'http://localhost:8080' });
     const [open, setOpen] = useState(false);
 
