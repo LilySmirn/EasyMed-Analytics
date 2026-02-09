@@ -13,6 +13,7 @@ interface InlineDrawerProps {
 
 export function InlineDrawer({ currentId }: InlineDrawerProps) {
     const { items } = useInlineDrawer();
+    // items.push({ id: 1234, name: 'Test', url: 'http://localhost:8080' });
     const [open, setOpen] = useState(false);
 
     if (!items.length) return null; // скрываем панель, если пусто

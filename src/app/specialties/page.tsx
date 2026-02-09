@@ -3,10 +3,12 @@
 import { useEffect, useState } from "react";
 import { BackButton } from "@/components/BackButton";
 import { SpecialtiesTable, Specialty } from "@/components/SpecialtiesTable/SpecialtiesTable";
+import { useInlineDrawer } from "@/context/InlineDrawerContext";
 
 export default function SpecialtiesPage() {
     const [specialties, setSpecialties] = useState<Specialty[]>([]);
     const [loading, setLoading] = useState(true);
+    const { setItems } = useInlineDrawer();
 
     useEffect(() => {
         async function fetchSpecialties() {
@@ -22,7 +24,8 @@ export default function SpecialtiesPage() {
         }
 
         fetchSpecialties();
-    }, []);
+        setItems([]);
+    }, [setItems]);
 
     if (loading) return <div className="p-8">Загрузка...</div>;
 
