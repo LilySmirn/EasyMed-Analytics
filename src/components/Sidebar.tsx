@@ -32,7 +32,7 @@ export function Sidebar() {
 
                 <DrawerContent className="!fixed !inset-y-0 !left-20 !right-auto !w-64 !rounded-none !border-l !border-gray-200  !shadow-none !bg-gray-50  !data-[state=open]:animate-none !data-[state=closed]:animate-none">
                     <DrawerHeader>
-                        <DrawerTitle>Главный экран</DrawerTitle>
+                        <DrawerTitle>Меню</DrawerTitle>
                     </DrawerHeader>
                     <DrawerDescription />
                     <DrawerBody>

@@ -8,7 +8,7 @@ import { useInlineDrawer } from "@/context/InlineDrawerContext";
 export default function NosologiesPage() {
     const [nosologies, setNosologies] = useState<Nosology[]>([]);
     const [loading, setLoading] = useState(true);
-    const { setItems } = useInlineDrawer();
+    const { setItems, setCurrentId } = useInlineDrawer();
 
     useEffect(() => {
         fetch('/api/nosologies')
@@ -17,7 +17,8 @@ export default function NosologiesPage() {
             .finally(() => setLoading(false));
 
         setItems([]);
-    }, [setItems]);
+        setCurrentId(null);
+    }, [setCurrentId, setItems]);
 
     if (loading) return <div className="p-8">Загрузка...</div>;
 

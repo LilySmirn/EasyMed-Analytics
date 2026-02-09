@@ -21,8 +21,22 @@ export default function AppointmentsPageInner() {
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const { setItems } = useInlineDrawer();
+    const { setItems, setCurrentId } = useInlineDrawer();
     const { filters } = useFilters();
+
+    useEffect(() => {
+        if (doctorId) {
+            setCurrentId(doctorId);
+            return;
+        }
+
+        if (specialtyName) {
+            setCurrentId(specialtyName);
+            return;
+        }
+
+        setCurrentId(null);
+    }, [doctorId, setCurrentId, specialtyName]);
 
     useEffect(() => {
         if (!doctorId) return;

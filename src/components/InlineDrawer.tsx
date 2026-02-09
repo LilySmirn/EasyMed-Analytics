@@ -3,18 +3,19 @@
 import { useInlineDrawer } from "@/context/InlineDrawerContext";
 import { RiCloseLine, RiArrowRightSLine } from "@remixicon/react";
 import { Button } from "@/components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cx } from "@/lib/utils";
 import Link from "next/link";
 
-interface InlineDrawerProps {
-    currentId?: string | null; // текущий выбранный элемент
-}
+export function InlineDrawer() {
+    const { items, currentId } = useInlineDrawer();
+    const [open, setOpen] = useState(true);
 
-export function InlineDrawer({ currentId }: InlineDrawerProps) {
-    const { items } = useInlineDrawer();
-    // items.push({ id: 1234, name: 'Test', url: 'http://localhost:8080' });
-    const [open, setOpen] = useState(false);
+    useEffect(() => {
+        if (items.length) {
+            setOpen(true);
+        }
+    }, [items.length]);
 
     if (!items.length) return null; // скрываем панель, если пусто
 
@@ -61,7 +62,7 @@ export function InlineDrawer({ currentId }: InlineDrawerProps) {
 
                 {!open && (
                     <button
-                        className="absolute top-0 left-0 w-4 h-full bg-blue-500 hover:bg-blue-600 flex items-center justify-center rounded-tr-lg rounded-br-lg"
+                        className="absolute top-0 left-0 w-4 h-full bg-blue-300 hover:bg-blue-400 flex items-center justify-center rounded-tr-lg rounded-br-lg"
                         onClick={() => setOpen(true)}
                         aria-label="Открыть панель"
                     >

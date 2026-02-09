@@ -12,7 +12,7 @@ export default function DoctorsPage() {
     const [loading, setLoading] = useState(true);
 
     const { filters } = useFilters();
-    const { setItems } = useInlineDrawer(); // контекст для очистки
+    const { setItems, setCurrentId } = useInlineDrawer(); // контекст для очистки
 
     useEffect(() => {
         fetch("/api/doctors")
@@ -22,7 +22,8 @@ export default function DoctorsPage() {
 
         // 🔹 очищаем боковую панель
         setItems([]);
-    }, [setItems]);
+        setCurrentId(null);
+    }, [setCurrentId, setItems]);
 
     const filteredDoctors = useMemo(
         () =>
