@@ -3,14 +3,19 @@
 import { useInlineDrawer } from "@/context/InlineDrawerContext";
 import { RiCloseLine, RiArrowRightSLine } from "@remixicon/react";
 import { Button } from "@/components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cx } from "@/lib/utils";
 import Link from "next/link";
 
 export function InlineDrawer() {
     const { items, currentId } = useInlineDrawer();
-    // items.push({ id: 1234, name: 'Test', url: 'http://localhost:8080' });
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
+
+    useEffect(() => {
+        if (items.length) {
+            setOpen(true);
+        }
+    }, [items.length]);
 
     if (!items.length) return null; // скрываем панель, если пусто
 
