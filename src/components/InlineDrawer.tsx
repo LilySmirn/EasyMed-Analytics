@@ -29,12 +29,12 @@ export function InlineDrawer() {
             >
                 <div
                     className={cx(
-                        "h-full flex flex-col p-4",
+                        "h-full flex flex-col pt-0 pr-4 pb-4 pl-4",
                         !open && "opacity-0 pointer-events-none"
                     )}
                 >
-                    <div className="flex items-center justify-between border-b pb-3 mb-4">
-                        <h2 className="text-sm font-semibold">Список элементов</h2>
+                    <div className="h-20 flex items-center justify-between border-b border-gray-300 mb-0 px-0">
+                        <h2 className="text-base font-semibold">Список элементов</h2>
                         <Button
                             variant="ghost"
                             className="p-1"
@@ -44,7 +44,7 @@ export function InlineDrawer() {
                         </Button>
                     </div>
 
-                    <div className="flex-1 flex flex-col gap-2 overflow-y-auto">
+                    <div className="flex-1 flex flex-col gap-2 overflow-y-auto mt-3">
                         {items.map((item) => (
                             <Link
                                 key={item.id}
