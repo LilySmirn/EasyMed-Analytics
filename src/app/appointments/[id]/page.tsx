@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AppointmentDetailsTable, AppointmentDetail } from "@/components/AppointmentDetailsTable";
 import { BackButton } from "@/components/BackButton";
 import { InlineDrawerItem, useInlineDrawer } from "@/context/InlineDrawerContext";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Doctor } from "@/components/DoctorsTable/DoctorsTable";
 
 interface AppointmentDetailsPageProps {
@@ -17,8 +17,11 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
     const [doctorId, setDoctorId] = useState<string | null>(null);
 
     const { setItems, setCurrentId } = useInlineDrawer();
+    const router = useRouter();
     const searchParams = useSearchParams();
+    const queryDoctorId = searchParams.get("id");
     const nosologyId = searchParams.get("nosology");
+    const specialty = searchParams.get("specialty");
 
     useEffect(() => {
         if (!params.id) return;
@@ -56,6 +59,13 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
     useEffect(() => {
         if (!doctorId) return;
 
+        if (!queryDoctorId) {
+            const query = new URLSearchParams({ id: doctorId });
+            if (nosologyId) query.set("nosology", nosologyId);
+            if (specialty) query.set("specialty", specialty);
+            router.replace(`/appointments/${params.id}?${query.toString()}`);
+        }
+
         fetch(`/api/appointments?doctorId=${doctorId}`)
             .then(res => res.json())
             .then((appointments: Array<{ id: string; date?: string; number?: string }>) => {
@@ -64,13 +74,17 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
                     name: a.date || `Приём ${a.number || a.id}`,
                     url: {
                         pathname: `/appointments/${a.id}`,
-                        query: nosologyId ? { nosology: nosologyId } : undefined,
+                        query: {
+                            id: doctorId,
+                            ...(nosologyId ? { nosology: nosologyId } : {}),
+                            ...(specialty ? { specialty } : {}),
+                        },
                     },
                 }));
 
                 setItems(drawerItems);
             });
-    }, [doctorId, nosologyId, setItems]);
+    }, [doctorId, nosologyId, params.id, queryDoctorId, router, setItems, specialty]);
 
     if (!params.id) return <div className="p-8">Не указан ID приёма</div>;
     if (loading) return <div className="p-8">Загрузка...</div>;

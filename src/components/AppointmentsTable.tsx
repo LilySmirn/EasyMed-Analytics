@@ -34,7 +34,9 @@ interface AppointmentsTableProps {
 
 export function AppointmentsTable({ data }: AppointmentsTableProps) {
     const searchParams = useSearchParams();
+    const doctorId = searchParams.get("id");
     const nosologyId = searchParams.get("nosology");
+    const specialty = searchParams.get("specialty");
 
     return (
         <TableRoot>
@@ -59,7 +61,11 @@ export function AppointmentsTable({ data }: AppointmentsTableProps) {
                                 <Link
                                     href={{
                                         pathname: `/appointments/${a.id}`,
-                                        query: nosologyId ? { nosology: nosologyId } : undefined,
+                                        query: {
+                                            ...(doctorId ? { id: doctorId } : {}),
+                                            ...(nosologyId ? { nosology: nosologyId } : {}),
+                                            ...(specialty ? { specialty } : {}),
+                                        },
                                     }}
                                     className="text-blue-600 hover:underline"
                                 >
