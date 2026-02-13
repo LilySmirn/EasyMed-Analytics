@@ -5,9 +5,28 @@ import * as DrawerPrimitives from "@radix-ui/react-dialog";
 import { RiCloseLine } from "@remixicon/react";
 import { Button } from "@/components/Button";
 import { cx, focusRing } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
-const Drawer = (props: React.ComponentPropsWithoutRef<typeof DrawerPrimitives.Root>) => {
-    return <DrawerPrimitives.Root {...props} />;
+const Drawer = ({
+                    open,
+                    onOpenChange,
+                    ...props
+                }: React.ComponentPropsWithoutRef<typeof DrawerPrimitives.Root>) => {
+    const pathname = usePathname();
+
+    React.useEffect(() => {
+        if (open) {
+            onOpenChange?.(false);
+        }
+    }, [pathname]);
+
+    return (
+        <DrawerPrimitives.Root
+            open={open}
+            onOpenChange={onOpenChange}
+            {...props}
+        />
+    );
 };
 Drawer.displayName = "Drawer";
 
@@ -44,12 +63,10 @@ const DrawerContent = React.forwardRef<
         <DrawerOverlay />
         <DrawerPrimitives.Content
             ref={forwardedRef}
+            onCloseAutoFocus={(e) => e.preventDefault()}
             className={cx(
-                // позиционирование
                 "fixed inset-y-2 left-20 z-50 mx-auto flex w-48 flex-1 flex-col overflow-y-auto rounded-md border p-4 shadow-lg sm:p-6",
-                // границы и фон
                 "border-gray-200 bg-white",
-                // анимация слева
                 "data-[state=closed]:animate-drawer-slide-left-out data-[state=open]:animate-drawer-slide-left-in",
                 focusRing,
                 className
