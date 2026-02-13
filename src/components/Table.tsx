@@ -110,7 +110,7 @@ const TableCell = React.forwardRef<
     <td
         ref={forwardedRef}
         className={cx(
-            "px-2 py-4 text-sm", // сохраняем верх/низ (py-4), уменьшаем слева/справа
+            "px-1 py-4 text-sm", // сохраняем верх/низ (py-4), уменьшаем слева/справа
             "text-gray-600 dark:text-gray-400",
 
             // перенос слов, не ломая слова

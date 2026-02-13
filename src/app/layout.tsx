@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
                     <div className="flex-1 flex flex-col min-w-0">
                         <TopFilters />
-                        <main className="flex-1 overflow-y-auto overflow-x-hidden p-8 min-w-0">
+                        <main className="flex-1 overflow-y-auto overflow-x-hidden p-1 min-w-0">
                             {children}
                         </main>
                     </div>

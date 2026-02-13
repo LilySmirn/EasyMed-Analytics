@@ -59,7 +59,10 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                 <TableHead>
                     <TableRow>
                         {columns.map((col) => (
-                            <TableCell key={String(col.key)}>
+                            <TableCell
+                                key={String(col.key)}
+                                className={`${col.minWidth ?? ""} ${col.maxWidth ?? ""} whitespace-normal break-words`}
+                            >
                                 <SortableHeader
                                     label={col.label}
                                     columnKey={col.key}
@@ -77,16 +80,18 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                             {columns.map((col) => (
                                 <TableCell
                                     key={String(col.key)}
-                                    className={
-                                        col.color
-                                            ? getPercentColor(
-                                                doc[col.key] as number,
-                                                col.color === "reverse"
-                                                    ? "reverse"
-                                                    : undefined
-                                            )
-                                            : undefined
-                                    }
+                                    className={`
+                                        ${col.minWidth ?? ""} ${col.maxWidth ?? ""} 
+                                        whitespace-normal break-words
+                                        ${col.color
+                                        ? getPercentColor(
+                                            doc[col.key] as number,
+                                            col.color === "reverse"
+                                                ? "reverse"
+                                                : undefined
+                                        )
+                                        : ""}
+                                    `}
                                 >
                                     {col.link ? (
                                         <Link
