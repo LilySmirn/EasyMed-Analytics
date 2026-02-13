@@ -61,14 +61,16 @@ export function MetricCardsWrapper() {
     });
 
     return (
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-auto">
-            {cardsData.map((cardData, index) => (
-                <MetricCard
-                    key={cardData.title ?? index}
-                    cardData={cardData}
-                    isLoading={isLoading}
-                />
-            ))}
+        <div className="flex justify-center">
+            <div className="flex flex-wrap gap-6 justify-start">
+                {cardsData.map((cardData, index) => (
+                    <MetricCard
+                        key={cardData.title ?? index}
+                        cardData={cardData}
+                        isLoading={isLoading}
+                    />
+                ))}
+            </div>
         </div>
     );
 }

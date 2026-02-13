@@ -24,7 +24,7 @@ export function MetricCard({ cardData, isLoading }: MetricCardProps) {
     const rightFilter = filters?.right;
 
     return (
-        <Card className="w-[750px] p-6">
+        <Card className="max-w-[750px] min-w-[530px] flex-shrink-0 p-6">
             <h2 className="text-[30px] font-bold text-center mb-4">{title}</h2>
 
             <div className="flex flex-col gap-4">
