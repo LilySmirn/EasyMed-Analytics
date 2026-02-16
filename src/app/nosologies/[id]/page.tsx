@@ -43,10 +43,10 @@ export default function NosologyPage({ params }: { params: { id: string } }) {
             });
     }, [setItems]);
 
-    if (loading) return <div className="p-8">Загрузка...</div>;
+    if (loading) return <div className="px-4 py-6 sm:px-6 lg:px-8">Загрузка...</div>;
 
     return (
-        <div className="p-8">
+        <div className="px-4 py-6 sm:px-6 lg:px-8">
             <div className="flex items-center gap-3 mb-6">
                 <BackButton />
                 <h1 className="text-2xl font-bold">{name}</h1>

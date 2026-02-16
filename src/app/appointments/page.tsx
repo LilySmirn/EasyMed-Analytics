@@ -4,7 +4,7 @@ import AppointmentsPageInner from './AppointmentsPageInner';
 
 export default function AppointmentsPageWrapper() {
     return (
-        <Suspense fallback={<div className="p-8">Загрузка...</div>}>
+        <Suspense fallback={<div className="px-4 py-6 sm:px-6 lg:px-8">Загрузка...</div>}>
             <AppointmentsPageInner />
         </Suspense>
     );

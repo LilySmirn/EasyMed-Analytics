@@ -26,7 +26,7 @@ export default function CancelReasonsPage() {
     }, []);
 
     return (
-        <div className="p-8">
+        <div className="px-4 py-6 sm:px-6 lg:px-8">
             <div className="flex items-center gap-2 mb-6">
                 <BackButton />
                 <h1 className="text-2xl font-bold">Статистика</h1>
@@ -41,8 +41,8 @@ export default function CancelReasonsPage() {
                     <p>Нет данных</p>
                 </Card>
 
-                <div className="flex gap-6">
-                    <Card className="basis-[65%]">
+                <div className="flex flex-col gap-6 xl:flex-row">
+                    <Card className="w-full xl:basis-[65%]">
                         <p className="text-lg font-bold mb-3 text-black">
                             Анализ кодов МКБ
                         </p>
@@ -55,7 +55,7 @@ export default function CancelReasonsPage() {
 
                     </Card>
 
-                    <Card className="basis-[35%] flex items-center justify-center">
+                    <Card className="w-full xl:basis-[35%] flex items-center justify-center">
                         <div className="flex flex-col items-center gap-[60px]">
                             <div className="text-center">
                                 <p className="text-2xl font-medium mb-3 text-black">

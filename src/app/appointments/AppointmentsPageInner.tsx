@@ -121,11 +121,11 @@ export default function AppointmentsPageInner() {
             });
     }, [filters, nosologyId, setItems, specialtyName]);
 
-    if (!doctorId) return <div className="p-8">Не указан ID доктора</div>;
-    if (loading) return <div className="p-8">Загрузка...</div>;
+    if (!doctorId) return <div className="px-4 py-6 sm:px-6 lg:px-8">Не указан ID доктора</div>;
+    if (loading) return <div className="px-4 py-6 sm:px-6 lg:px-8">Загрузка...</div>;
 
     return (
-        <div className="p-8">
+        <div className="px-4 py-6 sm:px-6 lg:px-8">
             <div className="flex items-center gap-2 mb-6">
                 <BackButton />
                 <h1 className="text-2xl font-bold">
