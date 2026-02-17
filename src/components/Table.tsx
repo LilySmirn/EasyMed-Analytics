@@ -96,6 +96,11 @@ export const TableRow = React.forwardRef<
             "[&_td:last-child]:pr-2 [&_th:last-child]:pr-2",
             "[&_td:first-child]:pl-2 [&_th:first-child]:pl-2",
             "[&_th]:align-top [&_th]:min-w-0 [&_td]:min-w-0",
+
+            // 👇 вот это добавляем
+            "[&_td:first-child]:whitespace-nowrap [&_th:first-child]:whitespace-nowrap",
+            "[&_td:first-child]:break-normal [&_th:first-child]:break-normal",
+
             className,
         )}
         {...props}
@@ -111,7 +116,7 @@ export const TableCell = React.forwardRef<
     <td
         ref={forwardedRef}
         className={cx(
-            "px-1 py-2 text-[clamp(0.67rem,0.58rem+0.2vw,0.875rem)] leading-tight", // сохраняем верх/низ (py-4), уменьшаем слева/справа
+            "px-1 py-3.5 text-[clamp(0.67rem,0.58rem+0.2vw,0.875rem)] leading-tight", // сохраняем верх/низ (py-4), уменьшаем слева/справа
             "text-gray-600 dark:text-gray-400",
 
             // перенос слов, не ломая слова␊
