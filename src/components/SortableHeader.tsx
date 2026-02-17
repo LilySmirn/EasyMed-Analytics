@@ -18,13 +18,13 @@ export const SortableHeader: React.FC<SortableHeaderProps> = ({
 
     return (
         <div
-            className="flex items-center gap-1 cursor-pointer select-none"
-            onClick={() => onSort(columnKey)}
-        >
-            {label}
-            <span className="flex flex-col items-center gap-0.5 ml-1">
+            className="flex min-w-0 items-start gap-1 cursor-pointer select-none"
+    onClick={() => onSort(columnKey)}
+>
+            <span className="min-w-0 whitespace-normal break-words">{label}</span>
+    <span className="ml-1 flex shrink-0 flex-col items-center gap-0.5">
                 <ChevronUp
-                    size={14}
+        size={14}
                     className={isActive && sortConfig?.direction === "asc" ? "text-black" : "text-gray-300"}
                 />
                 <ChevronDown
@@ -32,6 +32,6 @@ export const SortableHeader: React.FC<SortableHeaderProps> = ({
                     className={isActive && sortConfig?.direction === "desc" ? "text-black" : "text-gray-300"}
                 />
             </span>
-        </div>
-    );
+</div>
+);
 };

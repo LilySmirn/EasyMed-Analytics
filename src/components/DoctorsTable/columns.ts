@@ -12,7 +12,7 @@ export type ColumnConfig = {
 
 // Колонки качества лечения (КЛ)
 export const qualityColumns: ColumnConfig[] = [
-    { label: "ФИО", key: "fullName", sortable: true, link: true, minWidth: "min-w-[150px]", maxWidth: "max-w-[200px]"  },
+    { label: "ФИО", key: "fullName", sortable: true, link: true, minWidth: "min-w-[110px]", maxWidth: "max-w-[160px]"  },
     { label: "Приёмы", key: "appointments", sortable: true },
     { label: "Первичные приёмы", key: "primary", sortable: true },
     { label: "Повторные приёмы", key: "repeatAppointments", sortable: true },
@@ -27,7 +27,7 @@ export const qualityColumns: ColumnConfig[] = [
 
 // Колонки финансовых показателей (ФП)
 export const financeColumns: ColumnConfig[] = [
-    { label: "ФИО", key: "fullName", sortable: true, link: true, minWidth: "min-w-[150px]", maxWidth: "max-w-[150px]" },
+    { label: "ФИО", key: "fullName", sortable: true, link: true, minWidth: "min-w-[110px]", maxWidth: "max-w-[160px]" },
     { label: "Приёмы", key: "appointments", sortable: true },
     { label: "Первичные приёмы", key: "primary", sortable: true },
     { label: "Повторные приёмы", key: "repeatAppointments", sortable: true },
