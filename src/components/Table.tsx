@@ -48,7 +48,7 @@ export const TableHead = React.forwardRef<
 
 TableHead.displayName = "TableHead"
 
-const TableHeaderCell = React.forwardRef<
+ export const TableHeaderCell = React.forwardRef<
     HTMLTableCellElement,
     React.ThHTMLAttributes<HTMLTableCellElement>
 >(({ className, ...props }, forwardedRef) => (
