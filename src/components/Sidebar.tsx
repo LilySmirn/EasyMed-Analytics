@@ -17,7 +17,7 @@ import { Tooltip } from "@/components/Tooltip"; // импортируем Toolti
 
 import {
     RiMenuLine,      // иконка сэндвич
-    RiBarChartFill,  // иконка столбчатой диаграммы
+    RiDashboardLine,  // иконка дашборда
 } from "@remixicon/react";
 
 export function Sidebar() {
@@ -31,7 +31,7 @@ export function Sidebar() {
                 <Link href="/" className="mt-1.5">
                     <span>
                         <button className="p-3 rounded hover:bg-[#1A98FF] group">
-                            <RiBarChartFill className="w-8 h-8 text-[#1A98FF] group-hover:text-white" />
+                            <RiDashboardLine className="w-8 h-8 text-[#1A98FF] group-hover:text-white" />
                         </button>
                     </span>
                 </Link>
