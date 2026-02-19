@@ -20,10 +20,10 @@ export default function NosologiesPage() {
         setCurrentId(null);
     }, [setCurrentId, setItems]);
 
-    if (loading) return <div className="px-4 py-6 sm:px-6 lg:px-8">Загрузка...</div>;
+    if (loading) return <div className="px-4 py-6 sm:px-6 lg:px-4">Загрузка...</div>;
 
     return (
-        <div className="px-4 py-6 sm:px-6 lg:px-8">
+        <div className="px-4 py-6 sm:px-6 lg:px-4">
             <div className="flex items-center gap-2 mb-6">
                 <BackButton />
                 <h1 className="text-2xl font-bold">Нозологии</h1>

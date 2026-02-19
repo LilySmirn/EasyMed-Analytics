@@ -26,7 +26,7 @@ export default function CancelReasonsPage() {
     }, []);
 
     return (
-        <div className="px-4 py-6 sm:px-6 lg:px-8">
+        <div className="px-4 py-6 sm:px-6 lg:px-4">
             <div className="flex items-center gap-2 mb-6">
                 <BackButton />
                 <h1 className="text-2xl font-bold">Статистика</h1>
