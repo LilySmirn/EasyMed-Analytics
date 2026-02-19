@@ -55,7 +55,7 @@ export const TableHeaderCell = React.forwardRef<
         ref={forwardedRef}
         className={cx(
             "border-b px-1 py-2 text-left text-[clamp(0.67rem,0.58rem+0.25vw,0.875rem)] font-semibold leading-tight",
-            "text-gray-900 dark:text-gray-50",
+            "text-black dark:text-gray-50",
             "border-gray-200 dark:border-gray-800",
             TABLE_FONT_REDUCTION_CLASS,
             "whitespace-normal break-words align-top min-w-0",
@@ -108,7 +108,7 @@ export const TableCell = React.forwardRef<
         ref={forwardedRef}
         className={cx(
             "px-1 py-3.5 text-[clamp(0.67rem,0.58rem+0.2vw,0.875rem)] leading-tight",
-            "text-gray-600 dark:text-gray-400",
+            "text-black dark:text-gray-400",
             TABLE_FONT_REDUCTION_CLASS,
             "whitespace-normal break-words align-top min-w-0",
             className,
