@@ -33,9 +33,9 @@ export function MetricFilter({
     return (
         <div className={`flex ${align === "left" ? "justify-start" : "justify-end"} w-full`}>
             <div className="flex flex-col items-start">
-                <span className="font-medium text-gray-900 dark:text-gray-100">{title}</span>
-                <div className={`flex items-center gap-2 mt-1 ${valueColor}`}>
-                    <BarChart className="w-4 h-4" />
+                <span className="font-medium text-[0.8rem] text-gray-900 dark:text-gray-100">{title}</span>
+                <div className={`flex items-center gap-[0.45rem] mt-[0.225rem] text-[0.8rem] ${valueColor}`}>
+                    <BarChart className="w-[0.9rem] h-[0.9rem]" />
                     <span>
                         {percent}%{count != null && count > 0 ? ` (${count})` : ""}
                     </span>

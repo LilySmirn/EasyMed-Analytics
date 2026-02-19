@@ -3,21 +3,20 @@
 import React from "react"
 import { cx } from "@/lib/utils"
 
+const TABLE_FONT_REDUCTION_CLASS = "text-[90%]"
+
 export const TableRoot = React.forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, forwardedRef) => (
     <div ref={forwardedRef}>
         <div
-        className={cx(
-            "w-full overflow-x-hidden",
-            className
-            )}
-        {...props}
+            className={cx("w-full overflow-x-hidden", className)}
+            {...props}
         >
-        {children}
+            {children}
+        </div>
     </div>
-</div>
 ))
 
 TableRoot.displayName = "TableRoot"
@@ -31,8 +30,8 @@ export const Table = React.forwardRef<
         tremor-id="tremor-raw"
         className={cx(
             "w-full table-fixed caption-bottom border-b border-gray-200 dark:border-gray-800",
-                className,
-)}
+            className,
+        )}
         {...props}
     />
 ))
@@ -48,22 +47,20 @@ export const TableHead = React.forwardRef<
 
 TableHead.displayName = "TableHead"
 
- export const TableHeaderCell = React.forwardRef<
+export const TableHeaderCell = React.forwardRef<
     HTMLTableCellElement,
     React.ThHTMLAttributes<HTMLTableCellElement>
 >(({ className, ...props }, forwardedRef) => (
     <th
         ref={forwardedRef}
         className={cx(
-            "border-b px-1 py-2 text-left text-[clamp(0.67rem,0.58rem+0.25vw,0.875rem)] font-semibold leading-tight", // сохраняем верх/низ, уменьшаем слева/справа
+            "border-b px-1 py-2 text-left text-[clamp(0.67rem,0.58rem+0.25vw,0.875rem)] font-semibold leading-tight",
             "text-gray-900 dark:text-gray-50",
             "border-gray-200 dark:border-gray-800",
-
-            // responsive behavior␊
+            TABLE_FONT_REDUCTION_CLASS,
             "whitespace-normal break-words align-top min-w-0",
-
             className,
-            )}
+        )}
         {...props}
     />
 ))
@@ -76,10 +73,7 @@ export const TableBody = React.forwardRef<
 >(({ className, ...props }, forwardedRef) => (
     <tbody
         ref={forwardedRef}
-        className={cx(
-            "divide-y divide-gray-200 dark:divide-gray-800",
-            className,
-        )}
+        className={cx("divide-y divide-gray-200 dark:divide-gray-800", className)}
         {...props}
     />
 ))
@@ -96,11 +90,8 @@ export const TableRow = React.forwardRef<
             "[&_td:last-child]:pr-2 [&_th:last-child]:pr-2",
             "[&_td:first-child]:pl-2 [&_th:first-child]:pl-2",
             "[&_th]:align-top [&_th]:min-w-0 [&_td]:min-w-0",
-
-            // 👇 вот это добавляем
             "[&_td:first-child]:whitespace-nowrap [&_th:first-child]:whitespace-nowrap",
             "[&_td:first-child]:break-normal [&_th:first-child]:break-normal",
-
             className,
         )}
         {...props}
@@ -116,14 +107,12 @@ export const TableCell = React.forwardRef<
     <td
         ref={forwardedRef}
         className={cx(
-            "px-1 py-3.5 text-[clamp(0.67rem,0.58rem+0.2vw,0.875rem)] leading-tight", // сохраняем верх/низ (py-4), уменьшаем слева/справа
+            "px-1 py-3.5 text-[clamp(0.67rem,0.58rem+0.2vw,0.875rem)] leading-tight",
             "text-gray-600 dark:text-gray-400",
-
-            // перенос слов, не ломая слова␊
+            TABLE_FONT_REDUCTION_CLASS,
             "whitespace-normal break-words align-top min-w-0",
-
             className,
-            )}
+        )}
         {...props}
     />
 ))

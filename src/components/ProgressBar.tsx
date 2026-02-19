@@ -61,7 +61,7 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
                 aria-valuemax={mode === "progress" ? max : undefined}
                 {...props}
             >
-                <div className={cx("w-full rounded-full overflow-hidden", background())} style={{ height: 26 }}>
+                <div className={cx("w-full rounded-full overflow-hidden", background())} style={{ height: 23.4 }}>
                     <div className={cx("h-full rounded-full", bar(), showAnimation && "transition-all duration-300 ease-in-out")} style={{ width }} />
                 </div>
 

@@ -24,10 +24,10 @@ export function MetricCard({ cardData, isLoading }: MetricCardProps) {
     const rightFilter = filters?.right;
 
     return (
-        <Card className="w-full h-full p-6 flex flex-col">
-            <h2 className="text-[30px] font-bold text-center mb-4">{title}</h2>
+        <Card className="w-full h-full p-[1.2rem] flex flex-col">
+            <h2 className="text-[24px] font-bold text-center mb-[0.8rem]">{title}</h2>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-[0.8rem]">
                 {/* FACT BAR */}
                 {factMetric && (
                     <MetricBar
@@ -49,11 +49,11 @@ export function MetricCard({ cardData, isLoading }: MetricCardProps) {
                 )}
 
                 {/* FILTERS */}
-                <div className="flex justify-between mt-4 gap-4 text-sm">
+                <div className="flex justify-between mt-[0.8rem] gap-[0.8rem] text-[0.79rem]">
                     {showSkeleton ? (
-                        <>
-                            <div className="w-[120px] h-6 bg-gray-300 rounded" />
-                            <div className="w-[120px] h-6 bg-gray-300 rounded" />
+                        <>␊
+                        <div className="w-[96px] h-[1.2rem] bg-gray-300 rounded" />
+                        <div className="w-[96px] h-[1.2rem] bg-gray-300 rounded" />
                         </>
                     ) : (
                         <>

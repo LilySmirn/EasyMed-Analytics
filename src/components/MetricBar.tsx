@@ -23,9 +23,9 @@ export function MetricBar({ metric, total, centralValueOnly = false, unit }: Met
     return (
         <div>
             {centralValueOnly ? (
-                <div className="text-center font-bold text-[30px] mb-1">{metric.value}%</div>
-            ) : total ? (
-                <div className="flex justify-between font-bold text-[30px] mb-1">
+                <div className="text-center font-bold text-[27px] mb-[0.225rem]">{metric.value}%</div>
+    ) : total ? (
+                <div className="flex justify-between font-bold text-[27px] mb-[0.225rem]">
                     <span>{factCount}{unitText}</span>
                     <span>{total}{unitText}</span>
                 </div>
