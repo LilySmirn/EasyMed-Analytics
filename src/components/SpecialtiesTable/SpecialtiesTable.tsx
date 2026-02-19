@@ -73,8 +73,8 @@ export function SpecialtiesTable({ data, useFinance }: Props) {
                 </TableHead>
 
                 <TableBody>
-                    {items.map((spec) => (
-                        <TableRow key={spec.id}>
+                    {items.map((spec, index) => (
+                        <TableRow key={spec.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                             {columns.map((col) => (
                                 <TableCell
                                     key={col.key}

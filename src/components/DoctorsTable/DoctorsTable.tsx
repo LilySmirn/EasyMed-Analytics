@@ -75,8 +75,8 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                 </TableHead>
 
                 <TableBody>
-                    {items.map((doc) => (
-                        <TableRow key={doc.id}>
+                    {items.map((doc, index) => (
+                        <TableRow key={doc.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                             {columns.map((col) => (
                                 <TableCell
                                     key={String(col.key)}

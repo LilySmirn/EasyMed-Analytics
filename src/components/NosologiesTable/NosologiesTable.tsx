@@ -73,8 +73,8 @@ export function NosologiesTable({ data }: NosologiesTableProps) {
                 </TableHead>
 
                 <TableBody>
-                    {items.map((item) => (
-                        <TableRow key={item.id}>
+                    {items.map((item, index) => (
+                        <TableRow key={item.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                             {columns.map((col) => (
                                 <TableCell
                                     key={col.key as string}

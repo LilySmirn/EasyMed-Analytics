@@ -55,8 +55,8 @@ export function AppointmentsTable({ data }: AppointmentsTableProps) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map((a) => (
-                        <TableRow key={a.id}>
+                    {data.map((a, index) => (
+                        <TableRow key={a.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                             <TableCell>
                                 <Link
                                     href={{
