@@ -3,7 +3,7 @@
 import React from "react"
 import { cx } from "@/lib/utils"
 
-const TABLE_FONT_REDUCTION_CLASS = "text-[70%]"
+const TABLE_FONT_REDUCTION_CLASS = "text-[90%]"
 
 export const TableRoot = React.forwardRef<
     HTMLDivElement,
