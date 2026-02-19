@@ -62,10 +62,8 @@ export function MetricCardsWrapper() {
 
     return (
         <div className="w-full">
-            <div
-                className="grid w-full gap-6 auto-rows-fr
-      [grid-template-columns:repeat(auto-fit,minmax(440px,1fr))]"
-            >
+            <div className="grid w-full gap-6 auto-rows-fr
+  grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
                 {cardsData.map((cardData, index) => (
                     <MetricCard
                         key={cardData.title ?? index}
