@@ -3,8 +3,8 @@
 import React from "react"
 import { cx } from "@/lib/utils"
 
-const TABLE_FONT_REDUCTION_CLASS = "text-[65%]"
-const NUMBER_SIZE_COMPENSATION_CLASS = "text-[120%]"
+const TABLE_FONT_REDUCTION_CLASS = "text-[80%]"
+const NUMBER_SIZE_COMPENSATION_CLASS = "text-[110%]"
 
 function preserveNumberSize(node: React.ReactNode): React.ReactNode {
     if (typeof node === "number") {
