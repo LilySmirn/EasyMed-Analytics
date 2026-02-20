@@ -18,11 +18,11 @@ export const SortableHeader: React.FC<SortableHeaderProps> = ({
 
     return (
         <div
-            className="flex min-w-0 items-start gap-1 cursor-pointer select-none"
+            className="inline-flex max-w-full min-w-0 cursor-pointer select-none items-start gap-1"
     onClick={() => onSort(columnKey)}
 >
-            <span className="min-w-0 whitespace-normal break-words">{label}</span>
-    <span className="ml-1 flex shrink-0 flex-col items-center gap-0.5">
+            <span className="inline-block min-w-0 max-w-[calc(100%-18px)] [width:min-content] break-words">{label}</span>
+    <span className="inline-flex shrink-0 flex-col items-center gap-0.5">
                 <ChevronUp
         size={14}
                     className={isActive && sortConfig?.direction === "asc" ? "text-black" : "text-gray-300"}
