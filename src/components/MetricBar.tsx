@@ -6,6 +6,7 @@ type MetricBarProps = {
     total?: number;
     centralValueOnly?: boolean;
     unit?: string; // новая единица
+    description?: string;
 };
 
 function getVariantByValue(value?: number) {

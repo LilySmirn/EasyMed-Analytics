@@ -13,6 +13,7 @@ export type RawMetricData = {
     factValue: number;
     planValue?: number;
     lflValue?: number;
+    description?: string;
 };
 
 export interface FiltersState {
@@ -135,6 +136,7 @@ export function buildMetricCardData(
         centralValueOnly,
         unit: config.unit,
         filters: { left: leftFilter, right: rightFilter },
+        description: rawData.description,
     };
 }
 

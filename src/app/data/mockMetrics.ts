@@ -9,26 +9,31 @@ export const mockRawCardsData: Record<string, RawMetricData> = {
         factValue: 3300, // фактические приёмы
         planValue: 10000, // плановые приёмы (может отсутствовать)
         lflValue: 95, // для LFL можно использовать базовый процент, builder пересчитает по фильтрам
+        description: "Количество проведённых приёмов за выбранный период.",
     },
     "Ср.чек приема": {
         factValue: 4150,
         planValue: 5000,
         lflValue: -17,
+        description: "Средний чек приёма за выбранный период.",
     },
     "Соблюдение ОУКР": {
         factValue: 150, // фактическое соблюдение
         planValue: 180, // идеал ОУКР
         lflValue: -5,
+        description: "Соблюдение ОУКР.",
     },
     "Выполняемость": {
         factValue: 94, // фактическое
         planValue: 210, // план
         lflValue: -7,
+        description: "Выполненные клинические рекомендации.",
     },
     "Ср. назначаемость на прием": {
         factValue: 84, // фактическое
         planValue: 105, // план
         lflValue: 94,
+        description: "Средняя назначаемость на прием за выбранный период.",
     },
 };
 

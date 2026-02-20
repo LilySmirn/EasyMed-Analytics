@@ -29,4 +29,5 @@ export type MetricCardData = {
         left?: MetricFilterData;
         right?: MetricFilterData;
     };
+    description?: string;
 };

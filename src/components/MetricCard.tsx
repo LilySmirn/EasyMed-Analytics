@@ -5,6 +5,7 @@ import { MetricBar } from "./MetricBar";
 import { ProgressBar } from "./ProgressBar";
 import { MetricFilter } from "./MetricFilter";
 import type { MetricCardData } from "@/app/types/MetricTypes";
+import { Tooltip } from "@/components/Tooltip";
 
 type MetricCardProps = {
     cardData: MetricCardData;
@@ -12,7 +13,7 @@ type MetricCardProps = {
 };
 
 export function MetricCard({ cardData, isLoading }: MetricCardProps) {
-    const { title, metrics, total, filters, centralValueOnly, unit } = cardData;
+    const { title, metrics, total, filters, centralValueOnly, unit, description } = cardData;
 
     const factMetric = metrics[0];
     const lflMetric = metrics[1];
@@ -25,6 +26,29 @@ export function MetricCard({ cardData, isLoading }: MetricCardProps) {
 
     return (
         <Card className="w-full h-full p-[1.2rem] flex flex-col">
+
+            {description && (
+                <div className="absolute top-[0.75rem] right-[0.75rem]">
+                    <Tooltip content={description} side="top" showArrow asChild>
+                        <button
+                            type="button"
+                            aria-label="Описание метрики"
+                            className="
+                w-6 h-6 rounded-full border border-gray-200 bg-white/90
+                text-gray-600 hover:text-gray-900 hover:bg-white
+                flex items-center justify-center text-[12px] font-semibold leading-none
+                shadow-sm
+                cursor-pointer
+                focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-400
+              "
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            ?
+                        </button>
+                    </Tooltip>
+                </div>
+            )}
+
             <h2 className="text-[24px] font-bold text-center mb-[0.8rem]">{title}</h2>
 
             <div className="flex flex-col gap-[0.8rem]">
