@@ -1,49 +1,43 @@
 // src/app/data/mockMetrics.ts
 import type { RawMetricData } from "@/app/metric-domain/builders/buildMetricCardData";
 
-// ------------------------------
-// Raw данные от заказчика
-// ------------------------------
 export const mockRawCardsData: Record<string, RawMetricData> = {
     "Приёмы": {
-        factValue: 3300, // фактические приёмы
-        planValue: 10000, // плановые приёмы (может отсутствовать)
-        lflValue: 95, // для LFL можно использовать базовый процент, builder пересчитает по фильтрам
+        factValue: 1040,
+        planValue: 1120,
+        lflValue: -4,
         description: "Количество проведённых приёмов за выбранный период.",
     },
     "Ср.чек приема": {
-        factValue: 4150,
-        planValue: 5000,
-        lflValue: -17,
+        factValue: 2950,
+        planValue: 3100,
+        lflValue: -3,
         description: "Средний чек приёма за выбранный период.",
     },
     "Соблюдение ОУКР": {
-        factValue: 150, // фактическое соблюдение
-        planValue: 180, // идеал ОУКР
-        lflValue: -5,
-        description: "Соблюдение ОУКР.",
+        factValue: 89,
+        planValue: 92,
+        lflValue: -2,
+        description: "Доля назначений, соответствующих ОУКР.",
     },
     "Выполняемость": {
-        factValue: 94, // фактическое
-        planValue: 210, // план
-        lflValue: -7,
-        description: "Выполненные клинические рекомендации.",
+        factValue: 86,
+        planValue: 90,
+        lflValue: -1,
+        description: "Доля выполненных назначенных услуг.",
     },
     "Ср. назначаемость на прием": {
-        factValue: 84, // фактическое
-        planValue: 105, // план
-        lflValue: 94,
-        description: "Средняя назначаемость на прием за выбранный период.",
+        factValue: 3.1,
+        planValue: 3.3,
+        lflValue: -2,
+        description: "Среднее количество назначений на один приём.",
     },
 };
 
-// ------------------------------
-// Mock LFL для каждой карточки в зависимости от комбинации верхних фильтров
-// ------------------------------
 export const mockLFL: Record<
-    string, // карточка
+    string,
     Record<
-        string, // комбинация фильтров
+        string,
         {
             percent: number;
             count: number;
@@ -52,27 +46,27 @@ export const mockLFL: Record<
     >
 > = {
     "Приёмы": {
-        "терапевт_all_all": { percent: -10, count: 12, variant: "default" },
-        "кардиолог_all_all": { percent: 5, count: 15, variant: "error" },
-        "терапевт_first_Филиал 1": { percent: 45, count: 20, variant: "default" },
-        "кардиолог_second_Филиал 2": { percent: 50, count: 22, variant: "error" },
+        "терапевт_all_all": { percent: -3, count: 430, variant: "warning" },
+        "кардиолог_all_all": { percent: 4, count: 340, variant: "success" },
+        "терапевт_first_Филиал 1": { percent: -6, count: 220, variant: "error" },
+        "кардиолог_second_Филиал 2": { percent: 7, count: 180, variant: "success" },
     },
     "Ср.чек приема": {
-        "терапевт_all_all": { percent: 30, count: 15, variant: "default" },
-        "кардиолог_all_all": { percent: 40, count: 18, variant: "error" },
-        "терапевт_first_Филиал 1": { percent: 55, count: 23, variant: "default" },
-        "кардиолог_second_Филиал 2": { percent: 60, count: 25, variant: "error" },
+        "терапевт_all_all": { percent: 2, count: 2870, variant: "success" },
+        "кардиолог_all_all": { percent: 5, count: 3240, variant: "success" },
+        "терапевт_first_Филиал 1": { percent: -1, count: 2790, variant: "warning" },
+        "кардиолог_second_Филиал 2": { percent: 6, count: 3320, variant: "success" },
     },
     "Соблюдение ОУКР": {
-        "терапевт_all_all": { percent: 28, count: 14, variant: "default" },
-        "кардиолог_all_all": { percent: 38, count: 17, variant: "error" },
-        "терапевт_first_Филиал 3": { percent: 48, count: 21, variant: "default" },
-        "кардиолог_second_Филиал 1": { percent: 52, count: 24, variant: "error" },
+        "терапевт_all_all": { percent: -2, count: 87, variant: "warning" },
+        "кардиолог_all_all": { percent: 1, count: 92, variant: "success" },
+        "терапевт_first_Филиал 3": { percent: -4, count: 85, variant: "error" },
+        "кардиолог_second_Филиал 1": { percent: 3, count: 93, variant: "success" },
     },
     "Выполняемость": {
-        "терапевт_all_all": { percent: 28, count: 14, variant: "default" },
-        "кардиолог_all_all": { percent: 38, count: 17, variant: "error" },
-        "терапевт_first_Филиал 3": { percent: 48, count: 21, variant: "default" },
-        "кардиолог_second_Филиал 1": { percent: 52, count: 24, variant: "error" },
+        "терапевт_all_all": { percent: -1, count: 84, variant: "warning" },
+        "кардиолог_all_all": { percent: 2, count: 89, variant: "success" },
+        "терапевт_first_Филиал 3": { percent: -3, count: 82, variant: "error" },
+        "кардиолог_second_Филиал 1": { percent: 4, count: 90, variant: "success" },
     },
 };
