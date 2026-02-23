@@ -117,7 +117,12 @@ export function buildMetricCardData(
                 };
 
                 if (config.filters.right.showCount && count != null) {
-                    rightFilterData.count = count;
+                    const normalizedCount =
+                        config.title === "Ср. назначаемость на прием"
+                            ? Number(count.toFixed(1))
+                            : count;
+
+                    rightFilterData.count = normalizedCount;
                 }
 
                 return rightFilterData;
@@ -139,4 +144,3 @@ export function buildMetricCardData(
         description: rawData.description,
     };
 }
-

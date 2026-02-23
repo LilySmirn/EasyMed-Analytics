@@ -15,6 +15,7 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
     const [data, setData] = useState<AppointmentDetail[]>([]);
     const [loading, setLoading] = useState(true);
     const [doctorId, setDoctorId] = useState<string | null>(null);
+    const [appointmentLabel, setAppointmentLabel] = useState<string | null>(null);
 
     const { setItems, setCurrentId } = useInlineDrawer();
     const router = useRouter();
@@ -69,6 +70,13 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
         fetch(`/api/appointments?doctorId=${doctorId}`)
             .then(res => res.json())
             .then((appointments: Array<{ id: string; date?: string; number?: string }>) => {
+                const currentAppointment = appointments.find((a) => a.id === params.id);
+                if (currentAppointment?.date && currentAppointment?.number) {
+                    setAppointmentLabel(`${currentAppointment.date} / ${currentAppointment.number}`);
+                } else {
+                    setAppointmentLabel(null);
+                }
+
                 const drawerItems: InlineDrawerItem[] = appointments.map((a) => ({
                     id: a.id,
                     name: a.date || `Приём ${a.number || a.id}`,
@@ -93,7 +101,7 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
         <div className="px-4 py-6 sm:px-6 lg:px-4">
             <div className="flex items-center gap-2 mb-6">
                 <BackButton />
-                <h1 className="text-2xl font-bold">Детали приёма №{params.id}</h1>
+                <h1 className="text-2xl font-bold">Детали приёма {appointmentLabel ?? `№${params.id}`}</h1>
             </div>
             <AppointmentDetailsTable data={data} />
         </div>
