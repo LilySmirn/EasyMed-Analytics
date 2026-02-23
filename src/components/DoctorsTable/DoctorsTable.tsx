@@ -61,7 +61,7 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                         {columns.map((col) => (
                             <TableCell
                                 key={String(col.key)}
-                                className={`${col.minWidth ?? ""} ${col.maxWidth ?? ""} whitespace-normal break-words`}
+                                className={`${col.minWidth ?? ""} ${col.maxWidth ?? ""} whitespace-normal break-words ${col.key === "fullName" ? "whitespace-nowrap break-normal" : ""}`}
                             >
                                 <SortableHeader
                                     label={col.label}
@@ -83,6 +83,7 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                                     className={`
                                         ${col.minWidth ?? ""} ${col.maxWidth ?? ""} 
                                         whitespace-normal break-words
+                                         ${col.key === "fullName" ? "whitespace-nowrap break-normal" : ""}
                                         ${col.color
                                         ? getPercentColor(
                                             doc[col.key] as number,

@@ -150,9 +150,9 @@ export const TableRow = React.forwardRef<
             "[&_td:first-child]:pl-2 [&_th:first-child]:pl-2",
             "[&_th]:align-top [&_th]:min-w-0 [&_td]:min-w-0",
 
-            // 👇 вот это добавляем
-            "[&_td:first-child]:whitespace-nowrap [&_th:first-child]:whitespace-nowrap",
-            "[&_td:first-child]:break-normal [&_th:first-child]:break-normal",
+            // // 👇 вот это добавляем
+            // "[&_td:first-child]:whitespace-nowrap [&_th:first-child]:whitespace-nowrap",
+            // "[&_td:first-child]:break-normal [&_th:first-child]:break-normal",
 
             className,
         )}
