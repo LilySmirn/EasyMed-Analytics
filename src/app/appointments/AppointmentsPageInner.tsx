@@ -20,6 +20,7 @@ export default function AppointmentsPageInner() {
 
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [loading, setLoading] = useState(true);
+    const [doctorName, setDoctorName] = useState<string | null>(null);
 
     const { setItems, setCurrentId } = useInlineDrawer();
     const { filters } = useFilters();
@@ -54,6 +55,21 @@ export default function AppointmentsPageInner() {
             .then((data) => setAppointments(data))
             .finally(() => setLoading(false));
     }, [doctorId, filters]);
+
+    useEffect(() => {
+        if (!doctorId) {
+            setDoctorName(null);
+            return;
+        }
+
+        fetch('/api/doctors')
+            .then((res) => res.json())
+            .then((data: Doctor[]) => {
+                const doctor = data.find((item) => item.id === doctorId);
+                setDoctorName(doctor?.fullName ?? null);
+            })
+            .catch(() => setDoctorName(null));
+    }, [doctorId]);
 
     useEffect(() => {
         if (nosologyId) {
@@ -129,7 +145,7 @@ export default function AppointmentsPageInner() {
             <div className="flex items-center gap-2 mb-6">
                 <BackButton />
                 <h1 className="text-2xl font-bold">
-                    Приёмы доктора №{doctorId}
+                    Приёмы доктора {doctorName ?? `№${doctorId}`}
                 </h1>
             </div>
 
