@@ -59,7 +59,7 @@ export function buildMetricCardData(
         });
     }
 
-    const lflMetric = metrics.find((m) => m.label === "LFL");
+    // const lflMetric = metrics.find((m) => m.label === "LFL");
 
     // --- Левый фильтр ---
     const leftFilter: MetricFilterData | undefined =

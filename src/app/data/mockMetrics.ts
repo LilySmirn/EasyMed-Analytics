@@ -46,33 +46,33 @@ export const mockLFL: Record<
     >
 > = {
     "Приёмы": {
-        "терапевт_all_all": { percent: 87, count: 336, variant: "warning" },
-        "кардиолог_all_all": { percent: 92, count: 384, variant: "success" },
-        "терапевт_first_Филиал 1": { percent: 81, count: 178, variant: "warning" },
-        "кардиолог_second_Филиал 2": { percent: 95, count: 204, variant: "success" },
-    },
+        "терапевт_all_all": { percent: 89, count: 336, variant: "warning" },
+"кардиолог_all_all": { percent: 93, count: 384, variant: "success" },
+"терапевт_first_Филиал 1": { percent: 85, count: 174, variant: "warning" },
+"кардиолог_second_Филиал 2": { percent: 95, count: 198, variant: "success" },
+},
     "Ср.чек приема": {
-        "терапевт_all_all": { percent: 89, count: 2870, variant: "warning" },
-        "кардиолог_all_all": { percent: 94, count: 3240, variant: "success" },
-        "терапевт_first_Филиал 1": { percent: 85, count: 2790, variant: "warning" },
-        "кардиолог_second_Филиал 2": { percent: 96, count: 3320, variant: "success" },
-    },
+        "терапевт_all_all": { percent: 91, count: 2890, variant: "warning" },
+    "кардиолог_all_all": { percent: 94, count: 3260, variant: "success" },
+    "терапевт_first_Филиал 1": { percent: 87, count: 2810, variant: "warning" },
+    "кардиолог_second_Филиал 2": { percent: 96, count: 3340, variant: "success" },
+},
     "Соблюдение ОУКР": {
-    "терапевт_all_all": { percent: 82, count: 85, variant: "warning" },
-    "кардиолог_all_all": { percent: 78, count: 79, variant: "error" },
-    "терапевт_first_Филиал 3": { percent: 74, count: 76, variant: "error" },
-    "кардиолог_second_Филиал 1": { percent: 88, count: 89, variant: "warning" },
+        "терапевт_all_all": { percent: 92, count: 92, variant: "warning" },
+    "кардиолог_all_all": { percent: 95, count: 95, variant: "success" },
+    "терапевт_first_Филиал 1": { percent: 89, count: 89, variant: "warning" },
+    "кардиолог_second_Филиал 2": { percent: 96, count: 96, variant: "success" },
 },
-    "Выполняемость": {
-    "терапевт_all_all": { percent: 83, count: 81, variant: "warning" },
-    "кардиолог_all_all": { percent: 91, count: 88, variant: "success" },
-    "терапевт_first_Филиал 3": { percent: 77, count: 74, variant: "error" },
-    "кардиолог_second_Филиал 1": { percent: 89, count: 86, variant: "warning" },
+"Выполняемость": {
+        "терапевт_all_all": { percent: 79, count: 79, variant: "warning" },
+    "кардиолог_all_all": { percent: 82, count: 82, variant: "warning" },
+    "терапевт_first_Филиал 1": { percent: 76, count: 76, variant: "error" },
+    "кардиолог_second_Филиал 2": { percent: 84, count: 84, variant: "success" },
 },
-    "Ср. назначаемость на прием": {
-    "терапевт_all_all": { percent: 88, count: 3.0, variant: "warning" },
-    "кардиолог_all_all": { percent: 92, count: 3.3, variant: "success" },
-    "терапевт_first_Филиал 1": { percent: 84, count: 2.9, variant: "warning" },
+"Ср. назначаемость на прием": {
+        "терапевт_all_all": { percent: 89, count: 3.0, variant: "warning" },
+    "кардиолог_all_all": { percent: 93, count: 3.3, variant: "success" },
+    "терапевт_first_Филиал 1": { percent: 86, count: 2.9, variant: "warning" },
     "кардиолог_second_Филиал 2": { percent: 95, count: 3.4, variant: "success" },
 },
 };
