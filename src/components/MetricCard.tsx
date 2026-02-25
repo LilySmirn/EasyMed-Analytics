@@ -24,6 +24,8 @@ export function MetricCard({ cardData, isLoading }: MetricCardProps) {
     const leftFilter = filters?.left;
     const rightFilter = filters?.right;
 
+    const shouldReserveSpaceBeforeFilters = centralValueOnly && total == null;
+
     return (
         <Card className="w-full h-full p-[1.2rem] flex flex-col">
 
@@ -67,17 +69,21 @@ export function MetricCard({ cardData, isLoading }: MetricCardProps) {
                     <ProgressBar
                         mode="indicator"
                         value={100}
-                        label={`${lflMetric.label} ${lflMetric.value}%`}
+                        label={`${lflMetric.label} ${lflMetric.value > 0 ? "+" : ""}${lflMetric.value}%`}
                         variant={lflMetric.variant} // используем variant из билдера
                     />
+                )}
+
+                {shouldReserveSpaceBeforeFilters && (
+                    <div aria-hidden="true" className="w-full rounded-full" style={{ height: 23.4 }} />
                 )}
 
                 {/* FILTERS */}
                 <div className="flex justify-between mt-[0.8rem] gap-[0.8rem] text-[0.79rem]">
                     {showSkeleton ? (
-                        <>␊
-                        <div className="w-[96px] h-[1.2rem] bg-gray-300 rounded" />
-                        <div className="w-[96px] h-[1.2rem] bg-gray-300 rounded" />
+                        <>
+                            <div className="w-[96px] h-[1.2rem] bg-gray-300 rounded" />
+                            <div className="w-[96px] h-[1.2rem] bg-gray-300 rounded" />
                         </>
                     ) : (
                         <>
@@ -87,6 +93,7 @@ export function MetricCard({ cardData, isLoading }: MetricCardProps) {
                                     percent={leftFilter.value}
                                     count={leftFilter.count ?? 0} // дефолт 0
                                     variant={leftFilter.variant}
+                                    countDisplay={leftFilter.countDisplay}
                                     align="left"
                                 />
                             )}
@@ -97,6 +104,7 @@ export function MetricCard({ cardData, isLoading }: MetricCardProps) {
                                     percent={rightFilter.value}
                                     count={rightFilter.count ?? 0} // дефолт 0
                                     variant={rightFilter.variant}
+                                    countDisplay={rightFilter.countDisplay}
                                     align="right"
                                 />
                             )}

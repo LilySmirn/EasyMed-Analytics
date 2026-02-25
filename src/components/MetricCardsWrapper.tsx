@@ -4,15 +4,15 @@ import { useEffect, useState } from "react";
 import { MetricCard } from "./MetricCard";
 import { useFilters } from "@/context/FiltersContext";
 
-import type { MetricCardData } from "@/app/types/MetricTypes";
 import { buildMetricCardData } from "@/app/metric-domain/builders/buildMetricCardData";
 
 // конфиги карточек
 import { visitsCardConfig } from "@/app/metric-config/cards/visits.config";
 import { averageVisitRevenueCardConfig } from "@/app/metric-config/cards/averageVisitRevenue.config";
-import {oukrCardConfig} from "@/app/metric-config/cards/oukr.config";
-import {fulfillmentCardConfig} from "@/app/metric-config/cards/fulfillment.config";
-import {appointmentfulfillmentCardConfig} from "@/app/metric-config/cards/appointmentFulfillment.config";
+import { oukrCardConfig } from "@/app/metric-config/cards/oukr.config";
+import { fulfillmentCardConfig } from "@/app/metric-config/cards/fulfillment.config";
+import { appointmentfulfillmentCardConfig } from "@/app/metric-config/cards/appointmentFulfillment.config";
+import { lostRevenueCardConfig } from "@/app/metric-config/cards/lostRevenue.config";
 
 // моки данных
 import { mockRawCardsData, mockLFL } from "@/app/data/mockMetrics";
@@ -34,7 +34,8 @@ export function MetricCardsWrapper() {
         averageVisitRevenueCardConfig,
         oukrCardConfig,
         fulfillmentCardConfig,
-        appointmentfulfillmentCardConfig
+        appointmentfulfillmentCardConfig,
+        lostRevenueCardConfig,
         // сюда потом добавятся другие карточки
     ];
 
@@ -43,7 +44,7 @@ export function MetricCardsWrapper() {
         filters.type || "all"
     }_${filters.branch || "all"}`;
 
-    const cardsData: MetricCardData[] = cardConfigs.map((config) => {
+    const cardsData = cardConfigs.map((config) => {
         const rawData = mockRawCardsData[config.title];
 
         if (!rawData) {

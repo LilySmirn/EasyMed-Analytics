@@ -69,6 +69,11 @@ export type MetricCardConfig = {
             enabled: boolean;
 
             /**
+             * Кастомная подпись LFL-бара
+             */
+            label?: string;
+
+            /**
              * Полярность (normal / inverted)
              */
             polarity: MetricPolarity;
@@ -109,7 +114,7 @@ export type MetricCardConfig = {
             /**
              * Как считается значение
              */
-            value: "100minusFact";
+            value: "100minusFact" | "custom";
 
             /**
              * Откуда берётся цвет

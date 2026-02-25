@@ -15,6 +15,7 @@ export type MetricFilterData = {
     label: string;
     value: number;
     count?: number;
+    countDisplay?: string;
     variant?: ProgressBarVariant;
 };
 

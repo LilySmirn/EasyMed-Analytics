@@ -13,6 +13,9 @@ export type RawMetricData = {
     factValue: number;
     planValue?: number;
     lflValue?: number;
+    rightFilterValue?: number;
+    displayValue?: string;
+    leftFilterCountDisplay?: string;
     description?: string;
 };
 
@@ -47,13 +50,21 @@ export function buildMetricCardData(
         });
     }
 
+    if (!config.bars.fact?.enabled && config.referenceType === "none" && config.factDisplay.valuePosition === "center") {
+        metrics.push({
+            label: "Значение",
+            value: rawData.factValue,
+            displayValue: rawData.displayValue,
+        });
+    }
+
     // --- LFL-бар ---
     let lflPercent: number | undefined;
     if (config.bars.lfl?.enabled) {
         lflPercent = calcLFL(rawData, filtersState);
         const lflVariant = getVariant(lflPercent, undefined, config.bars.lfl.polarity);
         metrics.push({
-            label: "LFL",
+            label: config.bars.lfl.label ?? "LFL",
             value: lflPercent,
             variant: lflVariant,
         });
@@ -100,6 +111,10 @@ export function buildMetricCardData(
                     leftFilterData.count = count;
                 }
 
+                if (rawData.leftFilterCountDisplay) {
+                    leftFilterData.countDisplay = rawData.leftFilterCountDisplay;
+                }
+
                 return leftFilterData;
             })()
             : undefined;
@@ -109,14 +124,17 @@ export function buildMetricCardData(
     const rightFilter: MetricFilterData | undefined =
         config.filters.right?.enabled
             ? (() => {
-                const { percent, count } = calcRightFilter(rawData.factValue, rawData.planValue);
+                const isCustomRightValue = config.filters.right.value === "custom";
+                const { percent, count } = isCustomRightValue
+                    ? { percent: rawData.rightFilterValue ?? 0, count: undefined }
+                    : calcRightFilter(rawData.factValue, rawData.planValue);
                 const rightFilterData: MetricFilterData = {
                     label: config.filters.right.title,
                     value: percent,
                     variant: metrics.find((m) => m.label === "Факт")?.variant,
                 };
 
-                if (config.filters.right.showCount && count != null) {
+                if (!isCustomRightValue && config.filters.right.showCount && count != null) {
                     const normalizedCount =
                         config.title === "Ср. назначаемость на прием"
                             ? Number(count.toFixed(1))

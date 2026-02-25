@@ -20,23 +20,27 @@ export function MetricBar({ metric, total, centralValueOnly = false, unit }: Met
     const factCount = total ? Math.round((metric.value / 100) * total) : metric.value;
     const variant = getVariantByValue(metric.value);
     const unitText = unit ? ` ${unit}` : "";
+    const centralValue = metric.displayValue ?? (unit ? `${metric.value}${unit === "%" ? "%" : ` ${unit}`}` : `${metric.value}%`);
+    const shouldShowProgressBar = !(centralValueOnly && total == null);
 
     return (
         <div>
             {centralValueOnly ? (
-                <div className="text-center font-bold text-[27px] mb-[0.225rem]">{metric.value}%</div>
-    ) : total ? (
+                <div className="text-center font-bold text-[27px] mb-[0.225rem]">{centralValue}</div>
+            ) : total ? (
                 <div className="flex justify-between font-bold text-[27px] mb-[0.225rem]">
                     <span>{factCount}{unitText}</span>
                     <span>{total}{unitText}</span>
                 </div>
             ) : null}
 
-            <ProgressBar
-                value={metric.value}
-                label={metric.displayValue ?? `${metric.label} ${metric.value}%`}
-                variant={variant}
-            />
+            {shouldShowProgressBar && (
+                <ProgressBar
+                    value={metric.value}
+                    label={metric.displayValue ?? `${metric.label} ${metric.value}%`}
+                    variant={variant}
+                />
+            )}
         </div>
     );
 }

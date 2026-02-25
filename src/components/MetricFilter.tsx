@@ -5,6 +5,7 @@ type MetricFilterProps = {
     title: string;
     percent: number;
     count?: number; // optional
+    countDisplay?: string;
     align?: "left" | "right";
     variant?: MetricFilterData["variant"];
 };
@@ -24,11 +25,13 @@ export function MetricFilter({
                                  title,
                                  percent,
                                  count,
+                                 countDisplay,
                                  align = "left",
                                  variant = "default", // default безопасно
                              }: MetricFilterProps) {
     // fallback на default, если variant undefined
     const valueColor = valueColorClasses[(variant ?? "default") as VariantKey];
+    const signedPercent = title.includes("LFL") && percent > 0 ? `+${percent}` : `${percent}`;
 
     return (
         <div className={`flex ${align === "left" ? "justify-start" : "justify-end"} w-full`}>
@@ -37,7 +40,7 @@ export function MetricFilter({
                 <div className={`flex items-center gap-[0.45rem] mt-[0.225rem] text-[0.8rem] ${valueColor}`}>
                     <BarChart className="w-[0.9rem] h-[0.9rem]" />
                     <span>
-                        {percent}%{count != null && count > 0 ? ` (${count})` : ""}
+                        {signedPercent}%{(countDisplay || (count != null && count > 0 ? ` (${count})` : ""))}
                     </span>
                 </div>
             </div>
