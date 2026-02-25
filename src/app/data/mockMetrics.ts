@@ -40,6 +40,13 @@ export const mockRawCardsData: Record<string, RawMetricData> = {
         leftFilterCountDisplay: " (30 456 ₽)",
         description: "Оценка упущенной выручки за выбранный период.",
     },
+    "Потенциальная выручка": {
+        factValue: 11.1,
+        planValue: 15,
+        lflValue: +20,
+        rightFilterValue: 28,
+        description: "Потенциальная выручка за выбранный период.",
+    },
 };
 
 export const mockLFL: Record<
