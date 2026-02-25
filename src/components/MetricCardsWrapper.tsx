@@ -14,6 +14,8 @@ import { fulfillmentCardConfig } from "@/app/metric-config/cards/fulfillment.con
 import { appointmentfulfillmentCardConfig } from "@/app/metric-config/cards/appointmentFulfillment.config";
 import { lostRevenueCardConfig } from "@/app/metric-config/cards/lostRevenue.config";
 import {potentialRevenueCardConfig} from "@/app/metric-config/cards/potentialRevenue.config";
+import {revenueCardConfig} from "@/app/metric-config/cards/revenue.config";
+import {repeatVisitsCardConfig} from "@/app/metric-config/cards/repeatVisits.config";
 
 // моки данных
 import { mockRawCardsData, mockLFL } from "@/app/data/mockMetrics";
@@ -38,6 +40,8 @@ export function MetricCardsWrapper() {
         appointmentfulfillmentCardConfig,
         lostRevenueCardConfig,
         potentialRevenueCardConfig,
+        revenueCardConfig,
+        repeatVisitsCardConfig,
         // сюда потом добавятся другие карточки
     ];
 

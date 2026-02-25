@@ -47,6 +47,20 @@ export const mockRawCardsData: Record<string, RawMetricData> = {
         rightFilterValue: 28,
         description: "Потенциальная выручка за выбранный период.",
     },
+    "Выручка": {
+        factValue: 11.1,
+        planValue: 15,
+        lflValue: +20,
+        rightFilterValue: 28,
+        description: "Выручка за выбранный период.",
+    },
+    "Повторные приёмы": {
+        factValue: 11.1,
+        planValue: 15,
+        lflValue: +20,
+        rightFilterValue: 28,
+        description: "Повторные приёмы за выбранный период.",
+    },
 };
 
 export const mockLFL: Record<
