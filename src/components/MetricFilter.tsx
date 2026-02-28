@@ -32,6 +32,18 @@ export function MetricFilter({
     // fallback на default, если variant undefined
     const valueColor = valueColorClasses[(variant ?? "default") as VariantKey];
     const signedPercent = title.includes("LFL") && percent > 0 ? `+${percent}` : `${percent}`;
+    const formattedCount = (() => {
+        if (count == null || count <= 0) {
+            return "";
+        }
+
+        const roundedCount = Number(count.toFixed(1));
+        const normalizedCount = Number.isInteger(roundedCount)
+            ? String(roundedCount)
+            : roundedCount.toFixed(1);
+
+        return ` (${normalizedCount})`;
+    })();
 
     return (
         <div className={`flex ${align === "left" ? "justify-start" : "justify-end"} w-full`}>
@@ -40,7 +52,7 @@ export function MetricFilter({
                 <div className={`flex items-center gap-[0.45rem] mt-[0.225rem] text-[0.8rem] ${valueColor}`}>
                     <BarChart className="w-[0.9rem] h-[0.9rem]" />
                     <span>
-                        {signedPercent}%{(countDisplay || (count != null && count > 0 ? ` (${count})` : ""))}
+                        {signedPercent}%{(countDisplay || formattedCount)}
                     </span>
                 </div>
             </div>
