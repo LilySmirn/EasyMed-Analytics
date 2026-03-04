@@ -26,6 +26,7 @@ export function TopFilters() {
                         { value: "терапевт", label: "Терапевт" },
                         { value: "кардиолог", label: "Кардиолог" },
                         { value: "эндокринолог", label: "Эндокринолог" },
+                        { value: "пульмонолог", label: "Пульмонолог" },
                     ]}
                 />
 
