@@ -18,13 +18,13 @@ export const mockRawCardsData: Record<string, RawMetricData> = {
         factValue: 93,
         planValue: 100,
         lflValue: 86,
-        description: "Доля назначений, соответствующих ОУКР.",
+        description: "Доля назначений, соответствующих обязательным услугам из клинич.рекомендаций (диагностический минимум).",
     },
     "Выполняемость": {
         factValue: 80,
         planValue: 96,
         lflValue: -1,
-        description: "Доля выполненных назначенных услуг.",
+        description: "Доля выполненных от назначенных услуг.",
     },
     "Ср. назначаемость на прием": {
         factValue: 3.1,
