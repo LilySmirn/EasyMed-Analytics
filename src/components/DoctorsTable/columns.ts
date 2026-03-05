@@ -42,5 +42,4 @@ export const financeColumns: ColumnConfig[] = [
     { label: "Ср.чек", key: "avgBill", sortable: true },
     { label: "Потенциальная выручка", key: "potentialRevenue", sortable: true },
     { label: "Недореализованные ОУКР", key: "lostOUKRRevenue", sortable: true },
-    { label: "Не выполнено пациентами", key: "patientRevenueLoss", sortable: true, color: "reverse" },
 ];

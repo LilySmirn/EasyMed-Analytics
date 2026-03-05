@@ -38,7 +38,6 @@ export interface Doctor {
     potentialRevenue: string;
     lostOUKRRevenue: string;
     lostOUKRPercent: number;
-    patientRevenueLoss: string;
 }
 
 interface DoctorsTableProps {
