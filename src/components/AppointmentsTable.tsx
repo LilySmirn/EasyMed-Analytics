@@ -26,6 +26,7 @@ export interface Appointment {
     deviationPercent: number;
     revenue: string;
     lostRevenue: string;
+    mkb: string;
 }
 
 interface AppointmentsTableProps {
@@ -72,7 +73,7 @@ export function AppointmentsTable({ data }: AppointmentsTableProps) {
                                     {a.date} / {a.number}
                                 </Link>
                             </TableCell>
-                            <TableCell>J01.01</TableCell>
+                            <TableCell>{a.mkb}</TableCell>
                             <TableCell>{a.requiredServices}</TableCell>
                             <TableCell>{a.assignedRequired}</TableCell>
                             <TableCell className={getPercentColor(a.assignmentPercent)}>
