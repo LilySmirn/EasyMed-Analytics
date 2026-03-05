@@ -24,7 +24,7 @@ export interface Specialty {
     noServices: number;
 
     requiredKR: number;
-    assignedOUKRPercent: number;
+    assignedOUKRAvg: number;
     servicesCompletedPercent: number;
     deviationOUKRPercent: number;
 

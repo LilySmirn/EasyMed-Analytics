@@ -26,7 +26,7 @@ export interface Nosology {
     appointmentsWithoutServices: number;
 
     oukr: number;
-    assignedOUKRPercent: number;
+    assignedOUKRAvg: number;
     servicesCompletedPercent: number;
     overKR: number;
     totalServicesAssigned: number;
@@ -37,6 +37,7 @@ export interface Nosology {
     potentialRevenue: string;
     lostOUKRRevenue: string;
     lostOUKRPercent: number;
+    patientRevenueLoss: string;
 }
 
 interface NosologiesTableProps {

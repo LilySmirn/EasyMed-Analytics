@@ -32,12 +32,13 @@ export interface Doctor {
     avgBill: string;
     revenue: string;
     repeatAppointments: number;
-    assignedOUKRPercent: number;
+    assignedOUKRAvg: number;
     servicesCompletedPercent: number;
     overKR: number;
     potentialRevenue: string;
     lostOUKRRevenue: string;
     lostOUKRPercent: number;
+    patientRevenueLoss: string;
 }
 
 interface DoctorsTableProps {
