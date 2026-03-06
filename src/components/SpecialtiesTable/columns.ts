@@ -16,7 +16,7 @@ export const qualityColumns: ColumnConfig[] = [
     { key: "appointments", label: "Количество приёмов" },
     { key: "noServices", label: "Приемов без назначений" },
     { key: "requiredKR", label: "ОУКР" },
-    { key: "assignedOUKRAvg", label: "Назначено ОУКР" },
+    { key: "assignedOUKRAvg", label: "% назначений ОУКР" },
     { key: "servicesCompletedPercent", label: "Выполнено пациентами", color: true },
     {
         key: "deviationOUKRPercent",
@@ -40,7 +40,7 @@ export const financeColumns: ColumnConfig[] = [
     { key: "requiredKR", label: "ОУКР" },
     { key: "totalServices", label: "Назначено всего услуг" },
     { key: "servicesCompletedPercent", label: "Выполнено пациентами", color: true },
-    { key: "assignedOUKRAvg", label: "Назначено ОУКР" },
+    { key: "assignedOUKRAvg", label: "% назначений ОУКР" },
     { key: "lostOUKRRevenue", label: "Недореализованные ОУКР" },
     { key: "avgOUKRAssign", label: "Ср. назначаемость по ОУКР" },
     {
