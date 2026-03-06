@@ -54,6 +54,14 @@ export function SpecialtiesTable({ data, useFinance }: Props) {
     const { items, requestSort, sortConfig } =
         useSortableData<Specialty>(data, "specialtiesSorting");
 
+    const formatCellValue = (col: ColumnConfig, spec: Specialty) => {
+        const value = spec[col.key];
+        if (col.key === "servicesCompletedPercent" && typeof value === "number") {
+            return `${value}%`;
+        }
+        return value;
+    };
+
     return (
         <TableRoot>
             <Table>
@@ -95,10 +103,10 @@ export function SpecialtiesTable({ data, useFinance }: Props) {
                                             }}
                                             className="text-blue-600 hover:underline"
                                         >
-                                            {spec[col.key]}
+                                            {formatCellValue(col, spec)}
                                         </Link>
                                     ) : (
-                                        spec[col.key]
+                                        formatCellValue(col, spec)
                                     )}
                                 </TableCell>
                             ))}
