@@ -13,7 +13,7 @@ export async function GET() {
             oukr: 30, // Обязательных услуг по КР
 
             assignedOUKRAvg: 15.7, // Назначено обязательных услуг (среднее количество назначенных ОУКР)
-            servicesCompletedPercent: 83, // Выполнено услуг (%)
+            servicesCompletedPercent: 83, // Выполнено пациентами услуг (%)
 
             overKR: 47.7, // Доля нереализованных ОКР (%)
 

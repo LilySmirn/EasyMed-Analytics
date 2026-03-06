@@ -64,7 +64,7 @@ export function AppointmentDetailsTable({ data }: Props) {
                         <TableHeaderCell>Назначено</TableHeaderCell>
                         <TableHeaderCell>Причина неназначения</TableHeaderCell>
                         <TableHeaderCell>Стоимость услуги</TableHeaderCell>
-                        <TableHeaderCell>Выполнено</TableHeaderCell>
+                        <TableHeaderCell>Выполнено пациентами</TableHeaderCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
