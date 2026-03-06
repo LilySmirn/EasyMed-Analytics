@@ -48,9 +48,8 @@ export function AppointmentsTable({ data }: AppointmentsTableProps) {
                         <TableHeaderCell>МКБ</TableHeaderCell>
                         <TableHeaderCell>Кол-во обяз. услуг</TableHeaderCell>
                         <TableHeaderCell>Назначено обяз.</TableHeaderCell>
-                        <TableHeaderCell>% назначения</TableHeaderCell>
-                        <TableHeaderCell>% выполнения</TableHeaderCell>
-                        <TableHeaderCell>% отклонений</TableHeaderCell>
+                        <TableHeaderCell>% назначений ОУКР</TableHeaderCell>
+                        <TableHeaderCell>Выполнено пациентами</TableHeaderCell>
                         <TableHeaderCell>Выручка</TableHeaderCell>
                         <TableHeaderCell>Потерянная выручка</TableHeaderCell>
                     </TableRow>

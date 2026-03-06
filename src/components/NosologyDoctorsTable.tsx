@@ -39,9 +39,8 @@ export function NosologyDoctorsTable({ data, nosologyId }: NosologyDoctorsTableP
                     <TableRow>
                         <TableHeaderCell>ФИО врача</TableHeaderCell>
                         <TableHeaderCell>Кол-во диагнозов</TableHeaderCell>
-                        <TableHeaderCell>% назначения</TableHeaderCell>
-                        <TableHeaderCell>% выполнения</TableHeaderCell>
-                        <TableHeaderCell>% отклонений</TableHeaderCell>
+                        <TableHeaderCell>% назначений ОУКР</TableHeaderCell>
+                        <TableHeaderCell>Выполнено пациентами</TableHeaderCell>
                         <TableHeaderCell>Выручка</TableHeaderCell>
                         <TableHeaderCell>Потерянная выручка</TableHeaderCell>
                         <TableHeaderCell>Ср. назначаемость</TableHeaderCell>
