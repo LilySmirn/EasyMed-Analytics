@@ -74,11 +74,6 @@ export function NosologyDoctorsTable({ data, nosologyId }: NosologyDoctorsTableP
                             >
                                 {doctor.completionPercent}%
                             </TableCell>
-                            <TableCell
-                                className={getPercentColor(doctor.deviationPercent, "reverse")}
-                            >
-                                {doctor.deviationPercent}%
-                            </TableCell>
                             <TableCell>{doctor.revenue}</TableCell>
                             <TableCell>{doctor.lostRevenue}</TableCell>
                             <TableCell>{doctor.avgAssign}</TableCell>

@@ -81,9 +81,6 @@ export function AppointmentsTable({ data }: AppointmentsTableProps) {
                             <TableCell className={getPercentColor(a.completionPercent)}>
                                 {a.completionPercent}%
                             </TableCell>
-                            <TableCell className={getPercentColor(a.deviationPercent, "reverse")}>
-                                {a.deviationPercent}%
-                            </TableCell>
                             <TableCell>{a.revenue}</TableCell>
                             <TableCell>{a.lostRevenue}</TableCell>
                         </TableRow>

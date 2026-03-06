@@ -55,6 +55,8 @@ export function NosologiesTable({ data }: NosologiesTableProps) {
         "nosologiesSorting"
     );
 
+    const formatThousands = (value: number) => value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
     return (
         <TableRoot>
             <Table>
@@ -98,6 +100,8 @@ export function NosologiesTable({ data }: NosologiesTableProps) {
                                         >
                                             {item[col.key]}
                                         </Link>
+                                    ) : col.key === "totalServicesAssigned" ? (
+                                        formatThousands(item.totalServicesAssigned)
                                     ) : (
                                         item[col.key]
                                     )}
