@@ -1,6 +1,14 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
+    const toPercentOfOUKR = (assignedOUKRAvg: number, oukr: number) => {
+        if (!oukr) {
+            return 0;
+        }
+
+        return Number(((assignedOUKRAvg / oukr) * 100).toFixed(1));
+    };
+
     const nosologies = [
         {
             id: "1",
@@ -263,7 +271,10 @@ export async function GET() {
             patientRevenueLoss: "2 375 000 ₽",
             lostOUKRPercent: 22.5,
         },
-];
+    ].map((nosology) => ({
+        ...nosology,
+        assignedOUKRAvg: toPercentOfOUKR(nosology.assignedOUKRAvg, nosology.oukr),
+    }));
 
     return NextResponse.json(nosologies);
 }

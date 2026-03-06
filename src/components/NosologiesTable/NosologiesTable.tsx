@@ -57,7 +57,10 @@ export function NosologiesTable({ data }: NosologiesTableProps) {
 
     const formatCellValue = (col: ColumnConfig, item: Nosology) => {
         const value = item[col.key];
-        if (col.key === "servicesCompletedPercent" && typeof value === "number") {
+        if (
+            (col.key === "servicesCompletedPercent" || col.key === "assignedOUKRAvg") &&
+            typeof value === "number"
+        ) {
             return `${value}%`;
         }
         return value;
