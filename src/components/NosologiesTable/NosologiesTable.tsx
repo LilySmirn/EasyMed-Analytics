@@ -55,6 +55,14 @@ export function NosologiesTable({ data }: NosologiesTableProps) {
         "nosologiesSorting"
     );
 
+    const formatCellValue = (col: ColumnConfig, item: Nosology) => {
+        const value = item[col.key];
+        if (col.key === "servicesCompletedPercent" && typeof value === "number") {
+            return `${value}%`;
+        }
+        return value;
+    };
+
     const formatThousands = (value: number) => value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 
     return (
@@ -98,12 +106,12 @@ export function NosologiesTable({ data }: NosologiesTableProps) {
                                             }}
                                             className="text-blue-600 hover:underline"
                                         >
-                                            {item[col.key]}
+                                            {formatCellValue(col, item)}
                                         </Link>
                                     ) : col.key === "totalServicesAssigned" ? (
                                         formatThousands(item.totalServicesAssigned)
                                     ) : (
-                                        item[col.key]
+                                        formatCellValue(col, item)
                                     )}
                                 </TableCell>
                             ))}

@@ -3,7 +3,7 @@ import { Nosology } from "./NosologiesTable";
 export interface ColumnConfig {
     key: keyof Nosology;
     label: string;
-    color?: "reverse";
+    color?: "reverse" | boolean;
     link?: boolean;
 }
 
@@ -14,7 +14,7 @@ export const qualityColumns: ColumnConfig[] = [
     { key: "repeatAppointments", label: "Повторные приёмы" },
     { key: "oukr", label: "ОУКР" },
     { key: "assignedOUKRAvg", label: "Назначено ОУКР", color: "reverse" },
-    { key: "servicesCompletedPercent", label: "Выполнено пациентами" },
+    { key: "servicesCompletedPercent", label: "Выполнено пациентами", color: true },
     { key: "overKR", label: "Назначено сверх КР" },
     { key: "totalServicesAssigned", label: "Назначено всего услуг" },
     { key: "avgServicesPerVisit", label: "Ср. назначаемость на прием" },
@@ -31,7 +31,7 @@ export const financeColumns: ColumnConfig[] = [
     { key: "assignedOUKRAvg", label: "Назначено ОУКР", color: "reverse" },
     { key: "lostOUKRPercent", label: "Доля недореализованных ОУКР", color: "reverse" },
     { key: "totalServicesAssigned", label: "Назначено всего услуг" },
-    { key: "servicesCompletedPercent", label: "Выполнено пациентами" },
+    { key: "servicesCompletedPercent", label: "Выполнено пациентами", color: true },
     { key: "avgServicesPerVisit", label: "Ср. назначаемость на прием" },
     { key: "revenue", label: "Выручка" },
     { key: "avgCheck", label: "Ср.чек" },

@@ -4,7 +4,7 @@ export interface ColumnConfig {
     key: keyof Specialty;
     label: string;
     link?: boolean;
-    color?: "reverse";
+    color?: "reverse" | boolean;
 }
 
 /* =======================
@@ -17,7 +17,7 @@ export const qualityColumns: ColumnConfig[] = [
     { key: "noServices", label: "Приемов без назначений" },
     { key: "requiredKR", label: "ОУКР" },
     { key: "assignedOUKRAvg", label: "Назначено ОУКР" },
-    { key: "servicesCompletedPercent", label: "Выполнено пациентами" },
+    { key: "servicesCompletedPercent", label: "Выполнено пациентами", color: true },
     {
         key: "deviationOUKRPercent",
         label: "Отклонение ОУКР",
@@ -39,7 +39,7 @@ export const financeColumns: ColumnConfig[] = [
     { key: "noServices", label: "Приемов без назначений" },
     { key: "requiredKR", label: "ОУКР" },
     { key: "totalServices", label: "Назначено всего услуг" },
-    { key: "servicesCompletedPercent", label: "Выполнено пациентами" },
+    { key: "servicesCompletedPercent", label: "Выполнено пациентами", color: true },
     { key: "assignedOUKRAvg", label: "Назначено ОУКР" },
     { key: "lostOUKRRevenue", label: "Недореализованные ОУКР" },
     { key: "avgOUKRAssign", label: "Ср. назначаемость по ОУКР" },

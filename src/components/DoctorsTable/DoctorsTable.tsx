@@ -53,6 +53,14 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
     const { items, requestSort, sortConfig } =
         useSortableData<Doctor>(data, "doctorsSorting");
 
+    const formatCellValue = (col: ColumnConfig, row: Doctor) => {
+        const value = row[col.key];
+        if (col.key === "servicesCompletedPercent" && typeof value === "number") {
+            return `${value}%`;
+        }
+        return value;
+    };
+
     return (
         <TableRoot>
             <Table>
@@ -102,10 +110,10 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                                             }}
                                             className="text-blue-600 hover:underline"
                                         >
-                                            {doc[col.key]}
+                                            {formatCellValue(col, doc)}
                                         </Link>
                                     ) : (
-                                        doc[col.key]
+                                        formatCellValue(col, doc)
                                     )}
                                 </TableCell>
                             ))}
