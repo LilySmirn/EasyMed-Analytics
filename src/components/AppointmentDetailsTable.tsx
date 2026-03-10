@@ -44,7 +44,7 @@ export function AppointmentDetailsTable({ data }: Props) {
                 {groupData.map(d => (
                     <TableRow key={d.id}>
                         <TableCell colSpan={showMandatoryColumn ? 1 : 2}>{d.name}</TableCell>
-                        {showMandatoryColumn && <TableCell>{d.mandatoryOukr ? "✓" : "—"}</TableCell>}
+                        {showMandatoryColumn && <TableCell className="text-center">{d.mandatoryOukr ? "✓" : "—"}</TableCell>}
                         <TableCell>{d.assigned ? "Да" : "Нет"}</TableCell>
                         <TableCell>{d.assigned ? "-" : d.reason}</TableCell>
                         <TableCell>{d.cost}</TableCell>
@@ -61,7 +61,7 @@ export function AppointmentDetailsTable({ data }: Props) {
                 <TableHead>
                     <TableRow>
                         <TableHeaderCell>Название назначения/услуги</TableHeaderCell>
-                        <TableHeaderCell>Обязательные ОУКР</TableHeaderCell>
+                        <TableHeaderCell className="text-center">Обязательные ОУКР</TableHeaderCell>
                         <TableHeaderCell>Назначено</TableHeaderCell>
                         <TableHeaderCell>Причина неназначения</TableHeaderCell>
                         <TableHeaderCell>Стоимость услуги</TableHeaderCell>
