@@ -28,7 +28,7 @@ export const financeColumns: ColumnConfig[] = [
     { key: "repeatAppointments", label: "Повторные приёмы" },
     { key: "appointmentsWithoutServices", label: "Приемов без назначений" },
     { key: "oukr", label: "ОУКР" },
-    { key: "assignedOUKRAvg", label: "% назначений ОУКР", color: "reverse" },
+    { key: "assignedOUKRAvg", label: "% назначений ОУКР", color: true },
     { key: "lostOUKRPercent", label: "Доля недореализованных ОУКР", color: "reverse" },
     { key: "totalServicesAssigned", label: "Назначено всего услуг" },
     { key: "servicesCompletedPercent", label: "Выполнено пациентами", color: true },
