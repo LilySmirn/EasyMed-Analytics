@@ -14,6 +14,7 @@ import {
 export interface AppointmentDetail {
     id: string;
     name: string;
+    mandatoryOukr?: boolean;
     assigned: boolean;
     reason: string;
     cost: string;
@@ -29,23 +30,21 @@ export function AppointmentDetailsTable({ data }: Props) {
     const clinicalData = data.filter(d => d.clinical);
     const nonClinicalData = data.filter(d => !d.clinical);
 
-    const renderGroup = (title: string, groupData: AppointmentDetail[]) => {
+    const renderGroup = (title: string, groupData: AppointmentDetail[], showMandatoryColumn: boolean) => {
         if (groupData.length === 0) return null;
 
         return (
             <>
-                {/* Голубая полоска с подзаголовком */}
-                <TableRow className="bg-blue-100">
+                <TableRow className="bg-blue-100 [&>td]:bg-blue-100">
                     <TableCell colSpan={6} className="text-black py-1.5">
                         {title}
                     </TableCell>
                 </TableRow>
 
-                {/* Данные группы */}
                 {groupData.map(d => (
                     <TableRow key={d.id}>
-                        <TableCell>{d.name}</TableCell>
-                        <TableCell>{d.clinical ? "✓" : "—"}</TableCell>
+                        <TableCell colSpan={showMandatoryColumn ? 1 : 2}>{d.name}</TableCell>
+                        {showMandatoryColumn && <TableCell>{d.mandatoryOukr ? "✓" : "—"}</TableCell>}
                         <TableCell>{d.assigned ? "Да" : "Нет"}</TableCell>
                         <TableCell>{d.assigned ? "-" : d.reason}</TableCell>
                         <TableCell>{d.cost}</TableCell>
@@ -70,8 +69,8 @@ export function AppointmentDetailsTable({ data }: Props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {renderGroup("По клиническим рекомендациям", clinicalData)}
-                    {renderGroup("Не по клиническим рекомендациям", nonClinicalData)}
+                    {renderGroup("По клиническим рекомендациям", clinicalData, true)}
+                    {renderGroup("Не по клиническим рекомендациям", nonClinicalData, false)}
                 </TableBody>
             </Table>
         </TableRoot>

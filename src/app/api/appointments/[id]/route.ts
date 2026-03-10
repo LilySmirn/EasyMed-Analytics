@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 type AppointmentDetail = {
     id: string;
     name: string;
+    mandatoryOukr?: boolean;
     assigned: boolean;
     reason: string;
     cost: string;
@@ -12,9 +13,14 @@ type AppointmentDetail = {
 
 const appointmentsDetails: Record<string, AppointmentDetail[]> = {
     a1: [
-        { id: "s1", name: "Общий анализ крови", assigned: true, reason: "-", cost: "650 ₽", done: true, clinical: true },
-        { id: "s2", name: "С-реактивный белок", assigned: true, reason: "-", cost: "850 ₽", done: true, clinical: true },
-        { id: "s3", name: "Пульсоксиметрия", assigned: true, reason: "-", cost: "400 ₽", done: true, clinical: true },
+        { id: "s10", name: "ЭКГ в 12 отведениях", mandatoryOukr: true, assigned: true, reason: "-", cost: "900 ₽", done: true, clinical: true },
+        { id: "s11", name: "Электрокардиографический мониторинг", mandatoryOukr: true, assigned: true, reason: "-", cost: "1 800 ₽", done: true, clinical: true },
+        { id: "s12", name: "Эхокардиография", mandatoryOukr: true, assigned: true, reason: "-", cost: "2 100 ₽", done: true, clinical: true },
+        { id: "s13", name: "Определение уровня тропонина Т/И", mandatoryOukr: true, assigned: true, reason: "-", cost: "1 200 ₽", done: true, clinical: true },
+        { id: "s14", name: "Рентгенография грудной клетки", mandatoryOukr: true, assigned: true, reason: "-", cost: "1 400 ₽", done: true, clinical: true },
+        { id: "s15", name: "Биохимический анализ крови", mandatoryOukr: true, assigned: true, reason: "-", cost: "1 000 ₽", done: true, clinical: true },
+        { id: "s16", name: "Анализ мочи", mandatoryOukr: true, assigned: true, reason: "-", cost: "500 ₽", done: true, clinical: true },
+        { id: "s17", name: "КТ грудной клетки", assigned: false, reason: "-", cost: "3 200 ₽", done: false, clinical: false },
     ],
     a2: [
         { id: "s4", name: "Общий анализ крови", assigned: true, reason: "-", cost: "650 ₽", done: true, clinical: true },
@@ -27,9 +33,14 @@ const appointmentsDetails: Record<string, AppointmentDetail[]> = {
         { id: "s9", name: "Липидограмма", assigned: true, reason: "-", cost: "950 ₽", done: true, clinical: true },
     ],
     a4: [
-        { id: "s10", name: "ЭКГ", assigned: true, reason: "-", cost: "900 ₽", done: true, clinical: true },
-        { id: "s11", name: "ЭхоКГ", assigned: true, reason: "-", cost: "2 100 ₽", done: true, clinical: true },
-        { id: "s12", name: "КТ грудной клетки", assigned: false, reason: "Нет показаний по протоколу", cost: "3 200 ₽", done: false, clinical: false },
+        { id: "s10", name: "ЭКГ в 12 отведениях", mandatoryOukr: true, assigned: true, reason: "-", cost: "900 ₽", done: true, clinical: true },
+        { id: "s11", name: "Электрокардиографический мониторинг", mandatoryOukr: true, assigned: true, reason: "-", cost: "1 800 ₽", done: true, clinical: true },
+        { id: "s12", name: "Эхокардиография", mandatoryOukr: true, assigned: true, reason: "-", cost: "2 100 ₽", done: true, clinical: true },
+        { id: "s13", name: "Определение уровня тропонина Т/И", mandatoryOukr: true, assigned: true, reason: "-", cost: "1 200 ₽", done: true, clinical: true },
+        { id: "s14", name: "Рентгенография грудной клетки", mandatoryOukr: true, assigned: true, reason: "-", cost: "1 400 ₽", done: true, clinical: true },
+        { id: "s15", name: "Биохимический анализ крови", mandatoryOukr: true, assigned: true, reason: "-", cost: "1 000 ₽", done: true, clinical: true },
+        { id: "s16", name: "Анализ мочи", mandatoryOukr: true, assigned: true, reason: "-", cost: "500 ₽", done: true, clinical: true },
+        { id: "s17", name: "КТ грудной клетки", assigned: false, reason: "Нет показаний по протоколу", cost: "3 200 ₽", done: false, clinical: false },
     ],
     a5: [
         { id: "s13", name: "Общий анализ крови", assigned: true, reason: "-", cost: "650 ₽", done: true, clinical: true },
