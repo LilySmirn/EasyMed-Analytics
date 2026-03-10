@@ -55,15 +55,29 @@ export function NosologiesTable({ data }: NosologiesTableProps) {
         "nosologiesSorting"
     );
 
+    const getAvgServicesPerVisitPercent = (item: Nosology): number => {
+        if (item.oukr <= 0) return 0;
+        return Math.round((item.oukr / item.avgServicesPerVisit) * 100);
+    };
+
+    const getCellPercentValue = (col: ColumnConfig, item: Nosology): number => {
+        if (col.key === "avgServicesPerVisit") {
+            return getAvgServicesPerVisitPercent(item);
+        }
+
+        return item[col.key] as number;
+    };
+
     const formatCellValue = (col: ColumnConfig, item: Nosology) => {
         const value = item[col.key];
         if (
             (col.key === "servicesCompletedPercent" ||
                 col.key === "assignedOUKRAvg" ||
-                col.key === "lostOUKRPercent") &&
+                col.key === "lostOUKRPercent" ||
+                col.key === "avgServicesPerVisit") &&
             typeof value === "number"
         ) {
-            return `${value}%`;
+            return `${getCellPercentValue(col, item)} %`;
         }
         return value;
     };
@@ -97,7 +111,7 @@ export function NosologiesTable({ data }: NosologiesTableProps) {
                                     className={
                                         col.color
                                             ? getPercentColor(
-                                                item[col.key] as number,
+                                                getCellPercentValue(col, item),
                                                 col.color === "reverse" ? "reverse" : undefined
                                             )
                                             : undefined

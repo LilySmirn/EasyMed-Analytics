@@ -53,15 +53,29 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
     const { items, requestSort, sortConfig } =
         useSortableData<Doctor>(data, "doctorsSorting");
 
+    const getAvgServicesPerVisitPercent = (row: Doctor): number => {
+        if (row.requiredKR <= 0) return 0;
+        return Math.round((row.avgServicesPerVisit / row.requiredKR) * 100);
+    };
+
+    const getCellPercentValue = (col: ColumnConfig, row: Doctor): number => {
+        if (col.key === "avgServicesPerVisit") {
+            return getAvgServicesPerVisitPercent(row);
+        }
+
+        return row[col.key] as number;
+    };
+
     const formatCellValue = (col: ColumnConfig, row: Doctor) => {
         const value = row[col.key];
         if (
             (col.key === "servicesCompletedPercent" ||
                 col.key === "assignedOUKRAvg" ||
-                col.key === "lostOUKRPercent") &&
+                col.key === "lostOUKRPercent" ||
+                col.key === "avgServicesPerVisit") &&
             typeof value === "number"
         ) {
-            return `${value}%`;
+            return `${getCellPercentValue(col, row)} %`;
         }
         return value;
     };
@@ -99,7 +113,7 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
                                          ${col.key === "fullName" ? "whitespace-nowrap break-normal" : ""}
                                         ${col.color
                                         ? getPercentColor(
-                                            doc[col.key] as number,
+                                            getCellPercentValue(col, doc),
                                             col.color === "reverse"
                                                 ? "reverse"
                                                 : undefined
