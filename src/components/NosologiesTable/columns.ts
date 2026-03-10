@@ -13,7 +13,7 @@ export const qualityColumns: ColumnConfig[] = [
     { key: "primaryAppointments", label: "Первичные приёмы" },
     { key: "repeatAppointments", label: "Повторные приёмы" },
     { key: "oukr", label: "ОУКР" },
-    { key: "assignedOUKRAvg", label: "% назначений ОУКР", color: "reverse" },
+    { key: "assignedOUKRAvg", label: "% назначений ОУКР", color: true },
     { key: "servicesCompletedPercent", label: "Выполнено пациентами", color: true },
     { key: "overKR", label: "Назначено сверх КР" },
     { key: "totalServicesAssigned", label: "Назначено всего услуг" },

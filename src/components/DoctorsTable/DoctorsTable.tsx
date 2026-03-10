@@ -55,7 +55,12 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
 
     const formatCellValue = (col: ColumnConfig, row: Doctor) => {
         const value = row[col.key];
-        if (col.key === "servicesCompletedPercent" && typeof value === "number") {
+        if (
+            (col.key === "servicesCompletedPercent" ||
+                col.key === "assignedOUKRAvg" ||
+                col.key === "lostOUKRPercent") &&
+            typeof value === "number"
+        ) {
             return `${value}%`;
         }
         return value;

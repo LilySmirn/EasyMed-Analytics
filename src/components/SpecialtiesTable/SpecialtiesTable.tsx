@@ -56,7 +56,12 @@ export function SpecialtiesTable({ data, useFinance }: Props) {
 
     const formatCellValue = (col: ColumnConfig, spec: Specialty) => {
         const value = spec[col.key];
-        if (col.key === "servicesCompletedPercent" && typeof value === "number") {
+        if (
+            (col.key === "servicesCompletedPercent" ||
+                col.key === "assignedOUKRAvg" ||
+                col.key === "lostOUKRPercent") &&
+            typeof value === "number"
+        ) {
             return `${value}%`;
         }
         return value;

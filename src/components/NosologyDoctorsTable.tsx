@@ -7,11 +7,12 @@ import {
     TableBody,
     TableCell,
     TableHead,
-    TableHeaderCell,
     TableRow,
     TableRoot,
 } from "@/components/Table";
 import { getPercentColor } from "@/utils/getPercentColor";
+import { SortableHeader } from "@/components/SortableHeader";
+import { useSortableData } from "@/components/useSortableData";
 
 export interface NosologyDoctor {
     id: string;
@@ -32,22 +33,76 @@ interface NosologyDoctorsTableProps {
 }
 
 export function NosologyDoctorsTable({ data, nosologyId }: NosologyDoctorsTableProps) {
+    const { items, requestSort, sortConfig } = useSortableData<NosologyDoctor>(
+        data,
+        "nosologyDoctorsSorting"
+    );
+
     return (
         <TableRoot>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableHeaderCell>ФИО врача</TableHeaderCell>
-                        <TableHeaderCell>Кол-во диагнозов</TableHeaderCell>
-                        <TableHeaderCell>% назначений ОУКР</TableHeaderCell>
-                        <TableHeaderCell>Выполнено пациентами</TableHeaderCell>
-                        <TableHeaderCell>Выручка</TableHeaderCell>
-                        <TableHeaderCell>Потерянная выручка</TableHeaderCell>
-                        <TableHeaderCell>Ср. назначаемость</TableHeaderCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="ФИО врача"
+                                columnKey="name"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Кол-во диагнозов"
+                                columnKey="diagnosesCount"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="% назначений ОУКР"
+                                columnKey="assignPercent"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Выполнено пациентами"
+                                columnKey="completionPercent"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Выручка"
+                                columnKey="revenue"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Потерянная выручка"
+                                columnKey="lostRevenue"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
+                        <TableCell>
+                            <SortableHeader
+                                label="Ср. назначаемость"
+                                columnKey="avgAssign"
+                                sortConfig={sortConfig}
+                                onSort={requestSort}
+                            />
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map((doctor) => (
+                    {items.map((doctor) => (
                         <TableRow key={doctor.id}>
                             <TableCell>
                                 <Link
