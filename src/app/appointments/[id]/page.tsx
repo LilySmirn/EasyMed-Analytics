@@ -24,6 +24,14 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
     const nosologyId = searchParams.get("nosology");
     const specialty = searchParams.get("specialty");
 
+    const getDiagnosisByMkb = (mkbCode: string) => {
+        if (mkbCode.startsWith("I21") || mkbCode.startsWith("I22") || mkbCode.startsWith("I24")) {
+            return "Ишемическая болезнь сердца";
+        }
+
+        return null;
+    };
+
     useEffect(() => {
         if (!params.id) return;
 
@@ -69,9 +77,12 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
 
         fetch(`/api/appointments?doctorId=${doctorId}`)
             .then(res => res.json())
-            .then((appointments: Array<{ id: string; date?: string; number?: string }>) => {
+            .then((appointments: Array<{ id: string; date?: string; number?: string; mkb?: string }>) => {
                 const currentAppointment = appointments.find((a) => a.id === params.id);
-                if (currentAppointment?.date && currentAppointment?.number) {
+                if (currentAppointment?.mkb) {
+                    const diagnosis = getDiagnosisByMkb(currentAppointment.mkb);
+                    setAppointmentLabel(`${currentAppointment.mkb}${diagnosis ? ` ${diagnosis}` : ""}`);
+                } else if (currentAppointment?.date && currentAppointment?.number) {
                     setAppointmentLabel(`${currentAppointment.date} / ${currentAppointment.number}`);
                 } else {
                     setAppointmentLabel(null);
@@ -101,7 +112,7 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
         <div className="px-4 py-6 sm:px-6 lg:px-4">
             <div className="flex items-center gap-2 mb-6">
                 <BackButton />
-                <h1 className="text-2xl font-bold">Детали приёма {appointmentLabel ?? `№${params.id}`}</h1>
+                <h1 className="text-2xl font-bold">{appointmentLabel ?? `№${params.id}`}</h1>
             </div>
             <AppointmentDetailsTable data={data} />
         </div>
