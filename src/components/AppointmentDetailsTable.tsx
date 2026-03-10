@@ -36,7 +36,7 @@ export function AppointmentDetailsTable({ data }: Props) {
             <>
                 {/* Голубая полоска с подзаголовком */}
                 <TableRow className="bg-blue-100">
-                    <TableCell colSpan={5} className="text-black py-1.5">
+                    <TableCell colSpan={6} className="text-black py-1.5">
                         {title}
                     </TableCell>
                 </TableRow>
@@ -45,6 +45,7 @@ export function AppointmentDetailsTable({ data }: Props) {
                 {groupData.map(d => (
                     <TableRow key={d.id}>
                         <TableCell>{d.name}</TableCell>
+                        <TableCell>{d.clinical ? "✓" : "—"}</TableCell>
                         <TableCell>{d.assigned ? "Да" : "Нет"}</TableCell>
                         <TableCell>{d.assigned ? "-" : d.reason}</TableCell>
                         <TableCell>{d.cost}</TableCell>
@@ -61,6 +62,7 @@ export function AppointmentDetailsTable({ data }: Props) {
                 <TableHead>
                     <TableRow>
                         <TableHeaderCell>Название назначения/услуги</TableHeaderCell>
+                        <TableHeaderCell>Обязательные ОУКР</TableHeaderCell>
                         <TableHeaderCell>Назначено</TableHeaderCell>
                         <TableHeaderCell>Причина неназначения</TableHeaderCell>
                         <TableHeaderCell>Стоимость услуги</TableHeaderCell>
