@@ -15,12 +15,12 @@ const appointmentsDetails: Record<string, AppointmentDetail[]> = {
     a1: [
         { id: "s10", name: "ЭКГ в 12 отведениях", mandatoryOukr: true, assigned: true, reason: "-", cost: "2 160 ₽", done: true, clinical: true },
         { id: "s11", name: "Электрокардиографический мониторинг", mandatoryOukr: true, assigned: true, reason: "-", cost: "3 200 ₽", done: true, clinical: true },
-        { id: "s13", name: "Определение уровня тропонина Т/И", mandatoryOukr: true, assigned: false, reason: "-", cost: "1 200 ₽", done: false, clinical: true },
-        { id: "s13", name: "Эхокардиография", mandatoryOukr: false, assigned: true, reason: "-", cost: "5 000 ₽", done: false, clinical: true },
-        { id: "s14", name: "Рентгенография грудной клетки", mandatoryOukr: false, assigned: false, reason: "-", cost: "1 400 ₽", done: false, clinical: true },
-        { id: "s15", name: "Биохимический анализ крови", mandatoryOukr: true, assigned: false, reason: "-", cost: "1 000 ₽", done: false, clinical: true },
-        { id: "s16", name: "Анализ мочи", mandatoryOukr: true, assigned: false, reason: "-", cost: "300 ₽", done: false, clinical: true },
-        { id: "s17", name: "КТ грудной клетки", assigned: false, reason: "-", cost: "3 000 ₽", done: false, clinical: false },
+        { id: "s13", name: "Определение уровня тропонина Т/И", mandatoryOukr: true, assigned: true, reason: "-", cost: "1 200 ₽", done: true, clinical: true },
+        { id: "s13", name: "Эхокардиография", mandatoryOukr: true, assigned: true, reason: "-", cost: "5 000 ₽", done: true, clinical: true },
+        { id: "s14", name: "Рентгенография грудной клетки", mandatoryOukr: true, assigned: true, reason: "-", cost: "1 400 ₽", done: true, clinical: true },
+        { id: "s15", name: "Биохимический анализ крови", mandatoryOukr: true, assigned: true, reason: "-", cost: "1 000 ₽", done: true, clinical: true },
+        { id: "s16", name: "Анализ мочи", mandatoryOukr: false, assigned: true, reason: "-", cost: "300 ₽", done: true, clinical: true },
+        { id: "s17", name: "КТ грудной клетки", assigned: true, reason: "-", cost: "3 000 ₽", done: true, clinical: false },
     ],
     a2: [
         { id: "s4", name: "Общий анализ крови", assigned: true, reason: "-", cost: "650 ₽", done: true, clinical: true },
