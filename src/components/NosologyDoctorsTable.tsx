@@ -61,7 +61,7 @@ export function NosologyDoctorsTable({ data, nosologyId }: NosologyDoctorsTableP
                         </TableCell>
                         <TableCell>
                             <SortableHeader
-                                label="% назначений ОУКР"
+                                label="Процент назначений ОУКР"
                                 columnKey="assignPercent"
                                 sortConfig={sortConfig}
                                 onSort={requestSort}

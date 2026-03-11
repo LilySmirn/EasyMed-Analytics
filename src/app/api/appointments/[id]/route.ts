@@ -40,7 +40,6 @@ const appointmentsDetails: Record<string, AppointmentDetail[]> = {
         { id: "s14", name: "Рентгенография грудной клетки", mandatoryOukr: true, assigned: true, reason: "-", cost: "1 400 ₽", done: true, clinical: true },
         { id: "s15", name: "Биохимический анализ крови", mandatoryOukr: true, assigned: true, reason: "-", cost: "1 000 ₽", done: true, clinical: true },
         { id: "s16", name: "Анализ мочи", mandatoryOukr: true, assigned: true, reason: "-", cost: "500 ₽", done: true, clinical: true },
-        { id: "s17", name: "КТ грудной клетки", assigned: false, reason: "Нет показаний по протоколу", cost: "3 200 ₽", done: false, clinical: false },
     ],
     a5: [
         { id: "s13", name: "Общий анализ крови", assigned: true, reason: "-", cost: "650 ₽", done: true, clinical: true },

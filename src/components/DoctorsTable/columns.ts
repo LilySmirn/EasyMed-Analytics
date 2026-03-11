@@ -21,7 +21,7 @@ export const qualityColumns: ColumnConfig[] = [
     { label: "Выполнено пациентами", key: "servicesCompletedPercent", sortable: true, color: true },
     { label: "Назначено сверх КР", key: "overKR", sortable: true },
     { label: "Назначено всего услуг", key: "totalServices", sortable: true },
-    { label: "Ср. назначаемость на прием", key: "avgServicesPerVisit", sortable: true, color: true },
+    { label: "Ср. назначаемость на прием", key: "avgServicesPerVisit", sortable: true },
     { label: "Приемов без назначений", key: "noServices", sortable: true },
 ];
 
@@ -37,7 +37,7 @@ export const financeColumns: ColumnConfig[] = [
     { label: "Доля недореализованных ОУКР", key: "lostOUKRPercent", sortable: true, color: "reverse" },
     { label: "Назначено всего услуг", key: "totalServices", sortable: true },
     { label: "Выполнено пациентами", key: "servicesCompletedPercent", sortable: true, color: true },
-    { label: "Ср. назначаемость на прием", key: "avgServicesPerVisit", sortable: true, color: true },
+    { label: "Ср. назначаемость на прием", key: "avgServicesPerVisit", sortable: true },
     { label: "Выручка", key: "revenue", sortable: true },
     { label: "Ср.чек", key: "avgBill", sortable: true },
     { label: "Потенциальная выручка", key: "potentialRevenue", sortable: true },

@@ -30,6 +30,7 @@ export interface Specialty {
 
     avgOUKRAssign: number;
     avgNosologyAssign: number;
+    avgServicesPerVisit: number;
 
     totalServices: number;
     overKR: number;

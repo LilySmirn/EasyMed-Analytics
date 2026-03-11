@@ -24,7 +24,7 @@ export const qualityColumns: ColumnConfig[] = [
         color: "reverse",
     },
     { key: "avgOUKRAssign", label: "Ср. назначаемость по ОУКР" },
-    { key: "avgNosologyAssign", label: "Ср. назначаемость по нозологии" },
+    { key: "avgServicesPerVisit", label: "Ср. назначаемость по нозологии" },
     { key: "totalServices", label: "Назначено всего услуг" },
     { key: "overKR", label: "Назначено сверх КР" },
 ];
@@ -48,7 +48,7 @@ export const financeColumns: ColumnConfig[] = [
         label: "Доля недореализованных ОУКР",
         color: "reverse",
     },
-    { key: "avgNosologyAssign", label: "Ср. назначаемость по нозологии" },
+    { key: "avgServicesPerVisit", label: "Ср. назначаемость по нозологии" },
     { key: "revenue", label: "Выручка" },
     { key: "avgBill", label: "Ср.чек" },
     { key: "potentialRevenue", label: "Потенциальная выручка" },

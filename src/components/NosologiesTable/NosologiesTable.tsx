@@ -55,16 +55,7 @@ export function NosologiesTable({ data }: NosologiesTableProps) {
         "nosologiesSorting"
     );
 
-    const getAvgServicesPerVisitPercent = (item: Nosology): number => {
-        if (item.oukr <= 0) return 0;
-        return Math.round((item.oukr / item.avgServicesPerVisit) * 100);
-    };
-
     const getCellPercentValue = (col: ColumnConfig, item: Nosology): number => {
-        if (col.key === "avgServicesPerVisit") {
-            return getAvgServicesPerVisitPercent(item);
-        }
-
         return item[col.key] as number;
     };
 
@@ -73,8 +64,7 @@ export function NosologiesTable({ data }: NosologiesTableProps) {
         if (
             (col.key === "servicesCompletedPercent" ||
                 col.key === "assignedOUKRAvg" ||
-                col.key === "lostOUKRPercent" ||
-                col.key === "avgServicesPerVisit") &&
+                col.key === "lostOUKRPercent") &&
             typeof value === "number"
         ) {
             return `${getCellPercentValue(col, item)} %`;

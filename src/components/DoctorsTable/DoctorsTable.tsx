@@ -53,16 +53,7 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
     const { items, requestSort, sortConfig } =
         useSortableData<Doctor>(data, "doctorsSorting");
 
-    const getAvgServicesPerVisitPercent = (row: Doctor): number => {
-        if (row.requiredKR <= 0) return 0;
-        return Math.round((row.avgServicesPerVisit / row.requiredKR) * 100);
-    };
-
     const getCellPercentValue = (col: ColumnConfig, row: Doctor): number => {
-        if (col.key === "avgServicesPerVisit") {
-            return getAvgServicesPerVisitPercent(row);
-        }
-
         return row[col.key] as number;
     };
 
@@ -71,8 +62,7 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
         if (
             (col.key === "servicesCompletedPercent" ||
                 col.key === "assignedOUKRAvg" ||
-                col.key === "lostOUKRPercent" ||
-                col.key === "avgServicesPerVisit") &&
+                col.key === "lostOUKRPercent") &&
             typeof value === "number"
         ) {
             return `${getCellPercentValue(col, row)} %`;
