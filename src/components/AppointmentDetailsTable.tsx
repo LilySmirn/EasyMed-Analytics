@@ -27,32 +27,32 @@ interface Props {
 }
 
 export function AppointmentDetailsTable({ data }: Props) {
-    const clinicalData = data.filter(d => d.clinical);
+    const mandatoryServicesData = data.filter(d => d.clinical && d.mandatoryOukr);
+    const indicationServicesData = data.filter(d => d.clinical && !d.mandatoryOukr);
     const nonClinicalData = data.filter(d => !d.clinical);
 
-    const renderGroup = (title: string, groupData: AppointmentDetail[], showMandatoryColumn: boolean) => {
+    const renderGroup = (title: string, groupData: AppointmentDetail[]) => {
         if (groupData.length === 0) return null;
 
         return (
             <>
                 <TableRow className="bg-blue-100 [&>td]:bg-blue-100">
-                    <TableCell colSpan={6} className="text-black py-1.5">
+                    <TableCell colSpan={5} className="text-black py-1.5">
                         {title}
                     </TableCell>
                 </TableRow>
 
                 {groupData.map(d => (
                     <TableRow key={d.id}>
-                        <TableCell colSpan={showMandatoryColumn ? 1 : 2}>{d.name}</TableCell>
-                        {showMandatoryColumn && <TableCell className="text-center">{d.mandatoryOukr ? "✓" : "—"}</TableCell>}
-                        <TableCell>{d.assigned ? "Да" : "Нет"}</TableCell>
-                        <TableCell>{d.assigned ? "-" : d.reason}</TableCell>
-                        <TableCell>{d.cost}</TableCell>
-                        <TableCell>{d.done ? "Да" : "Нет"}</TableCell>
+                        <TableCell>{d.name}</TableCell>
+                        <TableCell className="text-center">{d.assigned ? "Да" : "Нет"}</TableCell>
+                        <TableCell className="text-center">{d.assigned ? "-" : d.reason}</TableCell>
+                        <TableCell className="text-center">{d.cost}</TableCell>
+                        <TableCell className="text-center">{d.done ? "Да" : "Нет"}</TableCell>
                     </TableRow>
-                ))}
+                    ))}
             </>
-        );
+    );
     };
 
     return (
@@ -61,18 +61,18 @@ export function AppointmentDetailsTable({ data }: Props) {
                 <TableHead>
                     <TableRow>
                         <TableHeaderCell>Название назначения/услуги</TableHeaderCell>
-                        <TableHeaderCell className="text-center">Обязательные ОУКР</TableHeaderCell>
-                        <TableHeaderCell>Назначено</TableHeaderCell>
-                        <TableHeaderCell>Причина неназначения</TableHeaderCell>
-                        <TableHeaderCell>Стоимость услуги</TableHeaderCell>
-                        <TableHeaderCell>Выполнено пациентами</TableHeaderCell>
+                        <TableHeaderCell className="text-center">Назначено</TableHeaderCell>
+                        <TableHeaderCell className="text-center">Причина неназначения</TableHeaderCell>
+                        <TableHeaderCell className="text-center">Стоимость услуги</TableHeaderCell>
+                        <TableHeaderCell className="text-center">Выполнено пациентами</TableHeaderCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {renderGroup("По клиническим рекомендациям", clinicalData, true)}
-                    {renderGroup("Не по клиническим рекомендациям", nonClinicalData, false)}
+                    {renderGroup("Обязательные услуги", mandatoryServicesData)}
+                    {renderGroup("Услуги по показаниям", indicationServicesData)}
+                    {renderGroup("Не по клиническим рекомендациям", nonClinicalData)}
                 </TableBody>
             </Table>
         </TableRoot>
-    );
+);
 }
