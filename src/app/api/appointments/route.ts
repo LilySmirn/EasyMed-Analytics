@@ -7,6 +7,7 @@ type Appointment = {
     number: string;
     requiredServices: number;
     assignedRequired: number;
+    assignedTotal?: number;
     assignmentPercent: number;
     completionPercent: number;
     deviationPercent: number;
@@ -892,9 +893,12 @@ export async function GET(request: Request) {
         );
     }
 
-    const doctorAppointments = appointments.filter(
-        (a) => a.doctorId === doctorId
-    );
+    const doctorAppointments = appointments
+        .filter((a) => a.doctorId === doctorId)
+        .map((a) => ({
+            ...a,
+            assignedTotal: a.assignedTotal ?? a.assignedRequired,
+        }));
 
     return NextResponse.json(doctorAppointments);
 }

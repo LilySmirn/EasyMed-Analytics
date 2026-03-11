@@ -21,6 +21,7 @@ export interface Appointment {
     number: string;
     requiredServices: number;
     assignedRequired: number;
+    assignedTotal: number;
     assignmentPercent: number;
     completionPercent: number;
     deviationPercent: number;
@@ -45,13 +46,14 @@ export function AppointmentsTable({ data }: AppointmentsTableProps) {
                 <TableHead>
                     <TableRow>
                         <TableHeaderCell>Дата / № приёма</TableHeaderCell>
-                        <TableHeaderCell>МКБ</TableHeaderCell>
-                        <TableHeaderCell>Кол-во обяз. услуг</TableHeaderCell>
-                        <TableHeaderCell>Назначено обяз.</TableHeaderCell>
-                        <TableHeaderCell>Процент назначений ОУКР</TableHeaderCell>
-                        <TableHeaderCell>Выполнено пациентами</TableHeaderCell>
-                        <TableHeaderCell>Выручка</TableHeaderCell>
-                        <TableHeaderCell>Потерянная выручка</TableHeaderCell>
+                        <TableHeaderCell className="text-center">МКБ</TableHeaderCell>
+                        <TableHeaderCell className="text-center">Кол-во обяз. услуг</TableHeaderCell>
+                        <TableHeaderCell className="text-center">Назначено обяз.</TableHeaderCell>
+                        <TableHeaderCell className="text-center">Назначено всего</TableHeaderCell>
+                        <TableHeaderCell className="text-center">% назначений ОУКР</TableHeaderCell>
+                        <TableHeaderCell className="text-center">Выполнено пациентами</TableHeaderCell>
+                        <TableHeaderCell className="text-center">Выручка</TableHeaderCell>
+                        <TableHeaderCell className="text-center">Потерянная выручка</TableHeaderCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -72,17 +74,18 @@ export function AppointmentsTable({ data }: AppointmentsTableProps) {
                                     {a.date} / {a.number}
                                 </Link>
                             </TableCell>
-                            <TableCell>{a.mkb}</TableCell>
-                            <TableCell>{a.requiredServices}</TableCell>
-                            <TableCell>{a.assignedRequired}</TableCell>
-                            <TableCell className={getPercentColor(a.assignmentPercent)}>
+                            <TableCell className="text-center">{a.mkb}</TableCell>
+                            <TableCell className="text-center">{a.requiredServices}</TableCell>
+                            <TableCell className="text-center">{a.assignedRequired}</TableCell>
+                            <TableCell className="text-center">{a.assignedTotal}</TableCell>
+                            <TableCell className={`text-center ${getPercentColor(a.assignmentPercent)}`}>
                                 {a.assignmentPercent}%
                             </TableCell>
-                            <TableCell className={getPercentColor(a.completionPercent)}>
+                            <TableCell className={`text-center ${getPercentColor(a.completionPercent)}`}>
                                 {a.completionPercent}%
                             </TableCell>
-                            <TableCell>{a.revenue}</TableCell>
-                            <TableCell>{a.lostRevenue}</TableCell>
+                            <TableCell className="text-center">{a.revenue}</TableCell>
+                            <TableCell className="text-center">{a.lostRevenue}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
