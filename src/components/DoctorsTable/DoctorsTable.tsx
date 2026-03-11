@@ -48,7 +48,7 @@ export function DoctorsTable({ data }: DoctorsTableProps) {
     const { mode } = useMode();
 
     const columns: ColumnConfig[] =
-        mode === "finance" ? financeColumns : qualityColumns;
+        (mode === "finance" ? financeColumns : qualityColumns).filter((col) => !col.hidden);
 
     const { items, requestSort, sortConfig } =
         useSortableData<Doctor>(data, "doctorsSorting");

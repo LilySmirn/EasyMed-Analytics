@@ -5,6 +5,7 @@ export interface ColumnConfig {
     label: string;
     color?: "reverse" | boolean;
     link?: boolean;
+    hidden?: boolean;
 }
 
 export const qualityColumns: ColumnConfig[] = [
@@ -29,7 +30,7 @@ export const financeColumns: ColumnConfig[] = [
     { key: "appointmentsWithoutServices", label: "Приемов без назначений" },
     { key: "oukr", label: "ОУКР" },
     { key: "assignedOUKRAvg", label: "Процент назначений ОУКР", color: true },
-    { key: "lostOUKRPercent", label: "Доля недореализованных ОУКР", color: "reverse" },
+    { key: "lostOUKRPercent", label: "Доля недореализованных ОУКР", color: "reverse", hidden: true },
     { key: "totalServicesAssigned", label: "Назначено всего услуг" },
     { key: "servicesCompletedPercent", label: "Выполнено пациентами", color: true },
     { key: "avgServicesPerVisit", label: "Ср. назначаемость на прием"},

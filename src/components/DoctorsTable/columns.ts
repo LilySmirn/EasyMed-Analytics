@@ -6,6 +6,7 @@ export type ColumnConfig = {
     sortable?: boolean;
     color?: "reverse" | boolean;
     link?: boolean;
+    hidden?: boolean;
     minWidth?: string; // добавили
     maxWidth?: string; // добавили
 };
@@ -34,7 +35,7 @@ export const financeColumns: ColumnConfig[] = [
     { label: "Приемов без назначений", key: "noServices", sortable: true },
     { label: "ОУКР", key: "requiredKR", sortable: true },
     { label: "% назначений ОУКР", key: "assignedOUKRAvg", sortable: true, color: true },
-    { label: "Доля недореализованных ОУКР", key: "lostOUKRPercent", sortable: true, color: "reverse" },
+    { label: "Доля недореализованных ОУКР", key: "lostOUKRPercent", sortable: true, color: "reverse", hidden: true },
     { label: "Назначено всего услуг", key: "totalServices", sortable: true },
     { label: "Выполнено пациентами", key: "servicesCompletedPercent", sortable: true, color: true },
     { label: "Ср. назначаемость на прием", key: "avgServicesPerVisit", sortable: true },

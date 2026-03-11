@@ -5,6 +5,7 @@ export interface ColumnConfig {
     label: string;
     link?: boolean;
     color?: "reverse" | boolean;
+    hidden?: boolean;
 }
 
 /* =======================
@@ -47,6 +48,7 @@ export const financeColumns: ColumnConfig[] = [
         key: "lostOUKRPercent",
         label: "Доля недореализованных ОУКР",
         color: "reverse",
+        hidden: true,
     },
     { key: "avgServicesPerVisit", label: "Ср. назначаемость по нозологии" },
     { key: "revenue", label: "Выручка" },

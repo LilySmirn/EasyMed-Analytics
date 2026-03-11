@@ -48,7 +48,7 @@ export function NosologiesTable({ data }: NosologiesTableProps) {
     const { mode } = useMode(); // <-- берём глобальный режим
     const useFinance = mode === "finance";
 
-    const columns: ColumnConfig[] = useFinance ? financeColumns : qualityColumns;
+    const columns: ColumnConfig[] = (useFinance ? financeColumns : qualityColumns).filter((col) => !col.hidden);
 
     const { items, requestSort, sortConfig } = useSortableData<Nosology>(
         data,

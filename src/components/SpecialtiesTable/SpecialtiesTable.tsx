@@ -51,7 +51,7 @@ export function SpecialtiesTable({ data, useFinance }: Props) {
     const { mode } = useMode(); // получаем глобальный режим
     const isFinance = useFinance ?? (mode === "finance"); // если пропс не передан, берем из контекста
 
-    const columns: ColumnConfig[] = isFinance ? financeColumns : qualityColumns;
+    const columns: ColumnConfig[] = (isFinance ? financeColumns : qualityColumns).filter((col) => !col.hidden);
     const { items, requestSort, sortConfig } =
         useSortableData<Specialty>(data, "specialtiesSorting");
 
