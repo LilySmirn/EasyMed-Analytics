@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { MetricCard } from "./MetricCard";
+import { useRouter } from "next/navigation";
 import { useFilters } from "@/context/FiltersContext";
 
 import { buildMetricCardData } from "@/app/metric-domain/builders/buildMetricCardData";
@@ -22,6 +23,7 @@ import { mockRawCardsData, mockLFL } from "@/app/data/mockMetrics";
 
 export function MetricCardsWrapper() {
     const { filters } = useFilters();
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -74,11 +76,22 @@ export function MetricCardsWrapper() {
       [grid-template-columns:repeat(auto-fit,minmax(440px,1fr))]"
             >
                 {cardsData.map((cardData, index) => (
-                    <MetricCard
+                    <div
                         key={cardData.title ?? index}
-                        cardData={cardData}
-                        isLoading={isLoading}
-                    />
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => router.push("/nosologies")}
+                        onKeyDown={(event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                                event.preventDefault();
+                                router.push("/nosologies");
+                            }
+                        }}
+                        className="h-full cursor-pointer transition-transform duration-200 hover:scale-[1.02] focus-visible:scale-[1.02] focus-visible:outline-none"
+                        aria-label={`Открыть страницу нозологий: ${cardData.title}`}
+                    >
+                        <MetricCard cardData={cardData} isLoading={isLoading} />
+                    </div>
                 ))}
             </div>
         </div>
