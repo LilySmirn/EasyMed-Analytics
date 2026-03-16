@@ -16,6 +16,7 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
     const [loading, setLoading] = useState(true);
     const [doctorId, setDoctorId] = useState<string | null>(null);
     const [appointmentLabel, setAppointmentLabel] = useState<string | null>(null);
+    const [isLabelLoading, setIsLabelLoading] = useState(true);
 
     const { setItems, setCurrentId } = useInlineDrawer();
     const router = useRouter();
@@ -68,6 +69,8 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
     useEffect(() => {
         if (!doctorId) return;
 
+        setIsLabelLoading(true);
+
         if (!queryDoctorId) {
             const query = new URLSearchParams({ id: doctorId });
             if (nosologyId) query.set("nosology", nosologyId);
@@ -102,7 +105,8 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
                 }));
 
                 setItems(drawerItems);
-            });
+            })
+            .finally(() => setIsLabelLoading(false));
     }, [doctorId, nosologyId, params.id, queryDoctorId, router, setItems, specialty]);
 
     if (!params.id) return <div className="px-4 py-6 sm:px-6 lg:px-4">Не указан ID приёма</div>;
@@ -112,7 +116,7 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
         <div className="px-4 py-6 sm:px-6 lg:px-4">
             <div className="flex items-center gap-2 mb-6">
                 <BackButton />
-                <h1 className="text-2xl font-bold">{appointmentLabel ?? `№${params.id}`}</h1>
+                <h1 className="text-2xl font-bold">{isLabelLoading ? "" : appointmentLabel ?? `Приём №${params.id}`}</h1>
             </div>
             <AppointmentDetailsTable data={data} />
         </div>
