@@ -13,15 +13,14 @@ export const CalendarPopover = () => {
         : "Выбрать даты";
 
     return (
-        <div className="flex flex-col">
-            {/* Label сверху */}
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-        Даты
-      </span>
+        <div className="flex flex-col w-48">
+            <span className="text-sm text-gray-500 mb-1 ml-1">
+                Даты
+            </span>
 
             <Popover>
                 <PopoverTrigger asChild>
-                    <button className="px-3 py-2 rounded border border-gray-300 dark:border-gray-700 text-sm bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+                    <button className="w-48 px-3 py-2 rounded border border-gray-300 dark:border-gray-700 text-sm bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-left">
                         {buttonLabel}
                     </button>
                 </PopoverTrigger>
