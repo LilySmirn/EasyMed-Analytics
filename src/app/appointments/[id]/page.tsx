@@ -11,12 +11,34 @@ interface AppointmentDetailsPageProps {
     params: { id: string };
 }
 
+type AppointmentSummary = { id: string; date?: string; number?: string; mkb?: string };
+
+const getDiagnosisByMkb = (mkbCode: string) => {
+    if (mkbCode.startsWith("I21") || mkbCode.startsWith("I22") || mkbCode.startsWith("I24")) {
+        return "Ишемическая болезнь сердца";
+    }
+
+    return null;
+};
+
+const buildAppointmentLabel = (appointment: AppointmentSummary | undefined) => {
+    if (appointment?.mkb) {
+        const diagnosis = getDiagnosisByMkb(appointment.mkb);
+        return `${appointment.mkb}${diagnosis ? ` ${diagnosis}` : ""}`;
+    }
+
+    if (appointment?.date && appointment?.number) {
+        return `${appointment.date} / ${appointment.number}`;
+    }
+
+    return null;
+};
+
 export default function AppointmentDetailsPage({ params }: AppointmentDetailsPageProps) {
     const [data, setData] = useState<AppointmentDetail[]>([]);
     const [loading, setLoading] = useState(true);
     const [doctorId, setDoctorId] = useState<string | null>(null);
     const [appointmentLabel, setAppointmentLabel] = useState<string | null>(null);
-    const [isLabelLoading, setIsLabelLoading] = useState(true);
 
     const { setItems, setCurrentId } = useInlineDrawer();
     const router = useRouter();
@@ -25,20 +47,12 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
     const nosologyId = searchParams.get("nosology");
     const specialty = searchParams.get("specialty");
 
-    const getDiagnosisByMkb = (mkbCode: string) => {
-        if (mkbCode.startsWith("I21") || mkbCode.startsWith("I22") || mkbCode.startsWith("I24")) {
-            return "Ишемическая болезнь сердца";
-        }
-
-        return null;
-    };
-
     useEffect(() => {
         if (!params.id) return;
 
         fetch(`/api/appointments/${params.id}`)
-            .then(res => res.json())
-            .then(d => setData(d))
+            .then((res) => res.json())
+            .then((d) => setData(d))
             .finally(() => setLoading(false));
     }, [params.id]);
 
@@ -47,29 +61,35 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
     }, [params.id, setCurrentId]);
 
     useEffect(() => {
+        if (queryDoctorId) {
+            setDoctorId(queryDoctorId);
+            return;
+        }
+
         const resolveDoctorId = async () => {
-            const doctorsRes = await fetch('/api/doctors');
+            const doctorsRes = await fetch("/api/doctors");
             const doctors: Doctor[] = await doctorsRes.json();
 
-            for (const doctor of doctors) {
-                const appointmentsRes = await fetch(`/api/appointments?doctorId=${doctor.id}`);
-                const appointments = await appointmentsRes.json();
-                if (appointments.some((appointment: { id: string }) => appointment.id === params.id)) {
-                    setDoctorId(doctor.id);
-                    return;
-                }
-            }
+            const appointmentsByDoctor = await Promise.all(
+                doctors.map(async (doctor) => {
+                    const appointmentsRes = await fetch(`/api/appointments?doctorId=${doctor.id}`);
+                    const appointments: AppointmentSummary[] = await appointmentsRes.json();
+                    return { doctorId: doctor.id, appointments };
+                }),
+            );
 
-            setDoctorId(null);
+            const matchedDoctor = appointmentsByDoctor.find(({ appointments }) =>
+                appointments.some((appointment) => appointment.id === params.id),
+            );
+
+            setDoctorId(matchedDoctor?.doctorId ?? null);
         };
 
         resolveDoctorId();
-    }, [params.id]);
+    }, [params.id, queryDoctorId]);
 
     useEffect(() => {
         if (!doctorId) return;
-
-        setIsLabelLoading(true);
 
         if (!queryDoctorId) {
             const query = new URLSearchParams({ id: doctorId });
@@ -79,17 +99,10 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
         }
 
         fetch(`/api/appointments?doctorId=${doctorId}`)
-            .then(res => res.json())
-            .then((appointments: Array<{ id: string; date?: string; number?: string; mkb?: string }>) => {
+            .then((res) => res.json())
+            .then((appointments: AppointmentSummary[]) => {
                 const currentAppointment = appointments.find((a) => a.id === params.id);
-                if (currentAppointment?.mkb) {
-                    const diagnosis = getDiagnosisByMkb(currentAppointment.mkb);
-                    setAppointmentLabel(`${currentAppointment.mkb}${diagnosis ? ` ${diagnosis}` : ""}`);
-                } else if (currentAppointment?.date && currentAppointment?.number) {
-                    setAppointmentLabel(`${currentAppointment.date} / ${currentAppointment.number}`);
-                } else {
-                    setAppointmentLabel(null);
-                }
+                setAppointmentLabel(buildAppointmentLabel(currentAppointment));
 
                 const drawerItems: InlineDrawerItem[] = appointments.map((a) => ({
                     id: a.id,
@@ -105,8 +118,7 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
                 }));
 
                 setItems(drawerItems);
-            })
-            .finally(() => setIsLabelLoading(false));
+            });
     }, [doctorId, nosologyId, params.id, queryDoctorId, router, setItems, specialty]);
 
     if (!params.id) return <div className="px-4 py-6 sm:px-6 lg:px-4">Не указан ID приёма</div>;
@@ -116,7 +128,7 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
         <div className="px-4 py-6 sm:px-6 lg:px-4">
             <div className="flex items-center gap-2 mb-6">
                 <BackButton />
-                <h1 className="text-2xl font-bold">{isLabelLoading ? "" : appointmentLabel ?? `Приём №${params.id}`}</h1>
+                <h1 className="text-2xl font-bold">{appointmentLabel ?? `Приём №${params.id}`}</h1>
             </div>
             <AppointmentDetailsTable data={data} />
         </div>
