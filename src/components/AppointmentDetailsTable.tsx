@@ -48,7 +48,9 @@ export function AppointmentDetailsTable({ data }: Props) {
                         <TableCell className="text-center">{d.assigned ? "Да" : "Нет"}</TableCell>
                         <TableCell className="text-center">{d.assigned ? "-" : d.reason}</TableCell>
                         <TableCell className="text-center">{d.cost}</TableCell>
-                        <TableCell className="text-center">{d.done ? "Да" : "Нет"}</TableCell>
+                        <TableCell className="text-center">
+                            {d.assigned ? (d.done ? "Да" : "Нет") : "-"}
+                        </TableCell>
                     </TableRow>
                     ))}
             </>
