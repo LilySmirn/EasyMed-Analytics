@@ -77,8 +77,8 @@ export function NosologyDoctorsTable({ data, nosologyId }: NosologyDoctorsTableP
                         </TableCell>
                         <TableCell>
                             <SortableHeader
-                                label="Ср. назначаемость"
-                                columnKey="avgAssign"
+                                label="Потерянная выручка"
+                                columnKey="lostRevenue"
                                 sortConfig={sortConfig}
                                 onSort={requestSort}
                             />
@@ -93,8 +93,8 @@ export function NosologyDoctorsTable({ data, nosologyId }: NosologyDoctorsTableP
                         </TableCell>
                         <TableCell>
                             <SortableHeader
-                                label="Потерянная выручка"
-                                columnKey="lostRevenue"
+                                label="Ср. назначаемость"
+                                columnKey="avgAssign"
                                 sortConfig={sortConfig}
                                 onSort={requestSort}
                             />
