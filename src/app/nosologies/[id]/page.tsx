@@ -1,11 +1,14 @@
 'use client';
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NosologyDoctorsTable, NosologyDoctor } from "@/components/NosologyDoctorsTable";
 import { BackButton } from "@/components/BackButton";
 import { InlineDrawerItem, useInlineDrawer } from "@/context/InlineDrawerContext";
 import { Nosology } from "@/components/NosologiesTable/NosologiesTable";
+import { useFilters } from "@/context/FiltersContext";
+import { applyFilters } from "@/utils/applyFilters";
+import { buildDoctorFilterOptions } from "@/utils/doctorFilterOptions";
 
 export default function NosologyPage({ params }: { params: { id: string } }) {
     const [doctors, setDoctors] = useState<NosologyDoctor[]>([]);
@@ -14,13 +17,17 @@ export default function NosologyPage({ params }: { params: { id: string } }) {
     const name = searchParams.get("name") || "Нозология";
 
     const { setItems, setCurrentId } = useInlineDrawer();
+    const { filters, setDoctorOptions } = useFilters();
 
     useEffect(() => {
         fetch(`/api/nosologies/${params.id}/doctors`)
             .then((res) => res.json())
-            .then((data) => setDoctors(data))
+            .then((data: NosologyDoctor[]) => {
+                setDoctors(data);
+                setDoctorOptions(buildDoctorFilterOptions(data, (doctor) => doctor.name));
+            })
             .finally(() => setLoading(false));
-    }, [params.id]);
+    }, [params.id, setDoctorOptions]);
 
     useEffect(() => {
         setCurrentId(params.id);
@@ -43,6 +50,11 @@ export default function NosologyPage({ params }: { params: { id: string } }) {
             });
     }, [setItems]);
 
+    const filteredDoctors = useMemo(
+        () => applyFilters(doctors, filters, { doctor: { field: "id" } }),
+        [doctors, filters]
+    );
+
     if (loading) return <div className="px-4 py-6 sm:px-6 lg:px-3">Загрузка...</div>;
 
     return (
@@ -51,7 +63,7 @@ export default function NosologyPage({ params }: { params: { id: string } }) {
                 <BackButton />
                 <h1 className="text-2xl font-bold">{name}</h1>
             </div>
-            <NosologyDoctorsTable data={doctors} nosologyId={params.id} />
+            <NosologyDoctorsTable data={filteredDoctors} nosologyId={params.id} />
         </div>
     );
 }

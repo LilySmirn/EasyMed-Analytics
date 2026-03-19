@@ -5,30 +5,34 @@ import { DoctorsTable, Doctor } from "@/components/DoctorsTable/DoctorsTable";
 import { useFilters } from "@/context/FiltersContext";
 import { applyFilters, FilterValue } from "@/utils/applyFilters";
 import { BackButton } from "@/components/BackButton";
-import { useInlineDrawer } from "@/context/InlineDrawerContext"; // добавили
+import { useInlineDrawer } from "@/context/InlineDrawerContext";
+import { buildDoctorFilterOptions } from "@/utils/doctorFilterOptions";
 
 export default function DoctorsPage() {
     const [doctors, setDoctors] = useState<Doctor[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const { filters } = useFilters();
-    const { setItems, setCurrentId } = useInlineDrawer(); // контекст для очистки
+    const { filters, setDoctorOptions } = useFilters();
+    const { setItems, setCurrentId } = useInlineDrawer();
 
     useEffect(() => {
         fetch("/api/doctors")
             .then((res) => res.json())
-            .then((data: Doctor[]) => setDoctors(data))
+            .then((data: Doctor[]) => {
+                setDoctors(data);
+                setDoctorOptions(buildDoctorFilterOptions(data, (doctor) => doctor.fullName));
+            })
             .finally(() => setLoading(false));
 
-        // 🔹 очищаем боковую панель
         setItems([]);
         setCurrentId(null);
-    }, [setCurrentId, setItems]);
+    }, [setCurrentId, setDoctorOptions, setItems]);
 
     const filteredDoctors = useMemo(
         () =>
             applyFilters<Doctor>(doctors, filters, {
                 specialty: { field: "profession" },
+                doctor: { field: "id" },
                 type: {
                     custom: (item: Doctor, value: FilterValue) => {
                         if (value === "first") return item.primary > 0;

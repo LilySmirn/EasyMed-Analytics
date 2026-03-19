@@ -7,7 +7,7 @@ import { useFilters } from "@/context/FiltersContext";
 import { useMode } from "@/context/ModeContext";
 
 export function TopFilters() {
-    const { setFilter, filters } = useFilters();
+    const { setFilter, filters, doctorOptions } = useFilters();
     const { mode, setMode, isReady } = useMode();
 
     if (!isReady) return <div className="h-20 bg-gray-100 dark:bg-gray-900" />;
@@ -20,7 +20,7 @@ export function TopFilters() {
 
                     <FilterSelect
                         label="Специальность"
-                        defaultValue={filters.specialty || "all"}
+                        value={filters.specialty || "all"}
                         onChange={(v) => setFilter("specialty", v)}
                         options={[
                             { value: "all", label: "Все специальности" },
@@ -33,7 +33,7 @@ export function TopFilters() {
 
                     <FilterSelect
                         label="Тип приёма"
-                        defaultValue={filters.type || "all"}
+                        value={filters.type || "all"}
                         options={[
                             { value: "all", label: "Все" },
                             { value: "first", label: "Первичный" },
@@ -44,7 +44,7 @@ export function TopFilters() {
 
                     <FilterSelect
                         label="Филиалы"
-                        defaultValue={filters.branch || "all"}
+                        value={filters.branch || "all"}
                         onChange={(v) => setFilter("branch", v)}
                         options={[
                             { value: "all", label: "Все филиалы" },
@@ -56,20 +56,14 @@ export function TopFilters() {
 
                     <FilterSelect
                         label="Врач"
-                        defaultValue={filters.doctor || "all"}
+                        value={filters.doctor || "all"}
                         onChange={(v) => setFilter("doctor", v)}
-                        options={[
-                            { value: "all", label: "Все врачи" },
-                            { value: "иванов", label: "Иванов" },
-                            { value: "петров", label: "Петров" },
-                            { value: "сидоров", label: "Сидоров" },
-                            { value: "смирнова", label: "Смирнова" },
-                        ]}
+                        options={doctorOptions}
                     />
 
                     <FilterSelect
                         label="ДМС"
-                        defaultValue={filters.insurance || "all"}
+                        value={filters.insurance || "all"}
                         onChange={(v) => setFilter("insurance", v)}
                         options={[
                             { value: "all", label: "Все" },
@@ -80,7 +74,7 @@ export function TopFilters() {
 
                     <FilterSelect
                         label="Вид услуг"
-                        defaultValue={filters.serviceType || "all"}
+                        value={filters.serviceType || "all"}
                         onChange={(v) => setFilter("serviceType", v)}
                         options={[
                             { value: "all", label: "Все" },
@@ -93,7 +87,7 @@ export function TopFilters() {
                 <div className="flex items-center gap-4">
                     <FilterSelect
                         label="EasyMed"
-                        defaultValue={filters.easyMed || "all"}
+                        value={filters.easyMed || "all"}
                         onChange={(v) => setFilter("easyMed", v)}
                         options={[
                             { value: "all", label: "Все" },
@@ -104,7 +98,7 @@ export function TopFilters() {
 
                     <FilterSelect
                         label="Категория услуг"
-                        defaultValue={filters.serviceCategory || "all"}
+                        value={filters.serviceCategory || "all"}
                         onChange={(v) => setFilter("serviceCategory", v)}
                         options={[
                             { value: "all", label: "Все категории" },
