@@ -14,10 +14,10 @@ export function ModeToggle({ value, onChange }: Props) {
     const isFinance = value === "finance"
 
     return (
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-3">
             {/* Иконка "Качество лечения" */}
             <div
-                className={`transition-opacity cursor-pointer ${
+                className={`shrink-0 cursor-pointer transition-opacity ${
                     !isFinance ? "opacity-100" : "opacity-40"
                 }`}
                 onClick={() => onChange("quality")}
@@ -27,6 +27,7 @@ export function ModeToggle({ value, onChange }: Props) {
                     alt="Качество лечения"
                     width={30}
                     height={30}
+                    className="h-[30px] w-[30px] shrink-0 max-w-none"
                 />
             </div>
 
@@ -42,7 +43,7 @@ export function ModeToggle({ value, onChange }: Props) {
 
             {/* Иконка "Финансы" */}
             <div
-                className={`transition-opacity cursor-pointer ${
+                className={`shrink-0 cursor-pointer transition-opacity ${
                     isFinance ? "opacity-100" : "opacity-40"
                 }`}
                 onClick={() => onChange("finance")}
@@ -52,6 +53,7 @@ export function ModeToggle({ value, onChange }: Props) {
                     alt="Финансы"
                     width={22}
                     height={22}
+                    className="h-[22px] w-[22px] shrink-0 max-w-none"
                 />
             </div>
         </div>
