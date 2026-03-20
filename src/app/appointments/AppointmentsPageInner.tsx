@@ -47,7 +47,8 @@ export default function AppointmentsPageInner() {
         let url = `/api/appointments?doctorId=${doctorId}`;
 
         Object.entries(filters).forEach(([key, value]) => {
-            url += `&${key}=${encodeURIComponent(value)}`;
+            const serializedValue = Array.isArray(value) ? value.join(',') : value;
+            url += `&${key}=${encodeURIComponent(serializedValue)}`;
         });
 
         fetch(url)

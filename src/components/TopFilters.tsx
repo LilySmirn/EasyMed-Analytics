@@ -10,6 +10,8 @@ export function TopFilters() {
     const { setFilter, filters } = useFilters();
     const { mode, setMode, isReady } = useMode();
 
+    const getSingleValue = (value: string | string[] | undefined) => (Array.isArray(value) ? "all" : (value || "all"));
+
     if (!isReady) return <div className="h-20 bg-gray-100 dark:bg-gray-900" />;
 
     return (
@@ -19,8 +21,9 @@ export function TopFilters() {
 
                 <FilterSelect
                     label="Специальность"
-                    value={filters.specialty || "all"}
-                    onChange={(v) => setFilter("specialty", v)}
+                    values={Array.isArray(filters.specialty) ? filters.specialty : []}
+                    onMultiChange={(values) => setFilter("specialty", values)}
+                    multiple
                     options={[
                         { value: "all", label: "Все специальности" },
                         { value: "терапевт", label: "Терапевт" },
@@ -32,7 +35,7 @@ export function TopFilters() {
 
                 <FilterSelect
                     label="Тип приёма"
-                    value={filters.type || "all"}
+                    value={getSingleValue(filters.type)}
                     options={[
                         { value: "all", label: "Все" },
                         { value: "first", label: "Первичный" },
@@ -43,8 +46,9 @@ export function TopFilters() {
 
                 <FilterSelect
                     label="Филиал"
-                    value={filters.branch || "all"}
-                    onChange={(v) => setFilter("branch", v)}
+                    values={Array.isArray(filters.branch) ? filters.branch : []}
+                    onMultiChange={(values) => setFilter("branch", values)}
+                    multiple
                     options={[
                         { value: "all", label: "Все филиалы" },
                         { value: "Филиал 1", label: "Филиал 1" },
@@ -55,8 +59,9 @@ export function TopFilters() {
 
                 <FilterSelect
                     label="Врач"
-                    value={filters.doctor || "all"}
-                    onChange={(v) => setFilter("doctor", v)}
+                    values={Array.isArray(filters.doctor) ? filters.doctor : []}
+                    onMultiChange={(values) => setFilter("doctor", values)}
+                    multiple
                     options={[
                         { value: "all", label: "Все врачи" },
                         { value: "иванов", label: "Иванов" },
@@ -68,7 +73,7 @@ export function TopFilters() {
 
                 <FilterSelect
                     label="ДМС"
-                    value={filters.insurance || "all"}
+                    value={getSingleValue(filters.insurance)}
                     onChange={(v) => setFilter("insurance", v)}
                     options={[
                         { value: "all", label: "Все" },
@@ -79,7 +84,7 @@ export function TopFilters() {
 
                 <FilterSelect
                     label="Вид услуг"
-                    value={filters.serviceType || "all"}
+                    value={getSingleValue(filters.serviceType)}
                     onChange={(v) => setFilter("serviceType", v)}
                     options={[
                         { value: "all", label: "Все" },
@@ -90,7 +95,7 @@ export function TopFilters() {
 
                 <FilterSelect
                     label="EasyMed"
-                    value={filters.easyMed || "all"}
+                    value={getSingleValue(filters.easyMed)}
                     onChange={(v) => setFilter("easyMed", v)}
                     options={[
                         { value: "all", label: "Все" },

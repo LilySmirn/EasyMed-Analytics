@@ -2,7 +2,8 @@
 
 import { createContext, useCallback, useContext, useMemo, useState, ReactNode } from "react";
 
-type FiltersState = Record<string, string>;
+export type FilterStateValue = string | string[];
+type FiltersState = Record<string, FilterStateValue>;
 
 export interface FilterOption {
     value: string;
@@ -12,17 +13,45 @@ export interface FilterOption {
 interface FiltersContextType {
     filters: FiltersState;
     doctorOptions: FilterOption[];
-    setFilter: (key: string, value: string) => void;
+    setFilter: (key: string, value: FilterStateValue) => void;
     setDoctorOptions: (options: FilterOption[]) => void;
     clearFilters: () => void;
 }
 
 const defaultDoctorOption: FilterOption = { value: "all", label: "Все врачи" };
+const multiSelectFilterKeys = new Set(["specialty", "branch", "doctor"]);
+
+function normalizeFilterValue(key: string, value: FilterStateValue | undefined): FilterStateValue {
+    if (!multiSelectFilterKeys.has(key)) {
+        return typeof value === "string" ? value : "all";
+    }
+
+    if (Array.isArray(value)) {
+        return value.filter(Boolean);
+    }
+
+    if (!value || value === "all") {
+        return [];
+    }
+
+    return [value];
+}
+
+function normalizeFilters(rawFilters: unknown): FiltersState {
+    if (!rawFilters || typeof rawFilters !== "object") return {};
+
+    return Object.entries(rawFilters as Record<string, unknown>).reduce<FiltersState>((acc, [key, value]) => {
+        if (typeof value === "string" || Array.isArray(value)) {
+            acc[key] = normalizeFilterValue(key, value as FilterStateValue);
+        }
+        return acc;
+    }, {});
+}
 
 function safeGetFilters(): FiltersState {
     if (typeof window === "undefined") return {};
     const raw = localStorage.getItem("filters");
-    return raw ? JSON.parse(raw) : {};
+    return raw ? normalizeFilters(JSON.parse(raw)) : {};
 }
 
 function safeSetFilters(filters: FiltersState) {
@@ -49,9 +78,9 @@ export const FiltersProvider = ({ children }: { children: ReactNode }) => {
     const [filters, setFilters] = useState<FiltersState>(() => safeGetFilters());
     const [doctorOptions, setDoctorOptionsState] = useState<FilterOption[]>([defaultDoctorOption]);
 
-    const setFilter = useCallback((key: string, value: string) => {
+    const setFilter = useCallback((key: string, value: FilterStateValue) => {
         setFilters((currentFilters) => {
-            const nextFilters = { ...currentFilters, [key]: value };
+            const nextFilters = { ...currentFilters, [key]: normalizeFilterValue(key, value) };
             safeSetFilters(nextFilters);
             return nextFilters;
         });
@@ -65,12 +94,19 @@ export const FiltersProvider = ({ children }: { children: ReactNode }) => {
         ));
 
         setFilters((currentFilters) => {
-            const currentDoctor = currentFilters.doctor;
-            if (!currentDoctor || nextOptions.some((option) => option.value === currentDoctor)) {
+            const currentDoctor = normalizeFilterValue("doctor", currentFilters.doctor);
+            if (!Array.isArray(currentDoctor)) {
                 return currentFilters;
             }
 
-            const nextFilters = { ...currentFilters, doctor: "all" };
+            const allowedDoctorIds = new Set(nextOptions.map((option) => option.value));
+            const nextDoctorFilter = currentDoctor.filter((doctorId) => allowedDoctorIds.has(doctorId));
+
+            if (nextDoctorFilter.length === currentDoctor.length) {
+                return currentFilters;
+            }
+
+            const nextFilters = { ...currentFilters, doctor: nextDoctorFilter };
             safeSetFilters(nextFilters);
             return nextFilters;
         });

@@ -48,9 +48,13 @@ export function MetricCardsWrapper() {
     ];
 
     // строка выбранных верхних фильтров
-    const selectedFiltersKey = `${filters.specialty || "all"}_${
-        filters.type || "all"
-    }_${filters.branch || "all"}`;
+    const formatFilterValue = (value: string | string[] | undefined) => (
+        Array.isArray(value) ? (value.length > 0 ? value.join("|") : "all") : (value || "all")
+    );
+
+    const selectedFiltersKey = `${formatFilterValue(filters.specialty)}_${
+        formatFilterValue(filters.type)
+    }_${formatFilterValue(filters.branch)}`;
 
     const cardsData = cardConfigs.map((config) => {
         const rawData = mockRawCardsData[config.title];
