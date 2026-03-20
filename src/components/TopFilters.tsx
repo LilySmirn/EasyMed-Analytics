@@ -42,7 +42,7 @@ export function TopFilters() {
                 />
 
                 <FilterSelect
-                    label="Филиалы"
+                    label="Филиал"
                     value={filters.branch || "all"}
                     onChange={(v) => setFilter("branch", v)}
                     options={[
