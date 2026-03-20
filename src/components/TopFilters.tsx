@@ -99,21 +99,7 @@ export function TopFilters() {
                     ]}
                 />
 
-                <FilterSelect
-                    label="Категория услуг"
-                    value={filters.serviceCategory || "all"}
-                    onChange={(v) => setFilter("serviceCategory", v)}
-                    options={[
-                        { value: "all", label: "Все категории" },
-                        { value: "vaccination", label: "Вакцинация" },
-                        { value: "gastroenterology", label: "Гастроэнтерология" },
-                        { value: "gynecology", label: "Гинекология" },
-                        { value: "dermatovenereology", label: "Дерматовенерология" },
-                        { value: "laboratory", label: "Лаборатория" },
-                        { value: "ultrasound", label: "УЗИ" },
-                        { value: "ct", label: "КТ" },
-                    ]}
-                />
+
             </div>
 
             <div className="mt-6 shrink-0 self-start">
