@@ -7,6 +7,7 @@ import { ModeProvider } from "@/context/ModeContext";
 import { TopFilters } from "@/components/TopFilters";
 import { ConditionalDrawer } from "@/components/ConditionalDrawer";
 import { InlineDrawerProvider } from "@/context/InlineDrawerContext"; // добавили
+import { TopFiltersDebugPanel } from "@/components/TopFiltersDebugPanel";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
                     <div className="flex-1 flex flex-col min-w-0">
                         <TopFilters />
+                        <TopFiltersDebugPanel />
                         <main className="flex-1 overflow-y-auto overflow-x-hidden p-1 min-w-0">
                             {children}
                         </main>

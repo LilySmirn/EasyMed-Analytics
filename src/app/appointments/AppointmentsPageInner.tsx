@@ -9,6 +9,7 @@ import { Doctor } from "@/components/DoctorsTable/DoctorsTable";
 import { NosologyDoctor } from "@/components/NosologyDoctorsTable";
 import { Specialty } from "@/components/SpecialtiesTable/SpecialtiesTable";
 import { applyFilters, FilterValue } from "@/utils/applyFilters";
+import { buildUrlWithTopFilters } from "@/utils/topFiltersQuery";
 
 type DrawerDoctor = Doctor & { city?: string; department?: string };
 
@@ -44,12 +45,7 @@ export default function AppointmentsPageInner() {
 
         setLoading(true);
 
-        let url = `/api/appointments?doctorId=${doctorId}`;
-
-        Object.entries(filters).forEach(([key, value]) => {
-            const serializedValue = Array.isArray(value) ? value.join(',') : value;
-            url += `&${key}=${encodeURIComponent(serializedValue)}`;
-        });
+        const url = buildUrlWithTopFilters('/api/appointments', filters, { doctorId });
 
         fetch(url)
             .then((res) => res.json())
@@ -63,18 +59,18 @@ export default function AppointmentsPageInner() {
             return;
         }
 
-        fetch('/api/doctors')
+        fetch(buildUrlWithTopFilters('/api/doctors', filters))
             .then((res) => res.json())
             .then((data: Doctor[]) => {
                 const doctor = data.find((item) => item.id === doctorId);
                 setDoctorName(doctor?.fullName ?? null);
             })
             .catch(() => setDoctorName(null));
-    }, [doctorId]);
+    }, [doctorId, filters]);
 
     useEffect(() => {
         if (nosologyId) {
-            fetch(`/api/nosologies/${nosologyId}/doctors`)
+            fetch(buildUrlWithTopFilters(`/api/nosologies/${nosologyId}/doctors`, filters))
                 .then((res) => res.json())
                 .then((data: NosologyDoctor[]) => {
                     const drawerItems: InlineDrawerItem[] = data.map((doctor) => ({
@@ -96,7 +92,7 @@ export default function AppointmentsPageInner() {
         }
 
         if (specialtyName) {
-            fetch('/api/specialities')
+            fetch(buildUrlWithTopFilters('/api/specialities', filters))
                 .then((res) => res.json())
                 .then((data: Specialty[]) => {
                     const drawerItems: InlineDrawerItem[] = data.map((specialty) => ({
@@ -114,7 +110,7 @@ export default function AppointmentsPageInner() {
             return;
         }
 
-        fetch('/api/doctors')
+        fetch(buildUrlWithTopFilters('/api/doctors', filters))
             .then(res => res.json())
             .then((data: DrawerDoctor[]) => {
                 const drawerFiltered = applyFilters<DrawerDoctor>(data, filters, {

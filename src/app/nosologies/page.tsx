@@ -7,15 +7,19 @@ import { useInlineDrawer } from "@/context/InlineDrawerContext";
 import { Doctor } from "@/components/DoctorsTable/DoctorsTable";
 import { useFilters } from "@/context/FiltersContext";
 import { buildDoctorFilterOptions } from "@/utils/doctorFilterOptions";
+import { buildUrlWithTopFilters } from "@/utils/topFiltersQuery";
 
 export default function NosologiesPage() {
     const [nosologies, setNosologies] = useState<Nosology[]>([]);
     const [loading, setLoading] = useState(true);
     const { setItems, setCurrentId } = useInlineDrawer();
-    const { setDoctorOptions } = useFilters();
+    const { filters, setDoctorOptions } = useFilters();
 
     useEffect(() => {
-        Promise.all([fetch('/api/nosologies'), fetch('/api/doctors')])
+        Promise.all([
+            fetch(buildUrlWithTopFilters('/api/nosologies', filters)),
+            fetch(buildUrlWithTopFilters('/api/doctors', filters)),
+        ])
             .then(async ([nosologiesRes, doctorsRes]) => {
                 const nosologiesData: Nosology[] = await nosologiesRes.json();
                 const doctorsData: Doctor[] = await doctorsRes.json();
@@ -27,7 +31,7 @@ export default function NosologiesPage() {
 
         setItems([]);
         setCurrentId(null);
-    }, [setCurrentId, setDoctorOptions, setItems]);
+    }, [filters, setCurrentId, setDoctorOptions, setItems]);
 
     if (loading) return <div className="px-4 py-6 sm:px-6 lg:px-4">Загрузка...</div>;
 

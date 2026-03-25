@@ -1,36 +1,69 @@
 "use client";
 
-import { createContext, useCallback, useContext, useMemo, useState, ReactNode } from "react";
+import {
+    createContext,
+    useCallback,
+    useContext,
+    useMemo,
+    useState,
+    ReactNode,
+} from "react";
+import { startOfMonth, subMonths } from "date-fns";
+import type { DateRange } from "react-day-picker";
+import { EMPTY_FILTER_VALUE, isMultiSelectFilter } from "@/config/topFilters";
 
 export type FilterStateValue = string | string[];
-type FiltersState = Record<string, FilterStateValue>;
+export type FiltersState = Record<string, FilterStateValue>;
 
 export interface FilterOption {
     value: string;
     label: string;
 }
 
+export interface StoredDateRange {
+    from?: string;
+    to?: string;
+}
+
 interface FiltersContextType {
     filters: FiltersState;
+    dateRange: DateRange | undefined;
     doctorOptions: FilterOption[];
     setFilter: (key: string, value: FilterStateValue) => void;
+    setDateRange: (value: DateRange | undefined) => void;
     setDoctorOptions: (options: FilterOption[]) => void;
     clearFilters: () => void;
 }
 
+const FILTERS_STORAGE_KEY = "filters";
+const DATE_RANGE_STORAGE_KEY = "filters:dateRange";
+
 const defaultDoctorOption: FilterOption = { value: "all", label: "Все врачи" };
-const multiSelectFilterKeys = new Set(["specialty", "branch", "doctor"]);
+
+function getDefaultDateRange(today: Date): DateRange {
+    if (today.getDate() >= 5) {
+        return {
+            from: startOfMonth(today),
+            to: today,
+        };
+    }
+
+    return {
+        from: subMonths(today, 1),
+        to: today,
+    };
+}
 
 function normalizeFilterValue(key: string, value: FilterStateValue | undefined): FilterStateValue {
-    if (!multiSelectFilterKeys.has(key)) {
-        return typeof value === "string" ? value : "all";
+    if (!isMultiSelectFilter(key)) {
+        return typeof value === "string" ? value : EMPTY_FILTER_VALUE;
     }
 
     if (Array.isArray(value)) {
-        return value.filter(Boolean);
+        return value.filter(Boolean).filter((item) => item !== EMPTY_FILTER_VALUE);
     }
 
-    if (!value || value === "all") {
+    if (!value || value === EMPTY_FILTER_VALUE) {
         return [];
     }
 
@@ -48,15 +81,57 @@ function normalizeFilters(rawFilters: unknown): FiltersState {
     }, {});
 }
 
+function serializeDateRange(value: DateRange | undefined): StoredDateRange | null {
+    if (!value?.from && !value?.to) return null;
+
+    return {
+        from: value.from?.toISOString() ?? undefined,
+        to: value.to?.toISOString() ?? undefined,
+    };
+}
+
+function deserializeDateRange(value: StoredDateRange | null): DateRange | undefined {
+    if (!value) return undefined;
+
+    return {
+        from: value.from ? new Date(value.from) : undefined,
+        to: value.to ? new Date(value.to) : undefined,
+    };
+}
+
 function safeGetFilters(): FiltersState {
     if (typeof window === "undefined") return {};
-    const raw = localStorage.getItem("filters");
+    const raw = localStorage.getItem(FILTERS_STORAGE_KEY);
     return raw ? normalizeFilters(JSON.parse(raw)) : {};
 }
 
 function safeSetFilters(filters: FiltersState) {
     if (typeof window === "undefined") return;
-    localStorage.setItem("filters", JSON.stringify(filters));
+    localStorage.setItem(FILTERS_STORAGE_KEY, JSON.stringify(filters));
+}
+
+function safeGetDateRange(): DateRange | undefined {
+    if (typeof window === "undefined") return getDefaultDateRange(new Date());
+
+    const raw = localStorage.getItem(DATE_RANGE_STORAGE_KEY);
+    if (!raw) {
+        return getDefaultDateRange(new Date());
+    }
+
+    return deserializeDateRange(JSON.parse(raw));
+}
+
+function safeSetDateRange(value: DateRange | undefined) {
+    if (typeof window === "undefined") return;
+
+    const serialized = serializeDateRange(value);
+
+    if (!serialized) {
+        localStorage.removeItem(DATE_RANGE_STORAGE_KEY);
+        return;
+    }
+
+    localStorage.setItem(DATE_RANGE_STORAGE_KEY, JSON.stringify(serialized));
 }
 
 function areOptionsEqual(left: FilterOption[], right: FilterOption[]) {
@@ -68,14 +143,17 @@ function areOptionsEqual(left: FilterOption[], right: FilterOption[]) {
 
 const FiltersContext = createContext<FiltersContextType>({
     filters: {},
+    dateRange: undefined,
     doctorOptions: [defaultDoctorOption],
     setFilter: () => {},
+    setDateRange: () => {},
     setDoctorOptions: () => {},
     clearFilters: () => {},
 });
 
 export const FiltersProvider = ({ children }: { children: ReactNode }) => {
     const [filters, setFilters] = useState<FiltersState>(() => safeGetFilters());
+    const [dateRange, setDateRangeState] = useState<DateRange | undefined>(() => safeGetDateRange());
     const [doctorOptions, setDoctorOptionsState] = useState<FilterOption[]>([defaultDoctorOption]);
 
     const setFilter = useCallback((key: string, value: FilterStateValue) => {
@@ -86,8 +164,13 @@ export const FiltersProvider = ({ children }: { children: ReactNode }) => {
         });
     }, []);
 
+    const setDateRange = useCallback((value: DateRange | undefined) => {
+        setDateRangeState(value);
+        safeSetDateRange(value);
+    }, []);
+
     const setDoctorOptions = useCallback((options: FilterOption[]) => {
-        const nextOptions = [defaultDoctorOption, ...options.filter((option) => option.value !== "all")];
+        const nextOptions = [defaultDoctorOption, ...options.filter((option) => option.value !== EMPTY_FILTER_VALUE)];
 
         setDoctorOptionsState((currentOptions) => (
             areOptionsEqual(currentOptions, nextOptions) ? currentOptions : nextOptions
@@ -114,14 +197,25 @@ export const FiltersProvider = ({ children }: { children: ReactNode }) => {
 
     const clearFilters = useCallback(() => {
         setFilters({});
+        setDateRangeState(getDefaultDateRange(new Date()));
+
         if (typeof window !== "undefined") {
-            localStorage.removeItem("filters");
+            localStorage.removeItem(FILTERS_STORAGE_KEY);
+            localStorage.removeItem(DATE_RANGE_STORAGE_KEY);
         }
     }, []);
 
     const value = useMemo(
-        () => ({ filters, doctorOptions, setFilter, setDoctorOptions, clearFilters }),
-        [clearFilters, doctorOptions, filters, setDoctorOptions, setFilter]
+        () => ({
+            filters,
+            dateRange,
+            doctorOptions,
+            setFilter,
+            setDateRange,
+            setDoctorOptions,
+            clearFilters,
+        }),
+        [clearFilters, dateRange, doctorOptions, filters, setDateRange, setDoctorOptions, setFilter]
     );
 
     return <FiltersContext.Provider value={value}>{children}</FiltersContext.Provider>;

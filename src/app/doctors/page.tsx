@@ -1,32 +1,76 @@
 'use client';
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DoctorsTable, Doctor } from "@/components/DoctorsTable/DoctorsTable";
 import { useFilters } from "@/context/FiltersContext";
 import { applyFilters, FilterValue } from "@/utils/applyFilters";
 import { BackButton } from "@/components/BackButton";
 import { useInlineDrawer } from "@/context/InlineDrawerContext";
 import { buildDoctorFilterOptions } from "@/utils/doctorFilterOptions";
+import {
+    buildTopFiltersPayload,
+    buildUrlWithTopFilters,
+} from "@/utils/topFiltersRequest";
 
 export default function DoctorsPage() {
     const [doctors, setDoctors] = useState<Doctor[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const { filters, setDoctorOptions } = useFilters();
+    const { filters, dateRange, setDoctorOptions } = useFilters();
     const { setItems, setCurrentId } = useInlineDrawer();
 
     useEffect(() => {
-        fetch("/api/doctors")
-            .then((res) => res.json())
-            .then((data: Doctor[]) => {
+        let cancelled = false;
+
+        async function loadDoctors() {
+            setLoading(true);
+
+            const payload = buildTopFiltersPayload(filters, { dateRange });
+            const url = buildUrlWithTopFilters("/api/doctors", filters, { dateRange });
+
+            console.group("[DoctorsPage] request");
+            console.log("filters:", filters);
+            console.log("dateRange:", dateRange);
+            console.log("payload:", payload);
+            console.log("url:", url);
+            console.groupEnd();
+
+            try {
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error(`Request failed: ${response.status}`);
+                }
+
+                const data: Doctor[] = await response.json();
+
+                if (cancelled) return;
+
                 setDoctors(data);
                 setDoctorOptions(buildDoctorFilterOptions(data, (doctor) => doctor.fullName));
-            })
-            .finally(() => setLoading(false));
+            } catch (error) {
+                if (!cancelled) {
+                    console.error("[DoctorsPage] Не удалось загрузить докторов", error);
+                    setDoctors([]);
+                }
+            } finally {
+                if (!cancelled) {
+                    setLoading(false);
+                }
+            }
+        }
 
+        void loadDoctors();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [filters, dateRange, setDoctorOptions]);
+
+    useEffect(() => {
         setItems([]);
         setCurrentId(null);
-    }, [setCurrentId, setDoctorOptions, setItems]);
+    }, [setCurrentId, setItems]);
 
     const filteredDoctors = useMemo(
         () =>

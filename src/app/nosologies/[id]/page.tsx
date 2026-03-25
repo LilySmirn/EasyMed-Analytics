@@ -9,6 +9,7 @@ import { Nosology } from "@/components/NosologiesTable/NosologiesTable";
 import { useFilters } from "@/context/FiltersContext";
 import { applyFilters } from "@/utils/applyFilters";
 import { buildDoctorFilterOptions } from "@/utils/doctorFilterOptions";
+import { buildUrlWithTopFilters } from "@/utils/topFiltersQuery";
 
 export default function NosologyPage({ params }: { params: { id: string } }) {
     const [doctors, setDoctors] = useState<NosologyDoctor[]>([]);
@@ -20,21 +21,21 @@ export default function NosologyPage({ params }: { params: { id: string } }) {
     const { filters, setDoctorOptions } = useFilters();
 
     useEffect(() => {
-        fetch(`/api/nosologies/${params.id}/doctors`)
+        fetch(buildUrlWithTopFilters(`/api/nosologies/${params.id}/doctors`, filters))
             .then((res) => res.json())
             .then((data: NosologyDoctor[]) => {
                 setDoctors(data);
                 setDoctorOptions(buildDoctorFilterOptions(data, (doctor) => doctor.name));
             })
             .finally(() => setLoading(false));
-    }, [params.id, setDoctorOptions]);
+    }, [filters, params.id, setDoctorOptions]);
 
     useEffect(() => {
         setCurrentId(params.id);
     }, [params.id, setCurrentId]);
 
     useEffect(() => {
-        fetch('/api/nosologies')
+        fetch(buildUrlWithTopFilters('/api/nosologies', filters))
             .then((res) => res.json())
             .then((data: Nosology[]) => {
                 const drawerItems: InlineDrawerItem[] = data.map((nosology) => ({
@@ -48,7 +49,7 @@ export default function NosologyPage({ params }: { params: { id: string } }) {
 
                 setItems(drawerItems);
             });
-    }, [setItems]);
+    }, [filters, setItems]);
 
     const filteredDoctors = useMemo(
         () => applyFilters(doctors, filters, { doctor: { field: "id" } }),

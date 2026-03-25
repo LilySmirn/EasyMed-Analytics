@@ -1,27 +1,11 @@
-"use client"
+"use client";
 
-import React from "react"
-import { startOfMonth, subMonths } from "date-fns"
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/Popover"
-import { Calendar } from "@/components/Calendar"
-import { DateRange } from "react-day-picker"
-
-function getDefaultDateRange(today: Date): DateRange {
-    if (today.getDate() >= 5) {
-        return {
-            from: startOfMonth(today),
-            to: today,
-        };
-    }
-
-    return {
-        from: subMonths(today, 1),
-        to: today,
-    };
-}
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/Popover";
+import { Calendar } from "@/components/Calendar";
+import { useFilters } from "@/context/FiltersContext";
 
 export const CalendarPopover = () => {
-    const [dateRange, setDateRange] = React.useState<DateRange | undefined>(() => getDefaultDateRange(new Date()));
+    const { dateRange, setDateRange } = useFilters();
 
     const buttonLabel = dateRange
         ? `${dateRange.from?.toLocaleDateString()} – ${dateRange.to?.toLocaleDateString() ?? ""}`
