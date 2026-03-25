@@ -69,9 +69,20 @@ export function TopFiltersDebugPanel() {
         });
     }, [debugDateRange, filters, params, payload, url]);
 
-    if (process.env.NODE_ENV === "production") {
+    // if (process.env.NODE_ENV === "production") {
+    //     return null;
+    // }
+
+    //раскомментить предыдущее, чтобы панель сбора состояний фильтров была только в деве
+    const isDebugEnabled =
+        typeof window !== "undefined" &&
+        new URLSearchParams(window.location.search).has("debugFilters");
+
+    if (!isDebugEnabled) {
         return null;
     }
+    //раскомментить предыдущее, чтобы панель сбора состояний фильтров была только в деве
+
 
     return (
         <div className="fixed bottom-4 right-4 z-[9999] w-[420px] max-w-[calc(100vw-2rem)]">
