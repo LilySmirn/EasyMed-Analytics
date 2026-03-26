@@ -6,12 +6,30 @@ import { BackButton } from "@/components/BackButton";
 import { InlineDrawerItem, useInlineDrawer } from "@/context/InlineDrawerContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Doctor } from "@/components/DoctorsTable/DoctorsTable";
+import { RiExternalLinkLine } from "@remixicon/react";
 
 interface AppointmentDetailsPageProps {
     params: { id: string };
 }
 
 type AppointmentSummary = { id: string; date?: string; number?: string; mkb?: string };
+
+const MINZDRAV_RUBRICATOR_URL = "https://cr.minzdrav.gov.ru/#!/search?text=";
+const NOSOLOGY_CODE_REGEX = /[A-Z]\d{2}(?:\.\d+)?/i;
+
+const extractNosologyCode = (value: string | null | undefined) => {
+    if (!value) return null;
+
+    const matchedCode = value.match(NOSOLOGY_CODE_REGEX)?.[0];
+    return matchedCode ? matchedCode.toUpperCase() : null;
+};
+
+const buildGuidelinesUrl = (value: string | null | undefined) => {
+    const nosologyCode = extractNosologyCode(value);
+    if (!nosologyCode) return null;
+
+    return `${MINZDRAV_RUBRICATOR_URL}${encodeURIComponent(nosologyCode)}`;
+};
 
 const getDiagnosisByMkb = (mkbCode: string) => {
     if (mkbCode.startsWith("I21") || mkbCode.startsWith("I22") || mkbCode.startsWith("I24")) {
@@ -39,6 +57,7 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
     const [loading, setLoading] = useState(true);
     const [doctorId, setDoctorId] = useState<string | null>(null);
     const [appointmentLabel, setAppointmentLabel] = useState<string | null>(null);
+    const [guidelinesUrl, setGuidelinesUrl] = useState<string | null>(null);
 
     const { setItems, setCurrentId } = useInlineDrawer();
     const router = useRouter();
@@ -102,7 +121,9 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
             .then((res) => res.json())
             .then((appointments: AppointmentSummary[]) => {
                 const currentAppointment = appointments.find((a) => a.id === params.id);
-                setAppointmentLabel(buildAppointmentLabel(currentAppointment));
+                const currentAppointmentLabel = buildAppointmentLabel(currentAppointment);
+                setAppointmentLabel(currentAppointmentLabel);
+                setGuidelinesUrl(buildGuidelinesUrl(currentAppointmentLabel ?? currentAppointment?.mkb ?? null));
 
                 const drawerItems: InlineDrawerItem[] = appointments.map((a) => ({
                     id: a.id,
@@ -126,9 +147,23 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
 
     return (
         <div className="px-4 py-6 sm:px-6 lg:px-4">
-            <div className="flex items-center gap-2 mb-6">
+            <div className="mb-6 flex items-center gap-2">
                 <BackButton />
-                <h1 className="text-2xl font-bold">{appointmentLabel ?? `Приём №${params.id}`}</h1>
+                <div className="flex w-full items-center justify-between gap-3">
+                    <h1 className="text-2xl font-bold">{appointmentLabel ?? `Приём №${params.id}`}</h1>
+                    {guidelinesUrl && (
+                        <a
+                            href={guidelinesUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Открыть клинические рекомендации Минздрава"
+                            title="Открыть клинические рекомендации Минздрава"
+                            className="rounded-md p-1 text-gray-500 transition-colors hover:text-black"
+                        >
+                            <RiExternalLinkLine size={20} />
+                        </a>
+                    )}
+                </div>
             </div>
             <AppointmentDetailsTable data={data} />
         </div>
