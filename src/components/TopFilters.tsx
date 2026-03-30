@@ -1,16 +1,60 @@
 "use client";
 
+import { useEffect } from "react";
 import { CalendarPopover } from "@/components/CalendarFilter";
 import { FilterSelect } from "@/components/FilterSelect";
 import { ModeToggle } from "@/components/ModeToggle";
 import { useFilters } from "@/context/FiltersContext";
 import { useMode } from "@/context/ModeContext";
+import type { Doctor } from "@/components/DoctorsTable/DoctorsTable";
+import { buildDoctorFilterOptions } from "@/utils/doctorFilterOptions";
+import { buildUrlWithTopFilters } from "@/utils/topFiltersQuery";
 
 export function TopFilters() {
-    const { setFilter, filters } = useFilters();
+    const { setFilter, filters, doctorOptions, setDoctorOptions } = useFilters();
     const { mode, setMode, isReady } = useMode();
 
     const getSingleValue = (value: string | string[] | undefined) => (Array.isArray(value) ? "all" : (value || "all"));
+
+    useEffect(() => {
+        let isCancelled = false;
+
+        async function loadDoctorOptions() {
+            try {
+                const filtersWithoutDoctor = { ...filters, doctor: [] };
+                const response = await fetch(buildUrlWithTopFilters("/api/doctors", filtersWithoutDoctor));
+
+                if (!response.ok) {
+                    throw new Error(`Request failed: ${response.status}`);
+                }
+
+                const doctors: Doctor[] = await response.json();
+                const selectedSpecialties = Array.isArray(filters.specialty)
+                    ? new Set(filters.specialty.map((item) => item.toLowerCase()))
+                    : null;
+
+                const filteredDoctors = selectedSpecialties && selectedSpecialties.size > 0
+                    ? doctors.filter((doctor) => selectedSpecialties.has(doctor.profession.toLowerCase()))
+                    : doctors;
+
+                if (!isCancelled) {
+                    setDoctorOptions(buildDoctorFilterOptions(filteredDoctors, (doctor) => doctor.fullName));
+                }
+            } catch (error) {
+                console.error("[TopFilters] Не удалось загрузить список врачей", error);
+
+                if (!isCancelled) {
+                    setDoctorOptions([]);
+                }
+            }
+        }
+
+        void loadDoctorOptions();
+
+        return () => {
+            isCancelled = true;
+        };
+    }, [filters, setDoctorOptions]);
 
     if (!isReady) return <div className="h-20 bg-gray-100 dark:bg-gray-900" />;
 
@@ -62,13 +106,7 @@ export function TopFilters() {
                     values={Array.isArray(filters.doctor) ? filters.doctor : []}
                     onMultiChange={(values) => setFilter("doctor", values)}
                     multiple
-                    options={[
-                        { value: "all", label: "Все врачи" },
-                        { value: "иванов", label: "Иванов" },
-                        { value: "петров", label: "Петров" },
-                        { value: "сидоров", label: "Сидоров" },
-                        { value: "смирнова", label: "Смирнова" },
-                    ]}
+                    options={doctorOptions}
                 />
 
                 <FilterSelect

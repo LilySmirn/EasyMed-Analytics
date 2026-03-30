@@ -6,7 +6,6 @@ import { useFilters } from "@/context/FiltersContext";
 import { applyFilters, FilterValue } from "@/utils/applyFilters";
 import { BackButton } from "@/components/BackButton";
 import { useInlineDrawer } from "@/context/InlineDrawerContext";
-import { buildDoctorFilterOptions } from "@/utils/doctorFilterOptions";
 import {
     buildTopFiltersPayload,
     buildUrlWithTopFilters,
@@ -16,7 +15,7 @@ export default function DoctorsPage() {
     const [doctors, setDoctors] = useState<Doctor[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const { filters, dateRange, setDoctorOptions } = useFilters();
+    const { filters, dateRange } = useFilters();
     const { setItems, setCurrentId } = useInlineDrawer();
 
     useEffect(() => {
@@ -47,7 +46,6 @@ export default function DoctorsPage() {
                 if (cancelled) return;
 
                 setDoctors(data);
-                setDoctorOptions(buildDoctorFilterOptions(data, (doctor) => doctor.fullName));
             } catch (error) {
                 if (!cancelled) {
                     console.error("[DoctorsPage] Не удалось загрузить докторов", error);
@@ -65,7 +63,7 @@ export default function DoctorsPage() {
         return () => {
             cancelled = true;
         };
-    }, [filters, dateRange, setDoctorOptions]);
+    }, [filters, dateRange]);
 
     useEffect(() => {
         setItems([]);

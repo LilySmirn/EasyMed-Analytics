@@ -4,34 +4,27 @@ import { useEffect, useState } from "react";
 import { BackButton } from "@/components/BackButton";
 import { NosologiesTable, Nosology } from "@/components/NosologiesTable/NosologiesTable";
 import { useInlineDrawer } from "@/context/InlineDrawerContext";
-import { Doctor } from "@/components/DoctorsTable/DoctorsTable";
 import { useFilters } from "@/context/FiltersContext";
-import { buildDoctorFilterOptions } from "@/utils/doctorFilterOptions";
 import { buildUrlWithTopFilters } from "@/utils/topFiltersQuery";
 
 export default function NosologiesPage() {
     const [nosologies, setNosologies] = useState<Nosology[]>([]);
     const [loading, setLoading] = useState(true);
     const { setItems, setCurrentId } = useInlineDrawer();
-    const { filters, setDoctorOptions } = useFilters();
+    const { filters } = useFilters();
 
     useEffect(() => {
-        Promise.all([
-            fetch(buildUrlWithTopFilters('/api/nosologies', filters)),
-            fetch(buildUrlWithTopFilters('/api/doctors', filters)),
-        ])
-            .then(async ([nosologiesRes, doctorsRes]) => {
+        fetch(buildUrlWithTopFilters('/api/nosologies', filters))
+            .then(async (nosologiesRes) => {
                 const nosologiesData: Nosology[] = await nosologiesRes.json();
-                const doctorsData: Doctor[] = await doctorsRes.json();
 
                 setNosologies(nosologiesData);
-                setDoctorOptions(buildDoctorFilterOptions(doctorsData, (doctor) => doctor.fullName));
             })
             .finally(() => setLoading(false));
 
         setItems([]);
         setCurrentId(null);
-    }, [filters, setCurrentId, setDoctorOptions, setItems]);
+    }, [filters, setCurrentId, setItems]);
 
     if (loading) return <div className="px-4 py-6 sm:px-6 lg:px-4">Загрузка...</div>;
 
