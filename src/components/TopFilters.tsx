@@ -72,7 +72,7 @@ export function TopFilters() {
                 />
 
                 <FilterSelect
-                    label="ДМС"
+                    label="Стаховые"
                     value={getSingleValue(filters.insurance)}
                     onChange={(v) => setFilter("insurance", v)}
                     options={[
