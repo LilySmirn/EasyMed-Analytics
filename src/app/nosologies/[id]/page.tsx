@@ -8,6 +8,7 @@ import { InlineDrawerItem, useInlineDrawer } from "@/context/InlineDrawerContext
 import { Nosology } from "@/components/NosologiesTable/NosologiesTable";
 import { useFilters } from "@/context/FiltersContext";
 import { applyFilters } from "@/utils/applyFilters";
+import { buildDoctorFilterOptions } from "@/utils/doctorFilterOptions";
 import { buildUrlWithTopFilters } from "@/utils/topFiltersQuery";
 
 export default function NosologyPage({ params }: { params: { id: string } }) {
@@ -17,16 +18,19 @@ export default function NosologyPage({ params }: { params: { id: string } }) {
     const name = searchParams.get("name") || "Нозология";
 
     const { setItems, setCurrentId } = useInlineDrawer();
-    const { filters } = useFilters();
+    const { filters, setDoctorOptions } = useFilters();
 
     useEffect(() => {
-        fetch(buildUrlWithTopFilters(`/api/nosologies/${params.id}/doctors`, filters))
+        const filtersWithoutDoctor = { ...filters, doctor: [] };
+
+        fetch(buildUrlWithTopFilters(`/api/nosologies/${params.id}/doctors`, filtersWithoutDoctor))
             .then((res) => res.json())
             .then((data: NosologyDoctor[]) => {
                 setDoctors(data);
+                setDoctorOptions(buildDoctorFilterOptions(data, (doctor) => doctor.name));
             })
             .finally(() => setLoading(false));
-    }, [filters, params.id]);
+    }, [filters, params.id, setDoctorOptions]);
 
     useEffect(() => {
         setCurrentId(params.id);

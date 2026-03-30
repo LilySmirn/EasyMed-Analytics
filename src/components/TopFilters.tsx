@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { CalendarPopover } from "@/components/CalendarFilter";
 import { FilterSelect } from "@/components/FilterSelect";
 import { ModeToggle } from "@/components/ModeToggle";
@@ -13,10 +14,16 @@ import { buildUrlWithTopFilters } from "@/utils/topFiltersQuery";
 export function TopFilters() {
     const { setFilter, filters, doctorOptions, setDoctorOptions } = useFilters();
     const { mode, setMode, isReady } = useMode();
+    const pathname = usePathname();
+    const isNosologyDetailsPage = pathname.startsWith("/nosologies/") && pathname !== "/nosologies";
 
     const getSingleValue = (value: string | string[] | undefined) => (Array.isArray(value) ? "all" : (value || "all"));
 
     useEffect(() => {
+        if (isNosologyDetailsPage) {
+            return;
+        }
+
         let isCancelled = false;
 
         async function loadDoctorOptions() {
@@ -54,7 +61,7 @@ export function TopFilters() {
         return () => {
             isCancelled = true;
         };
-    }, [filters, setDoctorOptions]);
+    }, [filters, isNosologyDetailsPage, setDoctorOptions]);
 
     if (!isReady) return <div className="h-20 bg-gray-100 dark:bg-gray-900" />;
 
