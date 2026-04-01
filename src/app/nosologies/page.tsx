@@ -6,6 +6,7 @@ import { NosologiesTable, Nosology } from "@/components/NosologiesTable/Nosologi
 import { useInlineDrawer } from "@/context/InlineDrawerContext";
 import { useFilters } from "@/context/FiltersContext";
 import { buildUrlWithTopFilters } from "@/utils/topFiltersQuery";
+import { dataGateway } from "@/lib/dataGateway";
 
 export default function NosologiesPage() {
     const [nosologies, setNosologies] = useState<Nosology[]>([]);
@@ -14,10 +15,8 @@ export default function NosologiesPage() {
     const { filters } = useFilters();
 
     useEffect(() => {
-        fetch(buildUrlWithTopFilters('/api/nosologies', filters))
-            .then(async (nosologiesRes) => {
-                const nosologiesData: Nosology[] = await nosologiesRes.json();
-
+        dataGateway.getNosologies(buildUrlWithTopFilters('/api/nosologies', filters))
+            .then((nosologiesData) => {
                 setNosologies(nosologiesData);
             })
             .finally(() => setLoading(false));

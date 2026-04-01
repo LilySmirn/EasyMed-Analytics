@@ -7,9 +7,9 @@ import { FilterSelect } from "@/components/FilterSelect";
 import { ModeToggle } from "@/components/ModeToggle";
 import { useFilters } from "@/context/FiltersContext";
 import { useMode } from "@/context/ModeContext";
-import type { Doctor } from "@/components/DoctorsTable/DoctorsTable";
 import { buildDoctorFilterOptions } from "@/utils/doctorFilterOptions";
 import { buildUrlWithTopFilters } from "@/utils/topFiltersQuery";
+import { dataGateway } from "@/lib/dataGateway";
 
 export function TopFilters() {
     const { setFilter, filters, doctorOptions, setDoctorOptions } = useFilters();
@@ -29,13 +29,7 @@ export function TopFilters() {
         async function loadDoctorOptions() {
             try {
                 const filtersWithoutDoctor = { ...filters, doctor: [] };
-                const response = await fetch(buildUrlWithTopFilters("/api/doctors", filtersWithoutDoctor));
-
-                if (!response.ok) {
-                    throw new Error(`Request failed: ${response.status}`);
-                }
-
-                const doctors: Doctor[] = await response.json();
+                const doctors = await dataGateway.getDoctors(buildUrlWithTopFilters("/api/doctors", filtersWithoutDoctor));
                 const selectedSpecialties = Array.isArray(filters.specialty)
                     ? new Set(filters.specialty.map((item) => item.toLowerCase()))
                     : null;

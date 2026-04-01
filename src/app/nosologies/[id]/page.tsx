@@ -10,6 +10,7 @@ import { useFilters } from "@/context/FiltersContext";
 import { applyFilters } from "@/utils/applyFilters";
 import { buildDoctorFilterOptions } from "@/utils/doctorFilterOptions";
 import { buildUrlWithTopFilters } from "@/utils/topFiltersQuery";
+import { dataGateway } from "@/lib/dataGateway";
 
 export default function NosologyPage({ params }: { params: { id: string } }) {
     const [doctors, setDoctors] = useState<NosologyDoctor[]>([]);
@@ -23,8 +24,7 @@ export default function NosologyPage({ params }: { params: { id: string } }) {
     useEffect(() => {
         const filtersWithoutDoctor = { ...filters, doctor: [] };
 
-        fetch(buildUrlWithTopFilters(`/api/nosologies/${params.id}/doctors`, filtersWithoutDoctor))
-            .then((res) => res.json())
+        dataGateway.getNosologyDoctors(params.id, buildUrlWithTopFilters(`/api/nosologies/${params.id}/doctors`, filtersWithoutDoctor))
             .then((data: NosologyDoctor[]) => {
                 setDoctors(data);
                 setDoctorOptions(buildDoctorFilterOptions(data, (doctor) => doctor.name));
@@ -37,8 +37,7 @@ export default function NosologyPage({ params }: { params: { id: string } }) {
     }, [params.id, setCurrentId]);
 
     useEffect(() => {
-        fetch(buildUrlWithTopFilters('/api/nosologies', filters))
-            .then((res) => res.json())
+        dataGateway.getNosologies(buildUrlWithTopFilters('/api/nosologies', filters))
             .then((data: Nosology[]) => {
                 const drawerItems: InlineDrawerItem[] = data.map((nosology) => ({
                     id: nosology.id,

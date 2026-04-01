@@ -5,14 +5,12 @@ import { AppointmentDetailsTable, AppointmentDetail } from "@/components/Appoint
 import { BackButton } from "@/components/BackButton";
 import { InlineDrawerItem, useInlineDrawer } from "@/context/InlineDrawerContext";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Doctor } from "@/components/DoctorsTable/DoctorsTable";
 import { RiExternalLinkLine } from "@remixicon/react";
+import { AppointmentSummary, dataGateway } from "@/lib/dataGateway";
 
 interface AppointmentDetailsPageProps {
     params: { id: string };
 }
-
-type AppointmentSummary = { id: string; date?: string; number?: string; mkb?: string };
 
 const MINZDRAV_RUBRICATOR_URL = "https://cr.minzdrav.gov.ru/#!/search?text=";
 const NOSOLOGY_CODE_REGEX = /[A-Z]\d{2}(?:\.\d+)?/i;
@@ -69,8 +67,7 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
     useEffect(() => {
         if (!params.id) return;
 
-        fetch(`/api/appointments/${params.id}`)
-            .then((res) => res.json())
+        dataGateway.getAppointmentById(params.id)
             .then((d) => setData(d))
             .finally(() => setLoading(false));
     }, [params.id]);
@@ -86,13 +83,11 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
         }
 
         const resolveDoctorId = async () => {
-            const doctorsRes = await fetch("/api/doctors");
-            const doctors: Doctor[] = await doctorsRes.json();
+            const doctors = await dataGateway.getDoctors();
 
             const appointmentsByDoctor = await Promise.all(
                 doctors.map(async (doctor) => {
-                    const appointmentsRes = await fetch(`/api/appointments?doctorId=${doctor.id}`);
-                    const appointments: AppointmentSummary[] = await appointmentsRes.json();
+                    const appointments = await dataGateway.getAppointmentSummaries(`/api/appointments?doctorId=${doctor.id}`);
                     return { doctorId: doctor.id, appointments };
                 }),
             );
@@ -117,8 +112,7 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
             router.replace(`/appointments/${params.id}?${query.toString()}`);
         }
 
-        fetch(`/api/appointments?doctorId=${doctorId}`)
-            .then((res) => res.json())
+        dataGateway.getAppointmentSummaries(`/api/appointments?doctorId=${doctorId}`)
             .then((appointments: AppointmentSummary[]) => {
                 const currentAppointment = appointments.find((a) => a.id === params.id);
                 const currentAppointmentLabel = buildAppointmentLabel(currentAppointment);

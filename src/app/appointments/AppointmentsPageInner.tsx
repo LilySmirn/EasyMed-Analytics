@@ -10,6 +10,7 @@ import { NosologyDoctor } from "@/components/NosologyDoctorsTable";
 import { Specialty } from "@/components/SpecialtiesTable/SpecialtiesTable";
 import { applyFilters, FilterValue } from "@/utils/applyFilters";
 import { buildUrlWithTopFilters } from "@/utils/topFiltersQuery";
+import { dataGateway } from "@/lib/dataGateway";
 
 type DrawerDoctor = Doctor & { city?: string; department?: string };
 
@@ -47,8 +48,7 @@ export default function AppointmentsPageInner() {
 
         const url = buildUrlWithTopFilters('/api/appointments', filters, { doctorId });
 
-        fetch(url)
-            .then((res) => res.json())
+        dataGateway.getAppointments(url)
             .then((data) => setAppointments(data))
             .finally(() => setLoading(false));
     }, [doctorId, filters]);
@@ -59,8 +59,7 @@ export default function AppointmentsPageInner() {
             return;
         }
 
-        fetch(buildUrlWithTopFilters('/api/doctors', filters))
-            .then((res) => res.json())
+        dataGateway.getDoctors(buildUrlWithTopFilters('/api/doctors', filters))
             .then((data: Doctor[]) => {
                 const doctor = data.find((item) => item.id === doctorId);
                 setDoctorName(doctor?.fullName ?? null);
@@ -70,8 +69,7 @@ export default function AppointmentsPageInner() {
 
     useEffect(() => {
         if (nosologyId) {
-            fetch(buildUrlWithTopFilters(`/api/nosologies/${nosologyId}/doctors`, filters))
-                .then((res) => res.json())
+            dataGateway.getNosologyDoctors(nosologyId, buildUrlWithTopFilters(`/api/nosologies/${nosologyId}/doctors`, filters))
                 .then((data: NosologyDoctor[]) => {
                     const drawerItems: InlineDrawerItem[] = data.map((doctor) => ({
                         id: doctor.id,
@@ -92,8 +90,7 @@ export default function AppointmentsPageInner() {
         }
 
         if (specialtyName) {
-            fetch(buildUrlWithTopFilters('/api/specialities', filters))
-                .then((res) => res.json())
+            dataGateway.getSpecialties(buildUrlWithTopFilters('/api/specialities', filters))
                 .then((data: Specialty[]) => {
                     const drawerItems: InlineDrawerItem[] = data.map((specialty) => ({
                         id: specialty.name,
@@ -110,8 +107,7 @@ export default function AppointmentsPageInner() {
             return;
         }
 
-        fetch(buildUrlWithTopFilters('/api/doctors', filters))
-            .then(res => res.json())
+        dataGateway.getDoctors(buildUrlWithTopFilters('/api/doctors', filters))
             .then((data: DrawerDoctor[]) => {
                 const drawerFiltered = applyFilters<DrawerDoctor>(data, filters, {
                     specialty: { field: "profession" },

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { BackButton } from "@/components/BackButton";
 import { Card } from "@/components/Card";
 import { StatisticsTable, Statistic } from "@/components/StatisticsTable";
+import { dataGateway } from "@/lib/dataGateway";
 
 export default function CancelReasonsPage() {
     const [statistics, setStatistics] = useState<Statistic[]>([]);
@@ -12,8 +13,7 @@ export default function CancelReasonsPage() {
     useEffect(() => {
         async function fetchStatistics() {
             try {
-                const res = await fetch("/api/statistics");
-                const data: Statistic[] = await res.json();
+                const data = await dataGateway.getStatistics();
                 setStatistics(data);
             } catch (err) {
                 console.error(err);
@@ -44,42 +44,42 @@ export default function CancelReasonsPage() {
                 <div className="flex flex-col gap-6 xl:flex-row">
                     <Card className="w-full xl:basis-[65%]">
                         <p className="text-lg font-bold mb-3 text-black">
-                            Анализ кодов МКБ
+                            Анализ кодов МКБ␊
                         </p>
 
                         {loading ? (
                             <p>Загрузка...</p>
-                        ) : (
+                            ) : (
                             <StatisticsTable data={statistics} />
-                        )}
+                    )}
 
-                    </Card>
+                </Card>
 
-                    <Card className="w-full xl:basis-[35%] flex items-center justify-center">
-                        <div className="flex flex-col items-center gap-[60px]">
-                            <div className="text-center">
-                                <p className="text-2xl font-medium mb-3 text-black">
-                                    Сколько раз<br />был открыт изимед
-                                </p>
-                                <p className="text-5xl font-bold text-black">
-                                    3352
-                                </p>
-                            </div>
-
-                            <div className="text-center">
-                                <p className="text-2xl font-medium mb-3 text-black">
-                                    % покрытия приемов<br />в клинике
-                                </p>
-                                <p className="text-5xl font-bold text-black">
-                                    67%
-                                </p>
-                            </div>
+                <Card className="w-full xl:basis-[35%] flex items-center justify-center">
+                    <div className="flex flex-col items-center gap-[60px]">
+                        <div className="text-center">
+                            <p className="text-2xl font-medium mb-3 text-black">
+                                Сколько раз<br />был открыт изимед
+                            </p>
+                            <p className="text-5xl font-bold text-black">
+                                3352
+                            </p>
                         </div>
 
-                    </Card>
-                </div>
+                        <div className="text-center">
+                            <p className="text-2xl font-medium mb-3 text-black">
+                                % покрытия приемов<br />в клинике
+                            </p>
+                            <p className="text-5xl font-bold text-black">
+                                67%
+                            </p>
+                        </div>
+                    </div>
 
+                </Card>
             </div>
+
         </div>
-    );
+</div>
+);
 }

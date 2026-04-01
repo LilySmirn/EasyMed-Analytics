@@ -5,6 +5,7 @@ import { DoctorsTable, Doctor } from "@/components/DoctorsTable/DoctorsTable";
 import { useFilters } from "@/context/FiltersContext";
 import { applyFilters, FilterValue } from "@/utils/applyFilters";
 import { BackButton } from "@/components/BackButton";
+import { dataGateway } from "@/lib/dataGateway";
 import { useInlineDrawer } from "@/context/InlineDrawerContext";
 import {
     buildTopFiltersPayload,
@@ -35,13 +36,7 @@ export default function DoctorsPage() {
             console.groupEnd();
 
             try {
-                const response = await fetch(url);
-
-                if (!response.ok) {
-                    throw new Error(`Request failed: ${response.status}`);
-                }
-
-                const data: Doctor[] = await response.json();
+                const data = await dataGateway.getDoctors(url);
 
                 if (cancelled) return;
 

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { BackButton } from "@/components/BackButton";
 import { SpecialtiesTable, Specialty } from "@/components/SpecialtiesTable/SpecialtiesTable";
 import { useInlineDrawer } from "@/context/InlineDrawerContext";
+import { dataGateway } from "@/lib/dataGateway";
 
 export default function SpecialtiesPage() {
     const [specialties, setSpecialties] = useState<Specialty[]>([]);
@@ -13,8 +14,7 @@ export default function SpecialtiesPage() {
     useEffect(() => {
         async function fetchSpecialties() {
             try {
-                const res = await fetch('/api/specialities', { cache: 'no-store' });
-                const data: Specialty[] = await res.json();
+                const data = await dataGateway.getSpecialties();
                 setSpecialties(data);
             } catch (err) {
                 console.error(err);
@@ -31,13 +31,13 @@ export default function SpecialtiesPage() {
     if (loading) return <div className="px-4 py-6 sm:px-6 lg:px-4">Загрузка...</div>;
 
     return (
-        <div className="px-4 py-6 sm:px-6 lg:px-4">
-            <div className="flex items-center gap-2 mb-6">
+        <div className="px-4 py-6 sm:px-6 lg:px-4">␊
+            <div className="flex items-center gap-2 mb-6">␊
                 <BackButton />
                 <h1 className="text-2xl font-bold">Специальности</h1>
-            </div>
-
+            </div>␊
+            ␊
             <SpecialtiesTable data={specialties} />
         </div>
-    );
+);
 }
