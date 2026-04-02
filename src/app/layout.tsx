@@ -6,8 +6,9 @@ import { FiltersProvider } from "@/context/FiltersContext";
 import { ModeProvider } from "@/context/ModeContext";
 import { TopFilters } from "@/components/TopFilters";
 import { ConditionalDrawer } from "@/components/ConditionalDrawer";
-import { InlineDrawerProvider } from "@/context/InlineDrawerContext"; // добавили
+import { InlineDrawerProvider } from "@/context/InlineDrawerContext";
 import { TopFiltersDebugPanel } from "@/components/TopFiltersDebugPanel";
+import { DatasetBootstrap } from "@/components/DatasetBootstrap";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -18,6 +19,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="ru" className={`${GeistSans.className} antialiased dark:bg-gray-950`}>
         <body className="h-screen flex overflow-hidden bg-gray-50 dark:bg-gray-950">
+        <DatasetBootstrap />
+
         <Sidebar />
 
         <FiltersProvider>
@@ -32,7 +35,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                             {children}
                         </main>
                     </div>
-
                 </InlineDrawerProvider>
             </ModeProvider>
         </FiltersProvider>

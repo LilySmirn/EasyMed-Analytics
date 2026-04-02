@@ -5,6 +5,8 @@ import type { Specialty } from "@/components/SpecialtiesTable/SpecialtiesTable";
 import type { Statistic } from "@/components/StatisticsTable";
 import type { Appointment } from "@/components/AppointmentsTable";
 import type { AppointmentDetail } from "@/components/AppointmentDetailsTable";
+import { ensureDatasetInIndexedDb } from "@/lib/indexedDbDatasetStore";
+import type { IndexedDbDatasetPayload } from "@/lib/indexedDbDatasetTypes";
 
 type JsonValue = Record<string, unknown> | unknown[];
 
@@ -60,5 +62,11 @@ export const dataGateway = {
 
     getRaw<T extends JsonValue>(url: string, init?: RequestInit) {
         return requestJson<T>(url, init);
+    },
+
+    async saveDatasetToIndexedDb(url: string, init?: RequestInit) {
+        const payload = await requestJson<IndexedDbDatasetPayload>(url, init);
+        await ensureDatasetInIndexedDb(payload);
+        return payload.meta;
     },
 };
