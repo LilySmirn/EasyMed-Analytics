@@ -13,10 +13,7 @@ export function DatasetBootstrap() {
             console.log("[DatasetBootstrap] bootstrap started");
 
             try {
-                const url = "/api/dataset";
-                console.log("[DatasetBootstrap] requesting:", url);
-
-                const meta = await dataGateway.saveDatasetToIndexedDb(url);
+                const meta = await dataGateway.syncIndexedDbDataset();
 
                 console.log("[DatasetBootstrap] dataset synced:", meta);
 
