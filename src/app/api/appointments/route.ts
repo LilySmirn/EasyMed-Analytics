@@ -890,20 +890,14 @@ const appointments: Appointment[] = [
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const doctorId = searchParams.get("doctorId");
+    const filteredAppointments = doctorId
+        ? appointments.filter((appointment) => appointment.doctorId === doctorId)
+        : appointments;
 
-    if (!doctorId) {
-        return NextResponse.json(
-            { error: "Missing doctorId parameter" },
-            { status: 400 }
-        );
-    }
+    const normalizedAppointments = filteredAppointments.map((appointment) => ({
+        ...appointment,
+        assignedTotal: appointment.assignedTotal ?? appointment.assignedRequired,
+    }));
 
-    const doctorAppointments = appointments
-        .filter((a) => a.doctorId === doctorId)
-        .map((a) => ({
-            ...a,
-            assignedTotal: a.assignedTotal ?? a.assignedRequired,
-        }));
-
-    return NextResponse.json(doctorAppointments);
+    return NextResponse.json(normalizedAppointments);
 }
