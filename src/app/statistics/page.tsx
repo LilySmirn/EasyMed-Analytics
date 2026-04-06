@@ -44,7 +44,7 @@ export default function CancelReasonsPage() {
                 <div className="flex flex-col gap-6 xl:flex-row">
                     <Card className="w-full xl:basis-[65%]">
                         <p className="text-lg font-bold mb-3 text-black">
-                            Анализ кодов МКБ␊
+                            Анализ кодов МКБ
                         </p>
 
                         {loading ? (

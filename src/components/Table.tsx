@@ -110,7 +110,7 @@ TableHead.displayName = "TableHead"
              "border-gray-200 dark:border-gray-800",
              TABLE_FONT_REDUCTION_CLASS,
 
-            // responsive behavior␊
+            // responsive behavior
             "whitespace-normal break-words align-top min-w-0",
 
              className,
@@ -173,7 +173,7 @@ export const TableCell = React.forwardRef<
             "text-black dark:text-gray-400",
             TABLE_FONT_REDUCTION_CLASS,
 
-            // перенос слов, не ломая слова␊
+            // перенос слов
             "whitespace-normal break-words align-top min-w-0",
 
             className,

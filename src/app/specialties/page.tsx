@@ -31,12 +31,12 @@ export default function SpecialtiesPage() {
     if (loading) return <div className="px-4 py-6 sm:px-6 lg:px-4">Загрузка...</div>;
 
     return (
-        <div className="px-4 py-6 sm:px-6 lg:px-4">␊
-            <div className="flex items-center gap-2 mb-6">␊
+        <div className="px-4 py-6 sm:px-6 lg:px-4">
+            <div className="flex items-center gap-2 mb-6">
                 <BackButton />
                 <h1 className="text-2xl font-bold">Специальности</h1>
-            </div>␊
-            ␊
+            </div>
+
             <SpecialtiesTable data={specialties} />
         </div>
 );
