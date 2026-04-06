@@ -53,7 +53,10 @@ export type AppointmentSummary = {
     id: string;
     date?: string;
     number?: string;
-    mkb?: string;
+    diagnosisType?: Array<{
+        mkbCode: string;
+        cr_id: string;
+    }>;
 };
 
 export const dataGateway = {
@@ -131,8 +134,10 @@ export const dataGateway = {
                 visitType: "primary" as const,
                 diagnosisType: [
                     {
-                        mkbCode: appointment.mkb,
-                        cr_id: `cr-${appointment.mkb}`,
+                        mkbCode: appointment.diagnosisType?.[0]?.mkbCode ?? "",
+                        cr_id:
+                            appointment.diagnosisType?.[0]?.cr_id ??
+                            `cr-${appointment.diagnosisType?.[0]?.mkbCode ?? ""}`,
                     },
                 ],
                 easyMed: true,
@@ -183,19 +188,19 @@ export const dataGateway = {
                 });
 
                 return {
-                    id: `${appointmentId}-${detail.id}-${index}`,
+                    id: detail.id ?? `${appointmentId}-${detail.serviceId}-${index}`,
                     datasetKey: "mock-dataset",
                     visitId: appointmentId,
-                    code: detail.id,
-                    name: detail.name,
+                    code: detail.code,
+                        name: detail.name,
                     assigned: detail.assigned,
-                    completed: detail.done,
-                    reasonNotAssigned: detail.assigned ? undefined : detail.reason,
-                    price: parseMoney(detail.cost),
-                    serviceId: detail.id,
-                };
+                    completed: detail.completed,
+                        reasonNotAssigned: detail.assigned ? undefined : detail.reasonNotAssigned,
+                    price: parseMoney(detail.price),
+                    serviceId: detail.serviceId,
+            };
             })
-        );
+    );
 
         console.log("[buildDataset] assignments built", {
             assignmentsCount: assignments.length,

@@ -38,9 +38,11 @@ const getDiagnosisByMkb = (mkbCode: string) => {
 };
 
 const buildAppointmentLabel = (appointment: AppointmentSummary | undefined) => {
-    if (appointment?.mkb) {
-        const diagnosis = getDiagnosisByMkb(appointment.mkb);
-        return `${appointment.mkb}${diagnosis ? ` ${diagnosis}` : ""}`;
+    const mkbCode = appointment?.diagnosisType?.[0]?.mkbCode;
+
+    if (mkbCode) {
+        const diagnosis = getDiagnosisByMkb(mkbCode);
+        return `${mkbCode}${diagnosis ? ` ${diagnosis}` : ""}`;
     }
 
     if (appointment?.date && appointment?.number) {
@@ -117,7 +119,7 @@ export default function AppointmentDetailsPage({ params }: AppointmentDetailsPag
                 const currentAppointment = appointments.find((a) => a.id === params.id);
                 const currentAppointmentLabel = buildAppointmentLabel(currentAppointment);
                 setAppointmentLabel(currentAppointmentLabel);
-                setGuidelinesUrl(buildGuidelinesUrl(currentAppointmentLabel ?? currentAppointment?.mkb ?? null));
+                setGuidelinesUrl(buildGuidelinesUrl(currentAppointmentLabel ?? currentAppointment?.diagnosisType?.[0]?.mkbCode ?? null));
 
                 const drawerItems: InlineDrawerItem[] = appointments.map((a) => ({
                     id: a.id,

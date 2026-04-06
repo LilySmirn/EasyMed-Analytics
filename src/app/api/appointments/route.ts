@@ -895,8 +895,27 @@ export async function GET(request: Request) {
         : appointments;
 
     const normalizedAppointments = filteredAppointments.map((appointment) => ({
-        ...appointment,
+        id: appointment.id,
+        doctorId: appointment.doctorId,
+        date: appointment.date,
+        number: appointment.number,
+        requiredServices: appointment.requiredServices,
+        assignedRequired: appointment.assignedRequired,
         assignedTotal: appointment.assignedTotal ?? appointment.assignedRequired,
+        assignmentPercent: appointment.assignmentPercent,
+        completionPercent: appointment.completionPercent,
+        deviationPercent: appointment.deviationPercent,
+        revenue: appointment.revenue,
+        lostRevenue: appointment.lostRevenue,
+        diagnosisType: [
+            {
+                mkbCode: appointment.mkb,
+                cr_id: `cr-${appointment.mkb}`,
+            },
+        ],
+        visitType: "primary",
+        easyMed: true,
+        insurance: null,
     }));
 
     return NextResponse.json(normalizedAppointments);

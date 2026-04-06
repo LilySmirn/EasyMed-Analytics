@@ -19,6 +19,10 @@ export interface Appointment {
     doctorId: string;
     date: string;
     number: string;
+    diagnosisType: Array<{
+        mkbCode: string;
+        cr_id: string;
+    }>;
     requiredServices: number;
     assignedRequired: number;
     assignedTotal: number;
@@ -27,7 +31,6 @@ export interface Appointment {
     deviationPercent: number;
     revenue: string;
     lostRevenue: string;
-    mkb: string;
 }
 
 interface AppointmentsTableProps {
@@ -74,7 +77,7 @@ export function AppointmentsTable({ data }: AppointmentsTableProps) {
                                     {a.date} / {a.number}
                                 </Link>
                             </TableCell>
-                            <TableCell className="text-center">{a.mkb}</TableCell>
+                            <TableCell className="text-center">{a.diagnosisType?.[0]?.mkbCode ?? "-"}</TableCell>
                             <TableCell className="text-center">{a.requiredServices}</TableCell>
                             <TableCell className="text-center">{a.assignedRequired}</TableCell>
                             <TableCell className="text-center">{a.assignedTotal}</TableCell>

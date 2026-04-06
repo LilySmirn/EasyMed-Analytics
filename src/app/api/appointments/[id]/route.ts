@@ -136,5 +136,18 @@ const appointmentsDetails: Record<string, AppointmentDetail[]> = {
 export async function GET(req: Request, { params }: { params: { id: string } }) {
     const { id } = params;
     const details = appointmentsDetails[id] || [];
-    return NextResponse.json(details);
+    const normalizedDetails = details.map((detail, index) => ({
+        id: `${id}-${detail.id}-${index}`,
+        serviceId: detail.id,
+        code: detail.id,
+        name: detail.name,
+        assigned: detail.assigned,
+        completed: detail.done,
+        reasonNotAssigned: detail.reason,
+        price: detail.cost,
+        isClinicalRecommendation: detail.clinical,
+        isRequiredByClinicalRecommendation: Boolean(detail.mandatoryOukr),
+    }));
+
+    return NextResponse.json(normalizedDetails);
 }
