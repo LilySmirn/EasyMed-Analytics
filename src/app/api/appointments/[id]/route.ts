@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-type AppointmentDetail = {
+export type RawAppointmentDetail = {
     id: string;
     name: string;
     mandatoryOukr?: boolean;
@@ -11,7 +11,7 @@ type AppointmentDetail = {
     clinical: boolean;
 };
 
-const appointmentsDetails: Record<string, AppointmentDetail[]> = {
+export const appointmentsDetails: Record<string, RawAppointmentDetail[]> = {
     a1: [
         { id: "s10", name: "ЭКГ в 12 отведениях", mandatoryOukr: true, assigned: true, reason: "-", cost: "1 850 ₽", done: true, clinical: true },
         { id: "s11", name: "Электрокардиографический мониторинг", mandatoryOukr: true, assigned: true, reason: "-", cost: "3 450 ₽", done: true, clinical: true },

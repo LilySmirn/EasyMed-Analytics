@@ -59,6 +59,8 @@ export type AppointmentSummary = {
     }>;
 };
 
+type AppointmentDetailsMap = Record<string, AppointmentDetail[]>;
+
 export const dataGateway = {
     // Level 1: read current raw sources (mock routes now, backend later)
     getDoctors(url = "/api/doctors") {
@@ -87,6 +89,10 @@ export const dataGateway = {
 
     getAppointmentById(appointmentId: string, url = `/api/appointments/${appointmentId}`) {
         return requestJson<AppointmentDetail[]>(url);
+    },
+
+    getAppointmentDetailsMap(url = "/api/appointments/details") {
+        return requestJson<AppointmentDetailsMap>(url);
     },
 
     getAppointmentSummaries(url: string) {
@@ -150,29 +156,21 @@ export const dataGateway = {
             firstVisit: visits[0],
         });
 
-        const appointmentDetails = await Promise.all(
-            appointments.map(async (appointment) => {
-                try {
-                    console.log("[buildDataset] loading details for", appointment.id);
+        let appointmentDetailsMap: AppointmentDetailsMap = {};
+        try {
+            console.log("[buildDataset] loading details map");
+            appointmentDetailsMap = await this.getAppointmentDetailsMap();
+            console.log("[buildDataset] details map loaded", {
+                appointmentsWithDetails: Object.keys(appointmentDetailsMap).length,
+            });
+        } catch (error) {
+            console.error("[buildDataset] failed to load appointment details map", error);
+        }
 
-                    const details = await this.getAppointmentById(appointment.id);
-
-                    console.log("[buildDataset] details loaded", appointment.id, details);
-
-                    return {
-                        appointmentId: appointment.id,
-                        details,
-                    };
-                } catch (error) {
-                    console.error("[buildDataset] failed to load appointment details", appointment.id, error);
-
-                    return {
-                        appointmentId: appointment.id,
-                        details: [],
-                    };
-                }
-            })
-        );
+        const appointmentDetails = appointments.map((appointment) => ({
+            appointmentId: appointment.id,
+            details: appointmentDetailsMap[appointment.id] ?? [],
+        }));
 
         console.log("[buildDataset] all details loaded", {
             groupsCount: appointmentDetails.length,
