@@ -8,7 +8,7 @@ import {
     useState,
     ReactNode,
 } from "react";
-import { startOfMonth, subMonths } from "date-fns";
+import { subMonths } from "date-fns";
 import type { DateRange } from "react-day-picker";
 import { EMPTY_FILTER_VALUE, isMultiSelectFilter } from "@/config/topFilters";
 
@@ -41,13 +41,6 @@ const DATE_RANGE_STORAGE_KEY = "filters:dateRange";
 const defaultDoctorOption: FilterOption = { value: "all", label: "Все врачи" };
 
 function getDefaultDateRange(today: Date): DateRange {
-    if (today.getDate() >= 5) {
-        return {
-            from: startOfMonth(today),
-            to: today,
-        };
-    }
-
     return {
         from: subMonths(today, 1),
         to: today,
