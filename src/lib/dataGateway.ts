@@ -107,7 +107,15 @@ function getStoredFilterFromDate(): Date | undefined {
         }
 
         const parsedDate = new Date(parsed.from);
-        return Number.isNaN(parsedDate.getTime()) ? undefined : parsedDate;
+        if (Number.isNaN(parsedDate.getTime())) {
+            return undefined;
+        }
+
+        return new Date(
+            parsedDate.getFullYear(),
+            parsedDate.getMonth(),
+            parsedDate.getDate()
+        );
     } catch {
         return undefined;
     }
@@ -358,7 +366,7 @@ export const dataGateway = {
             const existingMeta = await getDatasetMeta(DATASET_KEY);
 
             if (!existingMeta) {
-                const firstPayload = await this.buildIndexedDbDatasetPayload();
+                const firstPayload = await this.buildIndexedDbDatasetPayload(getRefreshDateWindow());
                 await ensureDatasetInIndexedDb(firstPayload);
                 return firstPayload.meta;
             }

@@ -19,7 +19,7 @@ type Appointment = {
 const appointments: Appointment[] = [
     { id: "a1",
         doctorId: "3",
-        date: "15.02.2026",
+        date: "02.04.2026",
         number: "№1", mkb: "I21.0",
         requiredServices: 6,
         assignedRequired: 6,
@@ -32,7 +32,7 @@ const appointments: Appointment[] = [
 
     { id: "a2",
         doctorId: "3",
-        date: "15.02.2026",
+        date: "01.03.2026",
         number: "№2", mkb: "I21.1",
         requiredServices: 5,
         assignedRequired: 1,
@@ -45,7 +45,7 @@ const appointments: Appointment[] = [
 
     { id: "a3",
         doctorId: "3",
-        date: "15.02.2026",
+        date: "08.04.2026",
         number: "№3", mkb: "I21.2",
         requiredServices: 4,
         assignedRequired: 3,
