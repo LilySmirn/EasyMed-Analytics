@@ -5,7 +5,12 @@ import type { Specialty } from "@/components/SpecialtiesTable/SpecialtiesTable";
 import type { Statistic } from "@/components/StatisticsTable";
 import type { Appointment } from "@/components/AppointmentsTable";
 import type { AppointmentDetail } from "@/components/AppointmentDetailsTable";
-import { ensureDatasetInIndexedDb } from "@/lib/indexedDbDatasetStore";
+import {
+    clearAllDatasetsFromIndexedDb,
+    ensureDatasetInIndexedDb,
+    getDatasetMeta,
+    writeDatasetToIndexedDb,
+} from "@/lib/indexedDbDatasetStore";
 import type { IndexedDbDatasetPayload } from "@/lib/indexedDbDatasetTypes";
 
 type JsonValue = Record<string, unknown> | unknown[];
@@ -61,6 +66,78 @@ export type AppointmentSummary = {
 
 type AppointmentDetailsMap = Record<string, AppointmentDetail[]>;
 
+type DateWindow = {
+    from: string;
+    to: string;
+};
+
+const DATASET_KEY = "mock-dataset";
+const DATE_RANGE_STORAGE_KEY = "filters:dateRange";
+
+function toDateOnlyIso(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
+
+function getTodayIso(): string {
+    return toDateOnlyIso(new Date());
+}
+
+function getFirstDayPreviousMonth(today = new Date()): Date {
+    return new Date(today.getFullYear(), today.getMonth() - 1, 1);
+}
+
+function getStoredFilterFromDate(): Date | undefined {
+    if (typeof window === "undefined") {
+        return undefined;
+    }
+
+    const raw = localStorage.getItem(DATE_RANGE_STORAGE_KEY);
+
+    if (!raw) {
+        return undefined;
+    }
+
+    try {
+        const parsed = JSON.parse(raw) as { from?: string } | null;
+        if (!parsed?.from) {
+            return undefined;
+        }
+
+        const parsedDate = new Date(parsed.from);
+        return Number.isNaN(parsedDate.getTime()) ? undefined : parsedDate;
+    } catch {
+        return undefined;
+    }
+}
+
+function getRefreshDateWindow(): DateWindow {
+    const today = new Date();
+    const todayIso = toDateOnlyIso(today);
+    const firstDayPrevMonth = getFirstDayPreviousMonth(today);
+    const filterFrom = getStoredFilterFromDate();
+
+    const requestFrom = filterFrom && filterFrom < firstDayPrevMonth
+        ? filterFrom
+        : firstDayPrevMonth;
+
+    return {
+        from: toDateOnlyIso(requestFrom),
+        to: todayIso,
+    };
+}
+
+function isSameLocalDay(leftIsoDateTime: string, rightIsoDate: string): boolean {
+    const leftDate = new Date(leftIsoDateTime);
+    if (Number.isNaN(leftDate.getTime())) {
+        return false;
+    }
+
+    return toDateOnlyIso(leftDate) === rightIsoDate;
+}
+
 export const dataGateway = {
     // Level 1: read current raw sources (mock routes now, backend later)
     getDoctors(url = "/api/doctors") {
@@ -104,11 +181,17 @@ export const dataGateway = {
     },
 
     // Level 2: build a unified payload for IndexedDB from raw sources
-    async buildIndexedDbDatasetPayload(): Promise<IndexedDbDatasetPayload> {
+    async buildIndexedDbDatasetPayload(dateWindow?: DateWindow): Promise<IndexedDbDatasetPayload> {
         console.log("[buildDataset] start");
 
+        const appointmentsUrl = new URL("/api/appointments", window.location.origin);
+        if (dateWindow) {
+            appointmentsUrl.searchParams.set("from", dateWindow.from);
+            appointmentsUrl.searchParams.set("to", dateWindow.to);
+        }
+
         const [appointments, doctors, nosologies] = await Promise.all([
-            this.getAppointments(),
+            this.getAppointments(appointmentsUrl.pathname + appointmentsUrl.search),
             this.getDoctors(),
             this.getNosologies(),
         ]);
@@ -131,7 +214,7 @@ export const dataGateway = {
 
             return {
                 id: appointment.id,
-                datasetKey: "mock-dataset",
+                datasetKey: DATASET_KEY,
                 number: appointment.number,
                 date: toIsoDate(appointment.date),
                 doctorId: appointment.doctorId,
@@ -187,18 +270,18 @@ export const dataGateway = {
 
                 return {
                     id: detail.id ?? `${appointmentId}-${detail.serviceId}-${index}`,
-                    datasetKey: "mock-dataset",
+                    datasetKey: DATASET_KEY,
                     visitId: appointmentId,
                     code: detail.code,
-                        name: detail.name,
+                    name: detail.name,
                     assigned: detail.assigned,
                     completed: detail.completed,
-                        reasonNotAssigned: detail.assigned ? undefined : detail.reasonNotAssigned,
+                    reasonNotAssigned: detail.assigned ? undefined : detail.reasonNotAssigned,
                     price: parseMoney(detail.price),
                     serviceId: detail.serviceId,
-            };
+                };
             })
-    );
+        );
 
         console.log("[buildDataset] assignments built", {
             assignmentsCount: assignments.length,
@@ -243,7 +326,7 @@ export const dataGateway = {
 
         const payload: IndexedDbDatasetPayload = {
             meta: {
-                datasetKey: "mock-dataset",
+                datasetKey: DATASET_KEY,
                 clinicId: "mock-clinic",
                 from,
                 to,
@@ -272,8 +355,24 @@ export const dataGateway = {
     // Level 3: sync the unified payload into IndexedDB
     async syncIndexedDbDataset() {
         try {
-            const payload = await this.buildIndexedDbDatasetPayload();
-            await ensureDatasetInIndexedDb(payload);
+            const existingMeta = await getDatasetMeta(DATASET_KEY);
+
+            if (!existingMeta) {
+                const firstPayload = await this.buildIndexedDbDatasetPayload();
+                await ensureDatasetInIndexedDb(firstPayload);
+                return firstPayload.meta;
+            }
+
+            const todayIso = getTodayIso();
+            const alreadySyncedToday = isSameLocalDay(existingMeta.fetchedAt, todayIso);
+
+            if (alreadySyncedToday) {
+                return existingMeta;
+            }
+
+            const payload = await this.buildIndexedDbDatasetPayload(getRefreshDateWindow());
+            await clearAllDatasetsFromIndexedDb();
+            await writeDatasetToIndexedDb(payload);
             return payload.meta;
         } catch (error) {
             console.error("BUILD FAILED, WRITING EMPTY DATASET", error);

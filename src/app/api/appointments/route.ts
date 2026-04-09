@@ -890,9 +890,34 @@ const appointments: Appointment[] = [
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const doctorId = searchParams.get("doctorId");
-    const filteredAppointments = doctorId
-        ? appointments.filter((appointment) => appointment.doctorId === doctorId)
-        : appointments;
+    const from = searchParams.get("from");
+    const to = searchParams.get("to");
+
+    const fromTime = from ? new Date(from).getTime() : undefined;
+    const toTime = to ? new Date(to).getTime() : undefined;
+
+    const filteredAppointments = appointments.filter((appointment) => {
+        if (doctorId && appointment.doctorId !== doctorId) {
+            return false;
+        }
+
+        if (fromTime === undefined && toTime === undefined) {
+            return true;
+        }
+
+        const [day, month, year] = appointment.date.split(".").map((item) => Number(item));
+        const appointmentTime = new Date(year, (month || 1) - 1, day || 1).getTime();
+
+        if (fromTime !== undefined && appointmentTime < fromTime) {
+            return false;
+        }
+
+        if (toTime !== undefined && appointmentTime > toTime) {
+            return false;
+        }
+
+        return true;
+    });
 
     const normalizedAppointments = filteredAppointments.map((appointment) => ({
         id: appointment.id,
