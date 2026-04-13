@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "gen:components": "node generate-components-doc.js"
+    "gen:components": "node generate-components-doc.js",
+    "test": "node --test src/lib/indexedDbSyncStrategy.test.js"
   },
   "dependencies": {
     "@internationalized/date": "^3.10.0",

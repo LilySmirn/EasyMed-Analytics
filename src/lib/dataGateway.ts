@@ -13,6 +13,12 @@ import {
     writeDatasetToIndexedDb,
 } from "@/lib/indexedDbDatasetStore";
 import type { IndexedDbDatasetPayload } from "@/lib/indexedDbDatasetTypes";
+import {
+    decideDateRangeCoverage,
+    decideRefresh,
+    getRefreshDateWindow,
+    toDateOnlyIso,
+} from "@/lib/indexedDbSyncStrategy";
 import type { DateRange } from "react-day-picker";
 
 type JsonValue = Record<string, unknown> | unknown[];
@@ -76,23 +82,12 @@ type DateWindow = {
 const DATASET_KEY = "mock-dataset";
 const DATE_RANGE_STORAGE_KEY = "filters:dateRange";
 
-function toDateOnlyIso(date: Date): string {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-}
-
 function getTodayIso(): string {
     return toDateOnlyIso(new Date());
 }
 
 function toLocalDateOnly(date: Date): Date {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-}
-
-function getFirstDayPreviousMonth(today = new Date()): Date {
-    return new Date(today.getFullYear(), today.getMonth() - 1, 1);
 }
 
 function getStoredFilterFromDate(): Date | undefined {
@@ -127,37 +122,12 @@ function getStoredFilterFromDate(): Date | undefined {
     }
 }
 
-function getRefreshDateWindow(): DateWindow {
-    const today = new Date();
-    const todayIso = toDateOnlyIso(today);
-    const firstDayPrevMonth = getFirstDayPreviousMonth(today);
-    const filterFrom = getStoredFilterFromDate();
-
-    const requestFrom = filterFrom && filterFrom < firstDayPrevMonth
-        ? filterFrom
-        : firstDayPrevMonth;
-
-    return {
-        from: toDateOnlyIso(requestFrom),
-        to: todayIso,
-    };
-}
-
 function getDateRangeStartIso(dateRange: DateRange | undefined): string | undefined {
     if (!dateRange?.from || Number.isNaN(dateRange.from.getTime())) {
         return undefined;
     }
 
     return toDateOnlyIso(toLocalDateOnly(dateRange.from));
-}
-
-function isSameLocalDay(leftIsoDateTime: string, rightIsoDate: string): boolean {
-    const leftDate = new Date(leftIsoDateTime);
-    if (Number.isNaN(leftDate.getTime())) {
-        return false;
-    }
-
-    return toDateOnlyIso(leftDate) === rightIsoDate;
 }
 
 export const dataGateway = {
@@ -378,21 +348,32 @@ export const dataGateway = {
     async syncIndexedDbDataset() {
         try {
             const existingMeta = await getDatasetMeta(DATASET_KEY);
+            const refreshDecision = decideRefresh({
+                existingFetchedAtIso: existingMeta?.fetchedAt,
+                today: new Date(),
+            });
 
-            if (!existingMeta) {
-                const firstPayload = await this.buildIndexedDbDatasetPayload(getRefreshDateWindow());
+            if (!existingMeta && refreshDecision.shouldRefresh) {
+                const firstPayload = await this.buildIndexedDbDatasetPayload(
+                    getRefreshDateWindow({
+                        today: new Date(),
+                        filterFrom: getStoredFilterFromDate(),
+                    })
+                );
                 await ensureDatasetInIndexedDb(firstPayload);
                 return firstPayload.meta;
             }
 
-            const todayIso = getTodayIso();
-            const alreadySyncedToday = isSameLocalDay(existingMeta.fetchedAt, todayIso);
-
-            if (alreadySyncedToday) {
+            if (!refreshDecision.shouldRefresh && existingMeta) {
                 return existingMeta;
             }
 
-            const payload = await this.buildIndexedDbDatasetPayload(getRefreshDateWindow());
+            const payload = await this.buildIndexedDbDatasetPayload(
+                getRefreshDateWindow({
+                    today: new Date(),
+                    filterFrom: getStoredFilterFromDate(),
+                })
+            );
             await clearAllDatasetsFromIndexedDb();
             await writeDatasetToIndexedDb(payload);
             return payload.meta;
@@ -423,16 +404,19 @@ export const dataGateway = {
 
     async ensureDateRangeCoverage(dateRange: DateRange | undefined) {
         const requestedFrom = getDateRangeStartIso(dateRange);
+        const existingMeta = await getDatasetMeta(DATASET_KEY);
+        const coverageDecision = decideDateRangeCoverage({
+            requestedFrom,
+            indexedDbFrom: existingMeta?.from,
+        });
 
-        if (!requestedFrom) {
+        if (coverageDecision.action === "skip-no-date-range") {
             return {
                 status: "skipped-no-date-range" as const,
             };
         }
 
-        const existingMeta = await getDatasetMeta(DATASET_KEY);
-
-        if (!existingMeta) {
+        if (coverageDecision.action === "bootstrap" && requestedFrom) {
             const firstPayload = await this.buildIndexedDbDatasetPayload({
                 from: requestedFrom,
                 to: getTodayIso(),
@@ -446,7 +430,7 @@ export const dataGateway = {
             };
         }
 
-        if (requestedFrom >= existingMeta.from) {
+        if (coverageDecision.action === "already-covered" && existingMeta) {
             return {
                 status: "covered-by-indexeddb" as const,
                 requestedFrom,
@@ -455,8 +439,8 @@ export const dataGateway = {
         }
 
         const incrementalWindow: DateWindow = {
-            from: requestedFrom,
-            to: existingMeta.from,
+            from: coverageDecision.requestWindow?.from ?? requestedFrom ?? getTodayIso(),
+            to: coverageDecision.requestWindow?.to ?? existingMeta?.from ?? getTodayIso(),
         };
 
         const payload = await this.buildIndexedDbDatasetPayload(incrementalWindow);
@@ -465,7 +449,7 @@ export const dataGateway = {
         return {
             status: "extended" as const,
             requestedFrom,
-            previousIndexedDbFrom: existingMeta.from,
+            previousIndexedDbFrom: existingMeta?.from ?? incrementalWindow.to,
             loadedWindow: incrementalWindow,
         };
     },
