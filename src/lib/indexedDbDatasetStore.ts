@@ -266,6 +266,48 @@ export async function ensureDatasetInIndexedDb(payload: IndexedDbDatasetPayload)
     await syncDatasetToIndexedDb(payload);
 }
 
+export async function extendDatasetInIndexedDb(payload: IndexedDbDatasetPayload): Promise<void> {
+    const existingMeta = await getDatasetMeta(payload.meta.datasetKey);
+    const db = await openDb();
+
+    try {
+        const tx = db.transaction(Object.values(STORES), "readwrite");
+
+        const metaStore = tx.objectStore(STORES.meta);
+        const visitsStore = tx.objectStore(STORES.visits);
+        const assignmentsStore = tx.objectStore(STORES.assignments);
+        const nosologiesStore = tx.objectStore(STORES.nosologies);
+        const servicesStore = tx.objectStore(STORES.services);
+        const crStore = tx.objectStore(STORES.clinicalRecommendations);
+
+        const mergedMeta = existingMeta
+            ? {
+                ...existingMeta,
+                from: existingMeta.from < payload.meta.from ? existingMeta.from : payload.meta.from,
+                to: existingMeta.to > payload.meta.to ? existingMeta.to : payload.meta.to,
+                fetchedAt: payload.meta.fetchedAt,
+            }
+            : payload.meta;
+
+        metaStore.put(mergedMeta);
+
+        payload.visits.forEach((visit) => visitsStore.put(visit));
+        payload.assignments.forEach((assignment) => assignmentsStore.put(assignment));
+
+        nosologiesStore.clear();
+        servicesStore.clear();
+        crStore.clear();
+
+        payload.nosologies.forEach((item) => nosologiesStore.put(item));
+        payload.services.forEach((item) => servicesStore.put(item));
+        payload.clinicalRecommendations.forEach((item) => crStore.put(item));
+
+        await transactionDone(tx);
+    } finally {
+        db.close();
+    }
+}
+
 export async function getDatasetMeta(datasetKey: string): Promise<DatasetMeta | undefined> {
     const db = await openDb();
 

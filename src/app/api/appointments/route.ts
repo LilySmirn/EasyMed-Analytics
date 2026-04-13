@@ -19,7 +19,7 @@ type Appointment = {
 const appointments: Appointment[] = [
     { id: "a1",
         doctorId: "3",
-        date: "02.04.2026",
+        date: "10.01.2026",
         number: "№1", mkb: "I21.0",
         requiredServices: 6,
         assignedRequired: 6,
@@ -45,7 +45,7 @@ const appointments: Appointment[] = [
 
     { id: "a3",
         doctorId: "3",
-        date: "08.04.2026",
+        date: "01.02.2026",
         number: "№3", mkb: "I21.2",
         requiredServices: 4,
         assignedRequired: 3,
@@ -885,6 +885,18 @@ const appointments: Appointment[] = [
         revenue: "17 260 ₽",
         lostRevenue: "3 452 ₽" },
 
+    { id: "a73",
+        doctorId: "2",
+        date: "25.12.2025",
+        number: "№72", mkb: "I22.1",
+        requiredServices: 6,
+        assignedRequired: 5,
+        assignmentPercent: 83,
+        completionPercent: 100,
+        deviationPercent: 17,
+        revenue: "17 260 ₽",
+        lostRevenue: "3 452 ₽" },
+
 ];
 
 export async function GET(request: Request) {
@@ -893,8 +905,22 @@ export async function GET(request: Request) {
     const from = searchParams.get("from");
     const to = searchParams.get("to");
 
-    const fromTime = from ? new Date(from).getTime() : undefined;
-    const toTime = to ? new Date(to).getTime() : undefined;
+    const toLocalDayTime = (value: string | null): number | undefined => {
+        if (!value) {
+            return undefined;
+        }
+
+        const [year, month, day] = value.split("-").map((item) => Number(item));
+
+        if (!year || !month || !day) {
+            return undefined;
+        }
+
+        return new Date(year, month - 1, day).getTime();
+    };
+
+    const fromTime = toLocalDayTime(from);
+    const toTime = toLocalDayTime(to);
 
     const filteredAppointments = appointments.filter((appointment) => {
         if (doctorId && appointment.doctorId !== doctorId) {

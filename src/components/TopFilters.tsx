@@ -12,7 +12,7 @@ import { buildUrlWithTopFilters } from "@/utils/topFiltersQuery";
 import { dataGateway } from "@/lib/dataGateway";
 
 export function TopFilters() {
-    const { setFilter, filters, doctorOptions, setDoctorOptions } = useFilters();
+    const { setFilter, filters, dateRange, doctorOptions, setDoctorOptions } = useFilters();
     const { mode, setMode, isReady } = useMode();
     const pathname = usePathname();
     const isNosologyDetailsPage = pathname.startsWith("/nosologies/") && pathname !== "/nosologies";
@@ -56,6 +56,30 @@ export function TopFilters() {
             isCancelled = true;
         };
     }, [filters, isNosologyDetailsPage, setDoctorOptions]);
+
+    useEffect(() => {
+        let cancelled = false;
+
+        async function ensureIndexedDbDateCoverage() {
+            try {
+                const result = await dataGateway.ensureDateRangeCoverage(dateRange);
+
+                if (!cancelled && result.status === "extended") {
+                    console.log("[TopFilters] IndexedDB date range extended", result);
+                }
+            } catch (error) {
+                if (!cancelled) {
+                    console.error("[TopFilters] Не удалось дозагрузить диапазон дат в IndexedDB", error);
+                }
+            }
+        }
+
+        void ensureIndexedDbDateCoverage();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [dateRange]);
 
     if (!isReady) return <div className="h-20 bg-gray-100 dark:bg-gray-900" />;
 

@@ -8,10 +8,12 @@ import type { AppointmentDetail } from "@/components/AppointmentDetailsTable";
 import {
     clearAllDatasetsFromIndexedDb,
     ensureDatasetInIndexedDb,
+    extendDatasetInIndexedDb,
     getDatasetMeta,
     writeDatasetToIndexedDb,
 } from "@/lib/indexedDbDatasetStore";
 import type { IndexedDbDatasetPayload } from "@/lib/indexedDbDatasetTypes";
+import type { DateRange } from "react-day-picker";
 
 type JsonValue = Record<string, unknown> | unknown[];
 
@@ -85,6 +87,10 @@ function getTodayIso(): string {
     return toDateOnlyIso(new Date());
 }
 
+function toLocalDateOnly(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
 function getFirstDayPreviousMonth(today = new Date()): Date {
     return new Date(today.getFullYear(), today.getMonth() - 1, 1);
 }
@@ -135,6 +141,14 @@ function getRefreshDateWindow(): DateWindow {
         from: toDateOnlyIso(requestFrom),
         to: todayIso,
     };
+}
+
+function getDateRangeStartIso(dateRange: DateRange | undefined): string | undefined {
+    if (!dateRange?.from || Number.isNaN(dateRange.from.getTime())) {
+        return undefined;
+    }
+
+    return toDateOnlyIso(toLocalDateOnly(dateRange.from));
 }
 
 function isSameLocalDay(leftIsoDateTime: string, rightIsoDate: string): boolean {
@@ -405,6 +419,55 @@ export const dataGateway = {
 
             return emptyPayload.meta;
         }
+    },
+
+    async ensureDateRangeCoverage(dateRange: DateRange | undefined) {
+        const requestedFrom = getDateRangeStartIso(dateRange);
+
+        if (!requestedFrom) {
+            return {
+                status: "skipped-no-date-range" as const,
+            };
+        }
+
+        const existingMeta = await getDatasetMeta(DATASET_KEY);
+
+        if (!existingMeta) {
+            const firstPayload = await this.buildIndexedDbDatasetPayload({
+                from: requestedFrom,
+                to: getTodayIso(),
+            });
+            await ensureDatasetInIndexedDb(firstPayload);
+
+            return {
+                status: "bootstrapped" as const,
+                requestedFrom,
+                loadedTo: getTodayIso(),
+            };
+        }
+
+        if (requestedFrom >= existingMeta.from) {
+            return {
+                status: "covered-by-indexeddb" as const,
+                requestedFrom,
+                indexedDbFrom: existingMeta.from,
+            };
+        }
+
+        const incrementalWindow: DateWindow = {
+            from: requestedFrom,
+            to: existingMeta.from,
+        };
+
+        const payload = await this.buildIndexedDbDatasetPayload(incrementalWindow);
+        await extendDatasetInIndexedDb(payload);
+
+        return {
+            status: "extended" as const,
+            requestedFrom,
+            previousIndexedDbFrom: existingMeta.from,
+            loadedWindow: incrementalWindow,
+        };
     },
 
     async saveDatasetToIndexedDb(url: string, init?: RequestInit) {
